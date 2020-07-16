@@ -30,3 +30,11 @@
 *.exe
 *.out
 *.app
+
+# Swap files
+*~
+*.swp
+*.swo
+
+# Cmake build dir
+cmake-build-debug
