@@ -37,5 +37,9 @@
 *.swo
 *.dia~
 
+# Dia autosave files (and swap)
+*.dia.autosave
+*.dia.autosave~
+
 # Cmake build dir
 cmake-build-debug
