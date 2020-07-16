@@ -28,14 +28,13 @@ long_line_behaviour=1
 long_line_column=90
 
 [files]
-current_page=3
+current_page=2
 FILE_NAME_0=133;C++;0;EUTF-8;1;1;0;%2Fhome%2Ffoxubuntu%2Fprojects%2FEyeglass%2Fsrc%2Fmain.cpp;0;4
 FILE_NAME_1=464;CMake;0;EUTF-8;1;1;0;%2Fhome%2Ffoxubuntu%2Fprojects%2FEyeglass%2FCMakeLists.txt;0;4
-FILE_NAME_2=377;CMake;0;EUTF-8;1;1;0;%2Fhome%2Ffoxubuntu%2Fprojects%2FEyeglass%2Ftest%2FCMakeLists.txt;0;4
-FILE_NAME_3=0;None;0;EUTF-8;1;1;0;%2Fhome%2Ffoxubuntu%2Fprojects%2FEyeglass%2FEyeglass.geany;0;4
+FILE_NAME_2=340;CMake;0;EUTF-8;1;1;0;%2Fhome%2Ffoxubuntu%2Fprojects%2FEyeglass%2Ftest%2FCMakeLists.txt;0;4
 
 [VTE]
-last_dir=/home/foxubuntu/projects/Eyeglass
+last_dir=/home/foxubuntu/projects/Eyeglass/test
 
 [build-menu]
 NF_00_LB=CMake
