@@ -28,8 +28,14 @@ long_line_behaviour=1
 long_line_column=90
 
 [files]
+current_page=3
+FILE_NAME_0=133;C++;0;EUTF-8;1;1;0;%2Fhome%2Ffoxubuntu%2Fprojects%2FEyeglass%2Fsrc%2Fmain.cpp;0;4
+FILE_NAME_1=464;CMake;0;EUTF-8;1;1;0;%2Fhome%2Ffoxubuntu%2Fprojects%2FEyeglass%2FCMakeLists.txt;0;4
+FILE_NAME_2=377;CMake;0;EUTF-8;1;1;0;%2Fhome%2Ffoxubuntu%2Fprojects%2FEyeglass%2Ftest%2FCMakeLists.txt;0;4
+FILE_NAME_3=0;None;0;EUTF-8;1;1;0;%2Fhome%2Ffoxubuntu%2Fprojects%2FEyeglass%2FEyeglass.geany;0;4
 
 [VTE]
+last_dir=/home/foxubuntu/projects/Eyeglass
 
 [build-menu]
 NF_00_LB=CMake
@@ -52,10 +58,10 @@ C++FT_02_CM=
 C++FT_02_WD=
 filetypes=C++;
 EX_00_LB=_Execute
-EX_00_CM="%p/cmake-build-debug/media_diff"
+EX_00_CM="%p/cmake-build-debug/Eyeglass"
 EX_00_WD=
 EX_01_LB=Test
-EX_01_CM="%p/cmake-build-debug/test/run_tests"
+EX_01_CM="%p/cmake-build-debug/test/Eyeglass_tests"
 EX_01_WD=
 
 [prjorg]

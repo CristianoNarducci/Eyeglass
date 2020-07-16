@@ -15,12 +15,13 @@ add_subdirectory(test)
 
 add_executable(Eyeglass src/main.cpp)
 
-#set(PROJECT_SOURCE_FILES
-#)
+set(PROJECT_SOURCE_FILES
+	src/main.cpp
+)
 set(DEPENDENCIES
 	${wxWidgets_LIBRARIES}
 )
 
-#add_library(core ${PROJECT_SOURCE_FILES})
+add_library(core ${PROJECT_SOURCE_FILES})
 target_link_libraries(Eyeglass core ${DEPENDENCIES})
 

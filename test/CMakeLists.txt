@@ -6,10 +6,10 @@ set(gtest_SOURCE_DIR, ./lib/googletest/)
 include_directories(${gtest_SOURCE_DIR}/include ${gtest_SOURCE_DIR})
 
 set(TEST_SOURCE_FILES testfile.cpp)
-add_executable(run_tests ${TEST_SOURCE_FILES})
+add_executable(Eyeglass_tests ${TEST_SOURCE_FILES})
 
 set(DEPENDENCIES
 	${wxWidgets_LIBRARIES}
 )
 
-target_link_libraries(run_tests gtest gtest_main core ${DEPENDENCIES})
+target_link_libraries(Eyeglass_tests gtest gtest_main core ${DEPENDENCIES})
