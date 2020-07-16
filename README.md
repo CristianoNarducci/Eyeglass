@@ -8,3 +8,9 @@ After che comparison has terminated, the differences can be viewed in different 
 We plan to implement a side-by-side view, a layered view and a heatmap view.
 
 This project is a university assignment, in case someone is interested in contributing or requesting something, he/she/it (?) will have to patiently wait for us to notice, as we won't focus only on this project.
+
+Dependences:
+* WxWidgets: GUI and Image comparation
+* Google Test: Unit Testing
+* cpp11
+* Cmake: Compilation starting
