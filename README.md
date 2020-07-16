@@ -7,10 +7,12 @@ Currently, images can be compared by alpha channel value, rgb value and hsv valu
 After che comparison has terminated, the differences can be viewed in different ways.
 We plan to implement a side-by-side view, a layered view and a heatmap view.
 
-This project is a university assignment, in case someone is interested in contributing or requesting something, he/she/it (?) will have to patiently wait for us to notice, as we won't focus only on this project.
+This project is a university assignment, in case someone is interested in contributing or requesting something, he/she/it (?) will have to patiently wait for us to notice, as we might be focused on something else.
 
 Dependences:
-* WxWidgets: GUI and Image comparation
+* WxWidgets: GUI and Image comparison
 * Google Test: Unit Testing
-* cpp11
-* Cmake: Compilation starting
+* Cmake: Compiler suite
+
+This project uses c++11.
+

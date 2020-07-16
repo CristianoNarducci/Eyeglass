@@ -36,7 +36,7 @@ Provides facilities to access the images, the diff cache and defines comparison 
 * comparePixelRGB( rgb1&, rgb2& ) returns the difference between the two rgb colors in percentage.  
 * comparePixelHSV( hsv1&, hsv2& ) returns the difference between the two hsv colors in percentage.  
 * comparePixelAlpha( alpha1&, alpha2& ) returns the difference between the two alpha values in percentage.   
-* compareRGB( path1, path2, color_tolerance ) compares the images indicated by their path, using the above comparePixelRgb() function, then saves those differences in the storage. The tolerance parameter excludes pixels in which the difference percentage is too low.
+* compareRGB( path1, path2, color_tolerance ) compares the images indicated by their path, using the above comparePixelRGB() function, then saves those differences in the storage. The tolerance parameter excludes pixels in which the difference percentage is too low.
 * compareHSV( path1, path2, color_tolerance ) does the same as compareRGB, but uses comparePixelHSV internally.
 * compareAlpha( path1, path2, alpha_tolerance ) again the same as above, with comparePixelAlpha.
 * getDifferences( path1, path2 ) returns a DiffResult structure which holds the differences betweeen those images. The order of the parameters does not count, as a comparison is the same in both directions.
