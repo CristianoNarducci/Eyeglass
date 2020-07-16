@@ -16,3 +16,8 @@ Dependences:
 
 This project uses c++11.
 
+Ide used:
+* Clion
+* Geany
+
+Others are usable, but we use these two without any conflict whatsoever.
