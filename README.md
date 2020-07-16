@@ -1,3 +1,4 @@
+![Eyeglass logo](https://raw.githubusercontent.com/CristianoNarducci/Eyeglass/master/docs/Eyeglass_logo.png)
 # Eyeglass
 Eyeglass is a FOSS graphical tool to compare and view differences between two images.   
 The underlying heavylifting is done by the wxWidget library for cpp.   
