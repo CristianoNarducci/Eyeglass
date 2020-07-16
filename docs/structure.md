@@ -54,12 +54,17 @@ Implements the subject interface as well, thus becoming observable.
 
 
 ### AbstractView (interface):
+Defines the interface of an interactive view.
+Provides a way to get its state from outside.
 #### methods:   
-* removeImages(wxCommandEvent& event) asks the controller to remove the selected items from the image storage.
-* loadImages(wxCommandEvent& event) gets an array of paths from the file chooser and asks the controller to load them.
-* activateSelectedImages(wxCommandEvent& event) marks the first two selected images as active and shows them. This marks the previously activated images as inactive, and each tab is reset to its original state.
-* compareImages(wxCommandEvent& event) asks the controller to compare the active images, by calling the appropriate function as selected in the modeSelector.
+* removeImages( wxCommandEvent& event ) asks the controller to remove the selected items from the image storage.
+* loadImages( wxCommandEvent& event ) gets an array of paths from the file chooser and asks the controller to load them.
+* activateSelectedImages( wxCommandEvent& event ) marks the first two selected images as active and shows them. This marks the previously activated images as inactive, and each tab is reset to its original state.
+* compareImages( wxCommandEvent& event ) asks the controller to compare the active images, by calling the appropriate function as selected in the modeSelector.
 * resetTabs() resets all the tabs to their original state. It is called when other images are activated or when an active image is deleted from the storage.
+* getMode() returns the selected comparison/visualization mode (alpha, rgb ... )
+* getModel() returns the model which the view communicates with. Useful for ViewTabs.
+* getActiveImages() returns the currectly active images (path only).
 
 
 ### View:
@@ -78,7 +83,7 @@ Implements the interface of AbstractView.
 * an array of tabs that provide different ways of visualising the differences between those images.
 * a messageBox for notification.
 * the instance of AbstractModel responsible for accessing the storage.
-* the instance of the AbstractController which handles the requests of the view.
+* the instance of AbstractController which handles the requests of the view.
 
 
 ### ViewTab (interface):
@@ -88,29 +93,40 @@ Defines a tab used to show the differences between images.
 * generateDiffView() processes the view's differences.
 
 
-# WORK STOPPED HERE:
 ### Tabs:
-The entities defined below are all realizations of ViewTab and all share an instance of the model passed to them by the view.
-
+The entities defined below are all realizations of ViewTab.
+They all have a reference to the View which created them, so that they can easily access its properties.
 #### OriginalViewTab:
 This tab shows the original images without any modification whatsoever. Gets the images from the model and converts them to static bitmaps for visualisation.
 #### DiffListTab:
 This tab has no images. It shows the list of differences with a table. No conversions are needed, it should be the fastest view.
-##### NOTE: It may be possible to implement a save to file functionality for this view.
 #### SideBySideTab:
 Shows the two images side by side. Changes the pixels which are different (over the imposed tolerance) with a bright color to highlight them. The images are then converted to static bitmaps.
-#### Image overlay (per type):
+#### LayerTab:
 Should work in the same way as the sliding-view from Kaleidoscope. A slider changes how much of an image is shown, over another.
 Different pixels are highlighted only in one image, thus sliding shows (or not) the differences.
-#### Heatmap (per type):
-TaKES THE Concept of a thermal camera and applies it to the differences. The original images are grayed out, then the result of the calculations are mapped to a range of color, from a darker (small difference) to a brighter (big difference) color per pixel.
+#### HeatmapTab:
+Takes the concept of a thermal camera and applies it to the differences. The original images are grayed out, then the result of the calculations are mapped to a range of color, from a darker (small difference) to a brighter (big difference) color per pixel.
+
+
+### AbstractController (interface):
+Defines the interface of a controller which relays requests made from the view, to the model.
+#### methods:
+* removeImages( paths )
+* loadImages( path )
+* compareRGB( path1, path2, color_tolerance )
+* compareHSV( path1, path2, color_tolerance )
+* comapreAlpha( path1, path2, alpha_tolerance ) 
+
+
+### Controller:
+#### variables:
+* the instance of AbstractModel responsible for accessing the storage.
 
 
 ### NOTES:
-1. We might use two sliders to compare colors and alpha differences separately.   
-2. The slider for color differences just passes a percentage value to the compare function. The compare function is then responsible for mapping the percentage to a reasonable difference between colors (hint: see color metrics).   
-3. Trying to load an image again will result in the request being ignored, to avoid duplicates in the storage. This is checked by path.
-4. If something doesn't need to be checked, just set the tolerance for it to the maximum value. This way, the comparison will say that every difference found is tolerated, thus not reported.
-5. There images selected to be shown and worked upon are called 'active' images in order to avoid confusion with the term 'shown' in its literal sense.
-6. All the tabs used in the view extend from a base class which is marked as a view friend. By making them friend, they can access all the elements of the main view object. This include the model (models?) passed initially to the view.
+1. The slider for color differences just passes a percentage value to the compare function. The compare function is then responsible for mapping the percentage to a reasonable difference between colors (hint: see color metrics).   
+2. Trying to load an image again will result in the request being ignored, to avoid duplicates in the storage. This is checked by path.
+3. There images selected to be shown and worked upon are called 'active' images in order to avoid confusion with the term 'shown' in its literal sense.
+4. It might be possible to implement a 'save to file' functionality in the DiffListTab, altough it's not strictly required. 
 
