@@ -25,9 +25,8 @@ enum{
 enum{
     MODE_SELECTOR=7
 };
-View::View(const std::string title, const wxPoint &pos, const wxSize &size, AbstractModel &model, AbstractController &controller): wxFrame(NULL,wxID_ANY,title,pos,size) {
-    this->controller = controller;
-    this->model = model;
+View::View(const std::string title, const wxPoint &pos, const wxSize &size, AbstractModel &model, AbstractController &controller): wxFrame(NULL,wxID_ANY,title,pos,size),model(model),controller(controller) {
+
 
     addImageButton = new wxButton(this,BUTTON_ADD,_T("Aggiungi un immagine"),wxPoint(30,30));
     removeImagesButton = new wxButton(this,BUTTON_REMOVE,_T("Rimuovi Immagine"));
