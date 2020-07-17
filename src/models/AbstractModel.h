@@ -6,6 +6,8 @@
 	#include <wx/wx.h>
 #endif
 
+#include <map>
+
 #include "DiffResult.h"
 
 
@@ -57,12 +59,12 @@ public:
 	/*
 	 * Returns the percentual of difference between the two RGB values, or 0 if below tolerance.
 	 */
-	virtual double comparePixelRGB(const RGBValue RGBValue1, const RGBValue RGBValue2, const double tolerance) = 0;
+	virtual double comparePixelRGB(const wxImage::RGBValue RGBValue1, const wxImage::RGBValue RGBValue2, const double tolerance) = 0;
 	
 	/*
 	 * Returns the percentual of difference between the two HSV values, or 0 if below tolerance.
 	 */
-	virtual double comparePixelHSV(const HSVValue HSVValue1, const HSVValue HSVValue2, const double tolerance) = 0;
+	virtual double comparePixelHSV(const wxImage::HSVValue HSVValue1, const wxImage::HSVValue HSVValue2, const double tolerance) = 0;
 	
 	/*
 	 * For each pixel in both images, compare the alpha value and save the percentual of difference 
