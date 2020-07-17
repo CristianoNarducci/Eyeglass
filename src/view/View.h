@@ -12,48 +12,50 @@
 #include "AbstractView.h"
 #include <iostream>
 #include <vector>
+#include "../models/AbstractModel.h"
 #include "../utils/Observer.h"
 #include "ViewTab.h"
+#include "../controllers/AbstractController.h"
 
 class View: public wxFrame, public AbstractView,public Observer {
-
 protected:
-    wxString* activeImages[2];
-    wxButton* addImageButton;
-    wxButton* removeImagesButton;
-    wxButton* activateImages;
-    wxSlider* alphaToleranceSlider;
-    wxSlider* colorToleranceSlider;
-    wxButton* compareButton;
-    std::vector<ViewTab*> tabs;
-    wxComboBox* modeSelector;
+    wxString* activeImages;   //Image activate array
+    wxButton* addImageButton;   //adding image button
+    wxButton* removeImagesButton;   //remove image button
+    wxButton* activateImages;       //activate image button
+    wxSlider* alphaToleranceSlider;     //slider for alpha tolerance
+    wxSlider* colorToleranceSlider;     //slider for color tolerance
+    wxButton* compareButton;            //button for comparation inizialize
+    std::vector<ViewTab*> tabs;     //Tab's vector for different result
+    wxComboBox* modeSelector;       //Comparation mode selector
     AbstractModel& model;
     AbstractController& controller;
 
 public:
-    bool onInit();
 
-    View();
+    View(const std::string title, const wxPoint& pos, const wxSize& size,AbstractModel& model, AbstractController& controller);
 
     void update(int eventCode) override;
 
-    void removeImages(wxCommandEvent &event) override;
+    void removeImages(wxCommandEvent &event) override; //Remove images from list
 
-    void loadImages(wxCommandEvent &event) override;
+    void loadImages(wxCommandEvent &event) override;    //upload the images to the list
 
-    void activateSelectedImages(wxCommandEvent &event) override;
+    void activateSelectedImages(wxCommandEvent &event) override;    //activate the selected image
 
-    void compareImages(wxCommandEvent &event) override;
+    void compareImages(wxCommandEvent &event) override; //compare activated images
 
-    void resetTabs() override;
+    void resetTabs() override;      //reset tabs
 
-    AbstractModel &getModel() override;
+    AbstractModel& getModel() override;
 
-    wxString getMode() override;
+    wxString getMode() override; //get selected comparation mode
 
-    wxString *getActiveImages() override;
-
+    wxString *getActiveImages() override;   //get activated images
+    wxDECLARE_EVENT_TABLE();
 };
+wxBEGIN_EVENT_TABLE(View,wxFrame)
 
+wxEND_EVENT_TABLE()
 
 #endif //EYEGLASS_VIEW_H

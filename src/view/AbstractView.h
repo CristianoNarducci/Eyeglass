@@ -10,8 +10,7 @@
 #include <wx/wx.h>
 #endif
 #include "../models/AbstractModel.h"
-class AbstractView
-{
+class AbstractView{
     virtual void removeImages(wxCommandEvent& event)=0;
     virtual void loadImages(wxCommandEvent& event)=0;
     virtual void activateSelectedImages(wxCommandEvent& event)=0;
