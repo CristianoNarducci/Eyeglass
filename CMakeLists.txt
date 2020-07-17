@@ -17,6 +17,7 @@ add_executable(Eyeglass src/main.cpp)
 
 set(PROJECT_SOURCE_FILES
 	src/main.cpp
+	src/models/Model.cpp
 )
 set(DEPENDENCIES
 	${wxWidgets_LIBRARIES}
