@@ -81,7 +81,6 @@ Implements the interface of AbstractView.
 * a button which starts the image comparison.
 * a combo box to select the comparison mode.
 * an array of tabs that provide different ways of visualising the differences between those images.
-* a messageBox for notification.
 * the instance of AbstractModel responsible for accessing the storage.
 * the instance of AbstractController which handles the requests of the view.
 
