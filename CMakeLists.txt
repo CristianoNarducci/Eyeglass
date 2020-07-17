@@ -17,8 +17,28 @@ add_executable(Eyeglass src/main.cpp)
 
 set(PROJECT_SOURCE_FILES
 		src/main.cpp
-		src/view/AbstractView.h src/view/View.cpp src/view/View.h src/utils/Observer.h src/view/ViewTab.h src/view/OriginalViewTab.cpp src/view/OriginalViewTab.h src/view/DiffListTab.cpp src/view/DiffListTab.h src/view/SideBySideTab.cpp src/view/SideBySideTab.h src/view/LayerTab.cpp src/view/LayerTab.h src/view/HeatmapTab.cpp src/view/HeatmapTab.h src/controllers/AbstractController.h src/controllers/controller.cpp src/controllers/controller.h)
+		src/view/AbstractView.h
+		src/view/View.cpp
+		src/view/View.h
+		src/utils/Observer.h
+		src/view/ViewTab.h
+		src/view/OriginalViewTab.cpp
+		src/view/OriginalViewTab.h
+		src/view/DiffListTab.cpp
+		src/view/DiffListTab.h
+		src/view/SideBySideTab.cpp
+		src/view/SideBySideTab.h
+		src/view/LayerTab.cpp
+		src/view/LayerTab.h
+		src/view/HeatmapTab.cpp
+		src/view/HeatmapTab.h
+		src/controllers/AbstractController.h
+		src/controllers/controller.cpp
+		src/controllers/controller.h
+		src/models/Model.cpp)
 set(DEPENDENCIES ${wxWidgets_LIBRARIES})
+
+
 
 add_library(core ${PROJECT_SOURCE_FILES})
 target_link_libraries(Eyeglass core ${DEPENDENCIES})
