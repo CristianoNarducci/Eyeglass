@@ -17,7 +17,7 @@
 #include "ViewTab.h"
 #include "../controllers/AbstractController.h"
 
-class View: public wxFrame, public AbstractView,public Observer {
+class View: public wxFrame, public AbstractView, public Observer {
 protected:
     wxString* activeImages;   //Image activate array
     wxButton* addImageButton;   //adding image button
