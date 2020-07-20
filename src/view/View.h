@@ -12,10 +12,10 @@
 #include "AbstractView.h"
 #include <iostream>
 #include <vector>
-#include "../models/AbstractModel.h"
+#include "../model/AbstractModel.h"
 #include "../utils/Observer.h"
 #include "ViewTab.h"
-#include "../controllers/AbstractController.h"
+#include "../controller/AbstractController.h"
 
 class View: public wxFrame, public AbstractView,public Observer {
 protected:

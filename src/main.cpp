@@ -1,6 +1,19 @@
-#include <iostream>
+#include <wx/wxprec.h>
+#ifndef WX_PRECOMP
+	#include <wx/wx.h>
+#endif
 
-int main(int argc, char** argv)
-{
-	std::cout << "La mattanza fa paranza, pesciolini ai tavolini" << std::endl;
-}
+#include "model/Model.h"
+#include "controller/Controller.h"
+#include "view/View.h"
+
+class App : public wxApp {
+public:
+	virtual bool OnInit() {
+		wxInitAllImageHandlers();
+		
+		// Model model;
+		// Controller controller;
+		// View view;
+	}
+};
