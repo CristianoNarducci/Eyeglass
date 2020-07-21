@@ -28,9 +28,9 @@ long_line_behaviour=1
 long_line_column=90
 
 [files]
-current_page=0
-FILE_NAME_0=0;C++;0;EUTF-8;1;1;0;%2Fhome%2Ffoxubuntu%2Fprojects%2FEyeglass%2Fsrc%2Fmodels%2FAbstractModel.h;0;4
-FILE_NAME_1=0;C++;0;EUTF-8;1;1;0;%2Fhome%2Ffoxubuntu%2Fprojects%2FEyeglass%2Fsrc%2Fmodels%2FDiffResult.h;0;4
+current_page=1
+FILE_NAME_0=313;C++;0;EUTF-8;1;1;0;%2Fhome%2Ffoxubuntu%2Fprojects%2FEyeglass%2Fsrc%2Fmain.cpp;0;4
+FILE_NAME_1=0;C++;0;EUTF-8;1;1;0;%2Fhome%2Ffoxubuntu%2Fprojects%2FEyeglass%2Fsrc%2Fmodel%2FAbstractModel.h;0;4
 
 [VTE]
 last_dir=/home/foxubuntu/projects/Eyeglass
