@@ -30,8 +30,6 @@ public:
 
     void loadImage(wxString path) override;
 
-    void loadImages(wxArrayString paths) override;
-
     void removeImage(wxString path) override;
 
     void removeAllImages(wxArrayString paths) override;

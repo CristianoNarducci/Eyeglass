@@ -12,6 +12,7 @@
 #include "AbstractView.h"
 #include <iostream>
 #include <vector>
+#include <wx/listctrl.h>
 #include "../model/AbstractModel.h"
 #include "../utils/Observer.h"
 #include "ViewTab.h"
@@ -20,6 +21,7 @@
 
 class View: public wxFrame, public AbstractView, public Observer {
 protected:
+    wxPanel* panel;            //application panel
     wxString* activeImages;   //Image activate array
     wxButton* addImageButton;   //adding image button
     wxButton* removeImagesButton;   //remove image button
@@ -27,11 +29,12 @@ protected:
     wxSlider* alphaToleranceSlider;     //slider for alpha tolerance
     wxSlider* colorToleranceSlider;     //slider for color tolerance
     wxButton* compareButton;            //button for comparation inizialize
-    std::vector<ViewTab*> tabs;     //Tab's vector for different result
+    std::vector<ViewTab*> tabs;     //Tab's vector for different results
     wxComboBox* modeSelector;       //Comparation mode selector
+    wxListView* list;
     AbstractModel& model;
     AbstractController& controller;
-    wxDECLARE_EVENT_TABLE();
+
 
 public:
 
@@ -54,7 +57,7 @@ public:
     wxString getMode() override; //get selected comparation mode
 
     wxString* getActiveImages() override;   //get activated images
-
+	wxDECLARE_EVENT_TABLE();
 };
 
 

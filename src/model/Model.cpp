@@ -10,10 +10,6 @@ void Model::loadImage(wxString path) {
 
 }
 
-void Model::loadImages(wxArrayString paths) {
-
-}
-
 void Model::removeImage(wxString path) {
 
 }

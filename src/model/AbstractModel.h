@@ -21,12 +21,7 @@ public:
 	 * If the selected file is invalid, the image is discarded. 
 	 */
 	virtual void loadImage(const wxString path) = 0;
-	
-	/*
-	 * Loads a batch of images into the store.
-	 * Invalid files will be skipped.
-	 */
-	virtual void loadImages(const wxArrayString paths) = 0;
+
 	
 	/*
 	 * Removes the specified image from the storage, if present.
@@ -96,11 +91,6 @@ public:
 	 */
 	virtual const DiffResult getDifferences(const wxString path1, const wxString path2) = 0;
 
-    virtual void registerObserver(Observer* observer)=0;
-
-    virtual void removeObserver(Observer* observer)=0;
-
-    virtual void notify(int eventCode)=0;
 protected:
 	/*
 	 * Remove the cache entry for the differences found between the two images.

@@ -10,13 +10,11 @@ class App : public wxApp {
 public:
 	virtual bool OnInit() {
 		wxInitAllImageHandlers();
-		Model luigi;
-		Controller pippo(luigi);
-		View* appe=new View("Eyeglass",wxPoint(300,500),wxSize(800,600),luigi,pippo);
-        appe->Show(true);
-		// Model model;
-		// Controller controller;
-		// View view;
+		Model model;
+		Controller controller(model);
+		View* eyeglass=new View("Eyeglass",wxPoint(300,500),wxSize(1440,720),model,controller);
+        eyeglass->Show(true);
+
 
 		return true;
 	}
