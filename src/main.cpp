@@ -13,9 +13,7 @@ public:
 		Model luigi;
 		Controller pippo(luigi);
 		View* appe=new View("Eyeglass",wxPoint(300,500),wxSize(800,600),luigi,pippo);
-		std::cout <<"DIO"<<std::endl;
         appe->Show(true);
-        std::cout<< "LUPO"<<std::endl;
 		// Model model;
 		// Controller controller;
 		// View view;
