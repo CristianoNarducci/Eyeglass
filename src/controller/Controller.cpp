@@ -4,22 +4,24 @@
 
 #include "Controller.h"
 
-void controller::removeImages(wxArrayString paths) {
+Controller::Controller(AbstractModel& model): model(model){}
+
+void Controller::removeImages(wxArrayString paths) {
 
 }
 
-void controller::loadImages(wxArrayString paths) {
+void Controller::loadImages(wxArrayString paths) {
 
 }
 
-void controller::compareRGB(wxString path1, wxString path2, double tolerance) {
+void Controller::compareRGB(wxString path1, wxString path2, double tolerance) {
 
 }
 
-void controller::compareAlpha(wxString path1, wxString path2, double tolerance) {
+void Controller::compareAlpha(wxString path1, wxString path2, double tolerance) {
 
 }
 
-void controller::compareHSV(wxString path1, wxString path2, double tolerance) {
+void Controller::compareHSV(wxString path1, wxString path2, double tolerance) {
 
 }

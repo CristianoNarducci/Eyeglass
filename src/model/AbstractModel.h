@@ -9,12 +9,12 @@
 #include <map>
 
 #include "DiffResult.h"
-
-
+#include "../utils/Subject.h"
+#include "../utils/Observer.h"
 /*
  * AbstractModel provides a generic interface to implement a model for this program.
  */
-class AbstractModel {
+class AbstractModel: public Subject {
 public:
 	/*
 	 * Loads an image into the storage.
@@ -96,6 +96,11 @@ public:
 	 */
 	virtual const DiffResult getDifferences(const wxString path1, const wxString path2) = 0;
 
+    virtual void registerObserver(Observer* observer)=0;
+
+    virtual void removeObserver(Observer* observer)=0;
+
+    virtual void notify(int eventCode)=0;
 protected:
 	/*
 	 * Remove the cache entry for the differences found between the two images.

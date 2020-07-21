@@ -6,14 +6,21 @@
 #include "model/Model.h"
 #include "controller/Controller.h"
 #include "view/View.h"
-
 class App : public wxApp {
 public:
 	virtual bool OnInit() {
 		wxInitAllImageHandlers();
-		
+		Model luigi;
+		Controller pippo(luigi);
+		View* appe=new View("Eyeglass",wxPoint(300,500),wxSize(800,600),luigi,pippo);
+		std::cout <<"DIO"<<std::endl;
+        appe->Show(true);
+        std::cout<< "LUPO"<<std::endl;
 		// Model model;
 		// Controller controller;
 		// View view;
+
+		return true;
 	}
 };
+wxIMPLEMENT_APP(App);

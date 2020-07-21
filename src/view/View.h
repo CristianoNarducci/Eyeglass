@@ -17,6 +17,7 @@
 #include "ViewTab.h"
 #include "../controller/AbstractController.h"
 
+
 class View: public wxFrame, public AbstractView, public Observer {
 protected:
     wxString* activeImages;   //Image activate array
@@ -30,6 +31,7 @@ protected:
     wxComboBox* modeSelector;       //Comparation mode selector
     AbstractModel& model;
     AbstractController& controller;
+    wxDECLARE_EVENT_TABLE();
 
 public:
 
@@ -51,11 +53,9 @@ public:
 
     wxString getMode() override; //get selected comparation mode
 
-    wxString *getActiveImages() override;   //get activated images
-    wxDECLARE_EVENT_TABLE();
-};
-wxBEGIN_EVENT_TABLE(View,wxFrame)
+    wxString* getActiveImages() override;   //get activated images
 
-wxEND_EVENT_TABLE()
+};
+
 
 #endif //EYEGLASS_VIEW_H

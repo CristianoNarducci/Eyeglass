@@ -9,7 +9,7 @@
 #ifndef WX_PRECOMP
 #include <wx/wx.h>
 #endif
-#include "../models/AbstractModel.h"
+#include "../model/AbstractModel.h"
 class AbstractView{
     virtual void removeImages(wxCommandEvent& event)=0;
     virtual void loadImages(wxCommandEvent& event)=0;

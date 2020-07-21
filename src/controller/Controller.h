@@ -9,13 +9,14 @@
 #include <wx/wx.h>
 #endif
 #include "AbstractController.h"
-#include "../models/AbstractModel.h"
-class controller: public AbstractController {
+#include "../model/AbstractModel.h"
+
+class Controller: public AbstractController {
 protected:
     AbstractModel& model;
 
 public:
-
+    Controller(AbstractModel& model);
     /*Remove images from the storage
      * It can remove multiple image at once*/
     void removeImages(wxArrayString paths) override;

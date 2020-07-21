@@ -1,6 +1,8 @@
 #ifndef EYEGLASS_DIFFRESULT_H
 #define EYEGLASS_DIFFRESULT_H
 
+#include <vector>
+
 /*
  * Groups together every cached difference for a couple of images.
  * Each vector keeps record of a tuple of x,y coordinates and the percentual of difference

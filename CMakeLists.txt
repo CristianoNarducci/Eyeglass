@@ -32,10 +32,12 @@ set(PROJECT_SOURCE_FILES
 		src/view/LayerTab.h
 		src/view/HeatmapTab.cpp
 		src/view/HeatmapTab.h
-		src/controllers/AbstractController.h
-		src/controllers/controller.cpp
-		src/controllers/controller.h
-		src/models/Model.cpp)
+		src/controller/AbstractController.h
+		src/controller/Controller.cpp
+		src/controller/Controller.h
+		src/model/Model.cpp
+		src/model/Model.h
+		src/utils/Subject.h)
 set(DEPENDENCIES ${wxWidgets_LIBRARIES})
 
 
