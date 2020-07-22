@@ -6,7 +6,10 @@
  * uptade it when a change happens on the subject side.
  */
 class Observer {
+public:
     virtual void update(int eventCode) = 0;
+    
+    virtual ~Observer() {};
 };
 
 #endif
