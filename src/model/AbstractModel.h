@@ -24,7 +24,13 @@ public:
 	 * If the selected file is invalid, the image is discarded. 
 	 */
 	virtual void loadImage(const wxString path) = 0;
-
+	
+	/*
+	 * Loads a batch of images into the store.
+	 * Invalid files will be skipped.
+	 */
+	virtual void loadImages(const wxArrayString paths) = 0;
+	
 	
 	/*
 	 * Removes the specified image from the storage, if present.
