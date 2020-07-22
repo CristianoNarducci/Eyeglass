@@ -8,10 +8,17 @@ Controller::Controller(AbstractModel& model): model(model){}
 
 void Controller::removeImages(wxArrayString paths) {
 
+    for(int it = 0; it < paths.size();it++){
+        model.removeImage(paths[it]);
+    }
+
 }
 
 void Controller::loadImages(wxArrayString paths) {
 
+    for(int it = 0; it < paths.size(); it++){
+        model.loadImage(paths[it]);
+    }
 }
 
 void Controller::compareRGB(wxString path1, wxString path2, double tolerance) {
