@@ -2,28 +2,54 @@
 
 Model::Model() {}
 
-void Model::loadImage(wxString path) {
+Model::~Model() {}
 
+// TODO: Error reporting is missing at the moment
+void Model::loadImage(wxString path) {
+	wxImage image;
+	
+	if (image.LoadFile(path)) {
+		imageStorage.insert(std::make_pair(path, image));
+	}
 }
 
 void Model::loadImages(wxArrayString paths) {
-
+	for (int i = 0; i < paths.GetCount(); i++) {
+		loadImage(paths.Item(i));
+	}
 }
 
+// Also removes the diff cache entry
+// NOTE: the iterator might get invalidated upon an erasure call. 
 void Model::removeImage(wxString path) {
-
+	imageStorage.erase(path);
+	
+	removeCachedDifferences(path);
 }
 
-void Model::removeAllImages(wxArrayString paths) {
-
+void Model::removeImages(wxArrayString paths) {
+	for (int i = 0; i < paths.GetCount(); i++) {
+		imageStorage.erase(paths.Item(i));
+	}
 }
 
-const wxImage Model::getImage(wxString path) {
-	return wxImage();
+void Model::removeAllImages() {
+	imageStorage.clear();
 }
 
-const std::map<wxString, wxImage> Model::getAllImages() {
-	return std::map<wxString, wxImage>();
+const wxImage* Model::getImage(wxString path) {
+	std::map<wxString, wxImage>::const_iterator iter;
+	
+	iter = imageStorage.find(path);
+	if (iter != imageStorage.end()) {
+		return & (iter->second);
+	}
+	
+	return nullptr;
+}
+
+const std::map<wxString, wxImage>& Model::getAllImages() {
+	return imageStorage;
 }
 
 double Model::comparePixelAlpha(const char alphaValue1, const char alphaValue2, const double tolerance) {
@@ -50,16 +76,44 @@ void Model::compareHSV(wxString path1, wxString path2, const double tolerance) {
 
 }
 
-const DiffResult Model::getDifferences(wxString path1, wxString path2) {
-	return DiffResult();
+// To implement the unordered usage, first check in one way, then try applying the operation with the
+// parameters reversed
+const DiffResult* Model::getDifferences(wxString path1, wxString path2) {
+	std::map<std::pair<wxString, wxString>, DiffResult>::const_iterator iter;
+	
+	iter = diffStorage.find(std::make_pair(path1, path2));
+	if (iter != diffStorage.end()) {
+		return & (iter->second);
+	}
+	
+	iter = diffStorage.find(std::make_pair(path1, path2));
+	if (iter != diffStorage.end()) {
+		return & (iter->second);
+	}
+	
+	return nullptr;
 }
 
+// Same as above
 void Model::removeCachedDifferences(wxString path1, wxString path2) {
-
+	if (path2.IsEmpty()) {
+		std::map<std::pair<wxString, wxString>, DiffResult>::iterator iter = diffStorage.begin();
+		while (iter != diffStorage.end()) {
+			std::pair<wxString, wxString> key = iter->first;
+		
+			if (key.first.IsSameAs(path1) || key.second.IsSameAs(path1)) {
+				diffStorage.erase(key); // TODO: checks if it works for equal string with different addresses. It should, though
+			}
+			
+			iter++;
+		}
+	} else if (diffStorage.erase(std::make_pair(path1, path2)) == 0) {
+		diffStorage.erase(std::make_pair(path2, path1));
+	}
 }
 
 void Model::removeAllCachedDifferences() {
-
+	diffStorage.clear();
 }
 
 void Model::registerObserver(Observer* observer) {
@@ -67,21 +121,15 @@ void Model::registerObserver(Observer* observer) {
 }
 
 void Model::removeObserver(Observer* observer) {
-	std::vector<Observer*>::iterator iter = observers.begin();
-	while(iter != observers.end())
-	{
-		if(*iter == observer)
-		{
-			iter = observers.erase(iter);
-		}
-		else
-		{
-			++iter;
-		}
-	}
-
+	observers.remove(observer);
 }
 
 void Model::notify(int eventCode) {
-
+	std::list<Observer*>::iterator iter = observers.begin();
+	
+	while(iter != observers.end())
+	{
+		(*iter)->update(eventCode); // TODO check why this doesn't work just with an arrow operator. According to docs, it should.
+		iter++;
+	}
 }

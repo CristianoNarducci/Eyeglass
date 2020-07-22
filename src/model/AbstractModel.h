@@ -37,22 +37,28 @@ public:
 	virtual void removeImage(const wxString path) = 0;
 	
 	/*
+	 * Removes the specified images from the storage, if present.
+	 * Should also remove any diff entry with the specified image as one of the two involved in the comparison.
+	 */
+	virtual void removeImages(const wxArrayString paths) = 0;
+	
+	/*
 	 * Completely purge the image storage.
 	 */
-	virtual void removeAllImages(const wxArrayString paths) = 0;
+	virtual void removeAllImages() = 0;
 	
 	/*
 	 * Returns a non modifiable image 
 	 * The images in storage should not be modified directly, as doing so prevents the original image
 	 * from being reused in another round of comparison.
 	 */
-	virtual const wxImage getImage(const wxString path) = 0;
+	virtual const wxImage* getImage(const wxString path) = 0;
 	
 	/*
 	 * Returns a map containing all the images in storage, with their path identifier.
 	 * The returned data is immutable.
 	 */
-	virtual const std::map<wxString, wxImage> getAllImages() = 0;
+	virtual const std::map<wxString, wxImage>& getAllImages() = 0;
 	
 	/*
 	 * Returns the percentual of difference between the two alpha values, or 0 if below tolerance.
@@ -97,16 +103,16 @@ public:
 	 * Returns the group of differences found between the two images.
 	 * The order of the images doesn't count.
 	 */
-	virtual const DiffResult getDifferences(const wxString path1, const wxString path2) = 0
+	virtual const DiffResult* getDifferences(const wxString path1, const wxString path2) = 0;
 	
-	virtual ~AbstractModel() = 0;
+	virtual ~AbstractModel() {};
 
 protected:
 	/*
-	 * Remove the cache entry for the differences found between the two images.
+	 * Remove the cached differences where one of the images (or both) are involved.
 	 * The orger of the images doesn't count.
 	 */
-	virtual void removeCachedDifferences(const wxString path1, const wxString path2) = 0;
+	virtual void removeCachedDifferences(const wxString path1, const wxString path2 = "") = 0;
 	
 	/*
 	 * Purge every diff cache entry.
