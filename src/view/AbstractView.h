@@ -19,6 +19,9 @@ class AbstractView{
     virtual AbstractModel& getModel()=0;
     virtual wxString getMode()=0;
     virtual wxString* getActiveImages()=0;
+    virtual void onAbout(wxCommandEvent& event)=0;
+    virtual void onExit(wxCommandEvent& event)=0;
+    virtual void onSliderUpdate(wxCommandEvent& event)=0;
 };
 
 #endif //EYEGLASS_ABSTRACTVIEW_H

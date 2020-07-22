@@ -17,11 +17,15 @@
 #include "../utils/Observer.h"
 #include "ViewTab.h"
 #include "../controller/AbstractController.h"
+#include <wx/textctrl.h>
+
 
 
 class View: public wxFrame, public AbstractView, public Observer {
 protected:
     wxPanel* panel;            //application panel
+    wxMenu* menuFile;
+    wxMenuBar* menu;
     wxString* activeImages;   //Image activate array
     wxButton* addImageButton;   //adding image button
     wxButton* removeImagesButton;   //remove image button
@@ -34,6 +38,7 @@ protected:
     wxListView* list;
     AbstractModel& model;
     AbstractController& controller;
+	wxTextCtrl* sliderValue;
 
 
 public:
@@ -57,7 +62,14 @@ public:
     wxString getMode() override; //get selected comparation mode
 
     wxString* getActiveImages() override;   //get activated images
-	wxDECLARE_EVENT_TABLE();
+
+	void onAbout(wxCommandEvent &event) override;
+
+	void onExit(wxCommandEvent &event) override;
+
+	void onSliderUpdate(wxCommandEvent &event) override;
+
+wxDECLARE_EVENT_TABLE();
 };
 
 
