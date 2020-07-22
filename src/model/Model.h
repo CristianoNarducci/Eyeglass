@@ -23,26 +23,26 @@ public:
 
 	void registerObserver(Observer *observer) override;
 	void removeObserver(Observer *observer) override;
-	void notify(int eventCode) override;
-	void loadImage(wxString path) override;
-	void loadImages(wxArrayString paths) override;
-	void removeImage(wxString path) override;
-	void removeImages(wxArrayString paths) override;
+	void notify(const int eventCode) override;
+	void loadImage(const wxString path) override;
+	void loadImages(const wxArrayString paths) override;
+	void removeImage(const wxString path) override;
+	void removeImages(const wxArrayString paths) override;
 	void removeAllImages() override;
-	const wxImage* getImage(wxString path) override;
+	const wxImage* getImage(const wxString path) override;
 	const std::map<wxString, wxImage>& getAllImages() override;
 	double comparePixelAlpha(const char alphaValue1, const char alphaValue2, const double tolerance) override;
-	double comparePixelRGB(wxImage::RGBValue RGBValue1, wxImage::RGBValue RGBValue2, const double tolerance) override;
-	double comparePixelHSV(wxImage::HSVValue HSVValue1, wxImage::HSVValue HSVValue2, const double tolerance) override;
-	void compareAlpha(wxString path1, wxString path2, const double tolerance) override;
-	void compareRGB(wxString path1, wxString path2, const double tolerance) override;
-	void compareHSV(wxString path1, wxString path2, const double tolerance) override;
-	const DiffResult* getDifferences(wxString path1, wxString path2) override;
+	double comparePixelRGB(const wxImage::RGBValue RGBValue1, const wxImage::RGBValue RGBValue2, const double tolerance) override;
+	double comparePixelHSV(const wxImage::HSVValue HSVValue1, const wxImage::HSVValue HSVValue2, const double tolerance) override;
+	void compareAlpha(wxString path1, const wxString path2, const double tolerance) override;
+	void compareRGB(const wxString path1, const wxString path2, const double tolerance) override;
+	void compareHSV(const wxString path1, const wxString path2, const double tolerance) override;
+	const DiffResult* getDifferences(const wxString path1, const wxString path2) override;
 	
 	virtual ~Model() override;
 
 protected:
-	void removeCachedDifferences(wxString path1, wxString path2 = "") override;
+	void removeCachedDifferences(const wxString path1, const wxString path2 = "") override;
 	void removeAllCachedDifferences() override;
 
 	/*

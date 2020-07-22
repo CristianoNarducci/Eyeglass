@@ -5,7 +5,7 @@ Model::Model() {}
 Model::~Model() {}
 
 // TODO: Error reporting is missing at the moment
-void Model::loadImage(wxString path) {
+void Model::loadImage(const wxString path) {
 	wxImage image;
 	
 	if (image.LoadFile(path)) {
@@ -13,7 +13,7 @@ void Model::loadImage(wxString path) {
 	}
 }
 
-void Model::loadImages(wxArrayString paths) {
+void Model::loadImages(const wxArrayString paths) {
 	for (int i = 0; i < paths.GetCount(); i++) {
 		loadImage(paths.Item(i));
 	}
@@ -21,13 +21,13 @@ void Model::loadImages(wxArrayString paths) {
 
 // Also removes the diff cache entry
 // NOTE: the iterator might get invalidated upon an erasure call. 
-void Model::removeImage(wxString path) {
+void Model::removeImage(const wxString path) {
 	imageStorage.erase(path);
 	
 	removeCachedDifferences(path);
 }
 
-void Model::removeImages(wxArrayString paths) {
+void Model::removeImages(const wxArrayString paths) {
 	for (int i = 0; i < paths.GetCount(); i++) {
 		imageStorage.erase(paths.Item(i));
 	}
@@ -37,7 +37,7 @@ void Model::removeAllImages() {
 	imageStorage.clear();
 }
 
-const wxImage* Model::getImage(wxString path) {
+const wxImage* Model::getImage(const wxString path) {
 	std::map<wxString, wxImage>::const_iterator iter;
 	
 	iter = imageStorage.find(path);
@@ -56,29 +56,29 @@ double Model::comparePixelAlpha(const char alphaValue1, const char alphaValue2, 
 	return 0;
 }
 
-double Model::comparePixelRGB(wxImage::RGBValue RGBValue1, wxImage::RGBValue RGBValue2, const double tolerance) {
+double Model::comparePixelRGB(const wxImage::RGBValue RGBValue1, const wxImage::RGBValue RGBValue2, const double tolerance) {
 	return 0;
 }
 
-double Model::comparePixelHSV(wxImage::HSVValue HSVValue1, wxImage::HSVValue HSVValue2, const double tolerance) {
+double Model::comparePixelHSV(const wxImage::HSVValue HSVValue1, const wxImage::HSVValue HSVValue2, const double tolerance) {
 	return 0;
 }
 
-void Model::compareAlpha(wxString path1, wxString path2, const double tolerance) {
+void Model::compareAlpha(const wxString path1, const wxString path2, const double tolerance) {
 
 }
 
-void Model::compareRGB(wxString path1, wxString path2, const double tolerance) {
+void Model::compareRGB(const wxString path1, const wxString path2, const double tolerance) {
 
 }
 
-void Model::compareHSV(wxString path1, wxString path2, const double tolerance) {
+void Model::compareHSV(const wxString path1, const wxString path2, const double tolerance) {
 
 }
 
 // To implement the unordered usage, first check in one way, then try applying the operation with the
 // parameters reversed
-const DiffResult* Model::getDifferences(wxString path1, wxString path2) {
+const DiffResult* Model::getDifferences(const wxString path1, const wxString path2) {
 	std::map<std::pair<wxString, wxString>, DiffResult>::const_iterator iter;
 	
 	iter = diffStorage.find(std::make_pair(path1, path2));
@@ -95,7 +95,7 @@ const DiffResult* Model::getDifferences(wxString path1, wxString path2) {
 }
 
 // Same as above
-void Model::removeCachedDifferences(wxString path1, wxString path2) {
+void Model::removeCachedDifferences(const wxString path1, const wxString path2) {
 	if (path2.IsEmpty()) {
 		std::map<std::pair<wxString, wxString>, DiffResult>::iterator iter = diffStorage.begin();
 		while (iter != diffStorage.end()) {
@@ -124,7 +124,7 @@ void Model::removeObserver(Observer* observer) {
 	observers.remove(observer);
 }
 
-void Model::notify(int eventCode) {
+void Model::notify(const int eventCode) {
 	std::list<Observer*>::iterator iter = observers.begin();
 	
 	while(iter != observers.end())
