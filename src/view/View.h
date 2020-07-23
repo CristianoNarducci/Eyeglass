@@ -23,14 +23,13 @@
 
 class View: public wxFrame, public AbstractView, public Observer {
 protected:
-    wxPanel* panel;            //application panel
+    wxScrolledWindow* panel;          //application panel
     wxMenu* menuFile;
     wxMenuBar* menu;
     wxString* activeImages;   //Image activate array
     wxButton* addImageButton;   //adding image button
     wxButton* removeImagesButton;   //remove image button
     wxButton* activateImages;       //activate image button
-    wxSlider* alphaToleranceSlider;     //slider for alpha tolerance
     wxSlider* colorToleranceSlider;     //slider for color tolerance
     wxButton* compareButton;            //button for comparation inizialize
     std::vector<ViewTab*> tabs;     //Tab's vector for different results
@@ -39,6 +38,8 @@ protected:
     AbstractModel& model;
     AbstractController& controller;
 	wxTextCtrl* sliderValue;
+	wxStaticText* toleranceText;
+	wxStaticText* comparisonText;
 
 
 public:
