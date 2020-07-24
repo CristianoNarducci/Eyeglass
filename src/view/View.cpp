@@ -99,7 +99,7 @@ void View::removeImages(wxCommandEvent& event) {
 }
 
 void View::loadImages(wxCommandEvent& event) {
-	wxFileDialog* fileDialog=new wxFileDialog(this,_("Scegli una o più foto"),wxEmptyString,wxEmptyString,wxFileSelectorDefaultWildcardStr,wxFD_MULTIPLE);
+	wxFileDialog* fileDialog=new wxFileDialog(this, _("Scegli una o più foto"),wxEmptyString,wxEmptyString,wxFileSelectorDefaultWildcardStr,wxFD_MULTIPLE);
 	if(fileDialog->ShowModal() == wxID_CANCEL){
 		return;
 	}
