@@ -17,6 +17,7 @@ wxBEGIN_EVENT_TABLE(View,wxFrame)
 	EVT_BUTTON(BUTTON_REMOVE,View::removeImages)
 	EVT_BUTTON(BUTTON_ACTIVATE,View::activateSelectedImages)
 	EVT_BUTTON(BUTTON_COMPARE,View::compareImages)
+	EVT_BUTTON(BUTTON_ACTIVATE,View::activateSelectedImages)
 	EVT_MENU(ABOUT,View::onAbout)
 	EVT_MENU(wxID_EXIT,View::onExit)
 	EVT_SLIDER(SLIDER_COLOR,View::onSliderUpdate)
@@ -42,13 +43,13 @@ View::View(const std::string title, const wxPoint &pos, const wxSize &size, Abst
 	//Definition of button items
     addImageButton = new wxButton(panel,BUTTON_ADD,_("Aggiungi un immagine"));
     removeImagesButton = new wxButton(panel,BUTTON_REMOVE,_("Rimuovi Immagine"));
-    activateImages = new wxButton(panel,BUTTON_ACTIVATE,_("Attiva Immagine"));
+    activateImages = new wxButton(panel,BUTTON_ACTIVATE,_("Attiva Immagine"),wxDefaultPosition,addImageButton->GetSize());
     compareButton = new wxButton(panel,BUTTON_COMPARE,_("Compara le immagini"));
-    toleranceText = new wxStaticText(panel,STATIC_ID,_("Seleziona tolleranza colore:"),wxDefaultPosition,wxDefaultSize,wxALIGN_CENTER_HORIZONTAL);
-    comparisonText = new wxStaticText(panel,STATIC_ID,_("Seleziona comparazione:"),wxDefaultPosition,wxDefaultSize,wxALIGN_CENTER_HORIZONTAL);
+    toleranceText = new wxStaticText(panel,STATIC_ID,_("Seleziona tolleranza colore:"),wxDefaultPosition,wxDefaultSize);
+    comparisonText = new wxStaticText(panel,STATIC_ID,_("Seleziona comparazione:"),wxDefaultPosition,wxDefaultSize);
     colorToleranceSlider= new wxSlider(panel,SLIDER_COLOR,500,0,1000,wxDefaultPosition,removeImagesButton->GetSize());
 	//Definition of color tolerance slider
-    sliderValue = new wxTextCtrl(panel,VALUE_SLIDER,_("500"),wxDefaultPosition,activateImages->GetSize(),wxTE_CENTRE);
+    sliderValue = new wxTextCtrl(panel,VALUE_SLIDER,_("500"),wxDefaultPosition,removeImagesButton->GetSize(),wxTE_CENTRE);
 	sliderValue->SetEditable(false);
 	/*Definition of comparison mode of combobox
 	 * the initial value is "seleziona"
@@ -63,6 +64,7 @@ View::View(const std::string title, const wxPoint &pos, const wxSize &size, Abst
      * the image address that the user select are stored in there */
     list = new wxListView(panel, LIST_ID, wxPoint(50, 50), wxSize(500, 400));
     list->InsertColumn(0, "Images",wxLIST_FORMAT_LEFT,250);
+    list->InsertColumn(1,"Activated Images",wxLIST_FORMAT_CENTER,150);
 	wxBoxSizer* hbox = new wxBoxSizer(wxHORIZONTAL);
 	wxBoxSizer* vbox = new wxBoxSizer(wxVERTICAL);
 	wxFlexGridSizer* gs = new wxFlexGridSizer(4,3,10,10);
@@ -70,14 +72,15 @@ View::View(const std::string title, const wxPoint &pos, const wxSize &size, Abst
 	vbox->Add(hbox,0,wxALIGN_LEFT | wxTOP ,90);
 	//Adding items in the gridSizer
 	gs->Add(addImageButton,0);
+	gs->Add(new wxStaticText(panel,STATIC_ID,_("")),0);
 	gs->Add(removeImagesButton,0);
-	gs->Add(activateImages,0);
-	gs->Add(toleranceText,0);
+	gs->Add(toleranceText,0,wxTOP,5);
 	gs->Add(colorToleranceSlider,0);
 	gs->Add(sliderValue,0);
-	gs->Add(comparisonText,0);
+	gs->Add(comparisonText,0,wxTOP,5);
 	gs->Add(modeSelector,0);
 	gs->Add(new wxStaticText(panel,STATIC_ID,_("")),0);
+	gs->Add(activateImages,0,wxTOP,14);
 	gs->Add(new wxStaticText(panel,STATIC_ID,_("")),0);
 	gs->Add(compareButton,0,wxTOP,15);
 	gs->AddGrowableCol(0);
