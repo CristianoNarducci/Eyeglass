@@ -1,5 +1,10 @@
 #include "View.h"
-enum{                //IDs used for id item's definition
+/*IDs used for id item's definition
+ * The IDs are auto-incremental
+ * Every id is for a single item(button/slider/combobox) except for "STATIC_ID"
+ * Its used for every static text in the View because there is no event
+ * that concern them*/
+enum{
     PANEL_ID,
 	BUTTON_ADD,
 	BUTTON_REMOVE,
@@ -12,6 +17,7 @@ enum{                //IDs used for id item's definition
 	STATIC_ID,
 	VALUE_SLIDER
 };
+/*Event table of the view*/
 wxBEGIN_EVENT_TABLE(View,wxFrame)
 	EVT_BUTTON(BUTTON_ADD,View::loadImages)
 	EVT_BUTTON(BUTTON_REMOVE,View::removeImages)
@@ -33,7 +39,7 @@ View::View(const std::string title, const wxPoint &pos, const wxSize &size, Abst
     panel->SetScrollRate(5,5);
 	/*Definition of Menutab
 	 * It's used for authors information*/
-    menuFile= new wxMenu;
+    menuFile= new wxMenu;;
     menuFile->Append(ABOUT,"Eyeglass");
 	menuFile->AppendSeparator();
 	menuFile->Append(wxID_EXIT);
@@ -54,7 +60,7 @@ View::View(const std::string title, const wxPoint &pos, const wxSize &size, Abst
 	/*Definition of comparison mode of combobox
 	 * the initial value is "seleziona"
 	 * the option are : HSV, RGB and ALPHA
-	 * the combobox are not editable*/
+	 * the combobox obviously is not editable*/
     modeSelector = new wxComboBox(panel,MODE_SELECTOR,_("Seleziona"),wxDefaultPosition,compareButton->GetSize());
     modeSelector->Append(_("RGB"));
     modeSelector->Append(_("HSV"));
@@ -70,7 +76,8 @@ View::View(const std::string title, const wxPoint &pos, const wxSize &size, Abst
 	wxFlexGridSizer* gs = new wxFlexGridSizer(4,3,10,10);
 	hbox->Add(list,0,wxLEFT  | wxBOTTOM, 15);
 	vbox->Add(hbox,0,wxALIGN_LEFT | wxTOP ,90);
-	//Adding items in the gridSizer
+	/*Adding item in a GridSizer
+	 * Border have been inserted for alignment issues with slider and combobox*/
 	gs->Add(addImageButton,0);
 	gs->Add(new wxStaticText(panel,STATIC_ID,_("")),0);
 	gs->Add(removeImagesButton,0);
@@ -85,7 +92,7 @@ View::View(const std::string title, const wxPoint &pos, const wxSize &size, Abst
 	gs->Add(compareButton,0,wxTOP,15);
 	gs->AddGrowableCol(0);
 	vbox->Add(gs,0,wxLEFT ,40);
-	panel->SetSizer(vbox); //setting sizer function
+	panel->SetSizer(vbox); //setting window sizer
 }
 void View::update(int eventCode) {
 
@@ -118,6 +125,9 @@ void View::loadImages(wxCommandEvent& event) {
 
 void View::activateSelectedImages(wxCommandEvent &event) {
 
+	long item;
+	item = list->GetFocusedItem();
+	list->SetItem(item,1,_("*"));
 
 }
 

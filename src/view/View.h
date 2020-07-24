@@ -40,6 +40,7 @@ protected:
 	wxTextCtrl* sliderValue;
 	wxStaticText* toleranceText;
 	wxStaticText* comparisonText;
+	int itemIndex=0;
 
 
 public:
