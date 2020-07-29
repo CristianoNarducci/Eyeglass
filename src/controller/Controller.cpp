@@ -22,13 +22,13 @@ void Controller::loadImages(wxArrayString paths) {
 }
 
 void Controller::compareRGB(wxString path1, wxString path2, double tolerance) {
-
+	std::cout<<"PIPPO"<<std::endl;
 }
 
 void Controller::compareAlpha(wxString path1, wxString path2, double tolerance) {
-
+	std::cout<<"PAPERINO"<<std::endl;
 }
 
 void Controller::compareHSV(wxString path1, wxString path2, double tolerance) {
-
+	std::cout<<"PLUTO"<<std::endl;
 }

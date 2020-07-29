@@ -1,5 +1,5 @@
 #include "View.h"
-/*IDs used for id item's definition
+/* IDs used for id item's definition
  * The IDs are auto-incremental
  * Every id is for a single item(button/slider/combobox) except for "STATIC_ID"
  * Its used for every static text in the View because there is no event
@@ -38,7 +38,7 @@ View::View(const std::string title, const wxPoint &pos, const wxSize &size, Abst
     panel = new wxScrolledWindow(this,PANEL_ID);
     panel->SetScrollRate(5,5);
 	/*Definition of Menutab
-	 * It's used for authors information*/
+	 * It's used for author's information and quick keys*/
     menuFile= new wxMenu;;
     menuFile->Append(ABOUT,"Eyeglass");
 	menuFile->AppendSeparator();
@@ -53,12 +53,12 @@ View::View(const std::string title, const wxPoint &pos, const wxSize &size, Abst
     compareButton = new wxButton(panel,BUTTON_COMPARE,_("Compara le immagini"));
     toleranceText = new wxStaticText(panel,STATIC_ID,_("Seleziona tolleranza colore:"),wxDefaultPosition,wxDefaultSize);
     comparisonText = new wxStaticText(panel,STATIC_ID,_("Seleziona comparazione:"),wxDefaultPosition,wxDefaultSize);
-    colorToleranceSlider= new wxSlider(panel,SLIDER_COLOR,500,0,1000,wxDefaultPosition,removeImagesButton->GetSize());
+    colorToleranceSlider= new wxSlider(panel,SLIDER_COLOR,50,0,100,wxDefaultPosition,removeImagesButton->GetSize());
 	//Definition of color tolerance slider
-    sliderValue = new wxTextCtrl(panel,VALUE_SLIDER,_("500"),wxDefaultPosition,removeImagesButton->GetSize(),wxTE_CENTRE);
+    sliderValue = new wxTextCtrl(panel,VALUE_SLIDER,_("50 %"),wxDefaultPosition,removeImagesButton->GetSize(),wxTE_CENTRE);
 	sliderValue->SetEditable(false);
 	/*Definition of comparison mode of combobox
-	 * the initial value is "seleziona"
+	 * the initial text "seleziona" aren't a value
 	 * the option are : HSV, RGB and ALPHA
 	 * the combobox obviously is not editable*/
     modeSelector = new wxComboBox(panel,MODE_SELECTOR,_("Seleziona"),wxDefaultPosition,compareButton->GetSize());
@@ -68,7 +68,7 @@ View::View(const std::string title, const wxPoint &pos, const wxSize &size, Abst
     modeSelector->SetEditable(false);
     /*Definition of image list
      * the image address that the user select are stored in there */
-    list = new wxListView(panel, LIST_ID, wxPoint(50, 50), wxSize(500, 400));
+    list = new wxListView(panel, LIST_ID,wxDefaultPosition, wxSize(500, 400));
     list->InsertColumn(0, "Images",wxLIST_FORMAT_LEFT,250);
     list->InsertColumn(1,"Activated Images",wxLIST_FORMAT_CENTER,150);
 	wxBoxSizer* hbox = new wxBoxSizer(wxHORIZONTAL);
@@ -98,14 +98,14 @@ void View::update(int eventCode) {
 
 }
 
-void View::removeImages(wxCommandEvent& event) {
+void View::removeImages(wxCommandEvent& event){
 	long item;
 	while((item = list->GetNextItem(-1,wxLIST_NEXT_ALL,wxLIST_STATE_SELECTED)) != -1){
 		list->DeleteItem(item);
 	}
 }
 
-void View::loadImages(wxCommandEvent& event) {
+void View::loadImages(wxCommandEvent& event){
 	wxFileDialog* fileDialog=new wxFileDialog(this, _("Scegli una o più foto"),wxEmptyString,wxEmptyString,wxFileSelectorDefaultWildcardStr,wxFD_MULTIPLE);
 	if(fileDialog->ShowModal() == wxID_CANCEL){
 		return;
@@ -129,41 +129,57 @@ void View::activateSelectedImages(wxCommandEvent &event) {
 	item = list->GetFocusedItem();
 	list->SetItem(item,1,_("*"));
 
-}
-
-void View::compareImages(wxCommandEvent &event) {
 
 }
 
-void View::resetTabs() {
+void View::compareImages(wxCommandEvent &event){
+
+	wxString mode = getMode();
+	double tolerance = colorToleranceSlider->GetValue();
+	if(mode == _("RGB")){
+		controller.compareRGB(activeImages[0],activeImages[1],tolerance);
+	}
+	else if(mode == _("HSV")){
+		controller.compareHSV(activeImages[0],activeImages[1],tolerance);
+	}
+	else if(mode == _("ALPHA")){
+		controller.compareAlpha(activeImages[0],activeImages[1],tolerance);
+	}
+	else{
+		wxMessageBox(_("SCEGLIERE METODO DI COMPARAZIONE"),_("ERRORE"),wxOK | wxICON_EXCLAMATION);
+	}
+
 
 }
 
-AbstractModel& View::getModel() {
+void View::resetTabs(){
+
+}
+
+AbstractModel& View::getModel(){
     return model;
 }
 
-wxString View::getMode() {
+wxString View::getMode(){
     wxString mode = modeSelector->GetStringSelection();
     return mode;
 }
 
-wxString* View::getActiveImages() {
+wxString* View::getActiveImages(){
     return activeImages;
 }
 
-void View::onAbout(wxCommandEvent &event) {
+void View::onAbout(wxCommandEvent &event){
 
 }
 
-void View::onExit(wxCommandEvent &event) {
+void View::onExit(wxCommandEvent &event){
 	Close(true);
 }
 
-void View::onSliderUpdate(wxCommandEvent &event) {
+void View::onSliderUpdate(wxCommandEvent &event){
 	int intValue = colorToleranceSlider->GetValue();
 	wxString stringValue;
 	stringValue << intValue;
-	sliderValue->SetValue(stringValue);
-
+	sliderValue->SetValue(stringValue + " %");
 }
