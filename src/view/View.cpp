@@ -1,7 +1,7 @@
 #include "View.h"
 /* IDs used for id item's definition
  * The IDs are auto-incremental
- * Every id is for a single item(button/slider/combobox) except for "STATIC_ID"
+ * Every id is for a single item(button/slider/combobox) except for "STATIC_ID" because
  * Its used for every static text in the View because there is no event
  * that concern them*/
 enum{
@@ -53,13 +53,13 @@ View::View(const std::string title, const wxPoint &pos, const wxSize &size, Abst
     compareButton = new wxButton(panel,BUTTON_COMPARE,_("Compara le immagini"));
     toleranceText = new wxStaticText(panel,STATIC_ID,_("Seleziona tolleranza colore:"),wxDefaultPosition,wxDefaultSize);
     comparisonText = new wxStaticText(panel,STATIC_ID,_("Seleziona comparazione:"),wxDefaultPosition,wxDefaultSize);
-    colorToleranceSlider= new wxSlider(panel,SLIDER_COLOR,50,0,100,wxDefaultPosition,removeImagesButton->GetSize());
+    colorToleranceSlider= new wxSlider(panel,SLIDER_COLOR,500,0,1000,wxDefaultPosition,removeImagesButton->GetSize());
 	//Definition of color tolerance slider
-    sliderValue = new wxTextCtrl(panel,VALUE_SLIDER,_("50 %"),wxDefaultPosition,removeImagesButton->GetSize(),wxTE_CENTRE);
+    sliderValue = new wxTextCtrl(panel,VALUE_SLIDER,_("50.0 %"),wxDefaultPosition,removeImagesButton->GetSize(),wxTE_CENTRE);
 	sliderValue->SetEditable(false);
 	/*Definition of comparison mode of combobox
 	 * the initial text "seleziona" aren't a value
-	 * the option are : HSV, RGB and ALPHA
+	 * the option for comparison are : HSV, RGB and ALPHA
 	 * the combobox obviously is not editable*/
     modeSelector = new wxComboBox(panel,MODE_SELECTOR,_("Seleziona"),wxDefaultPosition,compareButton->GetSize());
     modeSelector->Append(_("RGB"));
@@ -93,18 +93,22 @@ View::View(const std::string title, const wxPoint &pos, const wxSize &size, Abst
 	gs->AddGrowableCol(0);
 	vbox->Add(gs,0,wxLEFT ,40);
 	panel->SetSizer(vbox); //setting window sizer
+
 }
 void View::update(int eventCode) {
 
 }
-
+/*Delete the selected images
+ * the while cicle it afflict only the image selected*/
 void View::removeImages(wxCommandEvent& event){
 	long item;
 	while((item = list->GetNextItem(-1,wxLIST_NEXT_ALL,wxLIST_STATE_SELECTED)) != -1){
 		list->DeleteItem(item);
 	}
 }
-
+/*load images on storage
+ * It load the paths in the list view but in the model there is a map that associate
+ * the wxImage object with his relative path*/
 void View::loadImages(wxCommandEvent& event){
 	wxFileDialog* fileDialog=new wxFileDialog(this, _("Scegli una o più foto"),wxEmptyString,wxEmptyString,wxFileSelectorDefaultWildcardStr,wxFD_MULTIPLE);
 	if(fileDialog->ShowModal() == wxID_CANCEL){
@@ -122,14 +126,34 @@ void View::loadImages(wxCommandEvent& event){
 		std::cout << "Caught exception: " << error.what() << std::endl;
 	}
 }
+/*Deselect the activated images
+ * this function is called on activatedSelectImages function for deselect before activate the new images
+ * For practical reasons the function scan every image in the list and if in the column next to him is present the "*"
+ * symbol it deselect him and clear the activated imsges array
+ */
+void View::deselectImages() {
+	long item = -1;
+	while((item = list->GetNextItem(item,wxLIST_NEXT_ALL,wxLIST_STATE_DONTCARE)) != -1){
+		if(list->GetItemText(item,1) == _("*")){
+			list->SetItem(item,1,_(""));
+		}
+	}
 
-void View::activateSelectedImages(wxCommandEvent &event) {
+}
 
-	long item;
-	item = list->GetFocusedItem();
-	list->SetItem(item,1,_("*"));
-
-
+void View::activateSelectedImages(wxCommandEvent& event) {
+	deselectImages();
+	long itemCount=0;
+	long item = -1;
+	wxString arr[2];
+	while((item = list->GetNextItem(item,wxLIST_NEXT_ALL,wxLIST_STATE_SELECTED)) != -1){
+		if(itemCount < 2){
+			list->SetItem(item,1,_("*"));
+			arr[itemCount] = list->GetItemText(item);
+			itemCount++;
+			activeImages = arr;
+		}
+	}
 }
 
 void View::compareImages(wxCommandEvent &event){
@@ -178,8 +202,13 @@ void View::onExit(wxCommandEvent &event){
 }
 
 void View::onSliderUpdate(wxCommandEvent &event){
-	int intValue = colorToleranceSlider->GetValue();
+	long intValue = colorToleranceSlider->GetValue();
 	wxString stringValue;
-	stringValue << intValue;
+	stringValue << (intValue/10.0);
 	sliderValue->SetValue(stringValue + " %");
 }
+
+AbstractController &View::getController() {
+	return controller;
+}
+

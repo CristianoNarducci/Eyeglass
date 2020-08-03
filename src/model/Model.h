@@ -52,6 +52,7 @@ public:
 
     const DiffResult getDifferences(wxString path1, wxString path2) override;
 
+
 protected:
     void removeCachedDifferences(wxString path1, wxString path2) override;
 

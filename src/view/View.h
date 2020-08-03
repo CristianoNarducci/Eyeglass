@@ -40,8 +40,6 @@ protected:
 	wxTextCtrl* sliderValue;
 	wxStaticText* toleranceText;
 	wxStaticText* comparisonText;
-	int itemIndex=0;
-
 
 public:
 
@@ -61,7 +59,9 @@ public:
 
     AbstractModel& getModel() override;
 
-    wxString getMode() override; //get selected comparation mode
+	AbstractController& getController() override;
+
+	wxString getMode() override; //get selected comparation mode
 
     wxString* getActiveImages() override;   //get activated images
 
@@ -69,7 +69,9 @@ public:
 
 	void onExit(wxCommandEvent &event) override;
 
-	void onSliderUpdate(wxCommandEvent &event) override;
+	void onSliderUpdate(wxCommandEvent &event) override;	//it change the textbox value of comparison tolerance
+
+	void deselectImages() override;  //deselect the activate images
 
 wxDECLARE_EVENT_TABLE();
 };

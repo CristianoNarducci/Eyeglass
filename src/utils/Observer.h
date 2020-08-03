@@ -6,6 +6,7 @@
 #define EYEGLASS_OBSERVER_H
 
 class Observer{
+public:
     virtual void update(int eventCode)=0;
 };
 

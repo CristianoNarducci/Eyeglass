@@ -23,7 +23,7 @@ const wxImage Model::getImage(wxString path) {
 }
 
 const std::map<wxString, wxImage> Model::getAllImages() {
-    return std::map<wxString, wxImage>();
+    return imageStorage;
 }
 
 double Model::comparePixelAlpha(const char alphaValue1, const char alphaValue2, const double tolerance) {
@@ -85,3 +85,4 @@ void Model::removeObserver(Observer* observer) {
 void Model::notify(int eventCode) {
 
 }
+

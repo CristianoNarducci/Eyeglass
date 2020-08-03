@@ -4,7 +4,7 @@
 
 #include "Controller.h"
 
-Controller::Controller(AbstractModel& model): model(model){}
+Controller::Controller(AbstractModel& model) : model(model){}
 
 void Controller::removeImages(wxArrayString paths) {
 
