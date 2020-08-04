@@ -20,10 +20,11 @@ public:
     virtual void compareImages(wxCommandEvent& event) = 0;
     virtual void resetTabs() = 0;
     virtual AbstractModel& getModel() = 0;
-    virtual AbstractController& getController()=0;
+    virtual AbstractController& getController() = 0;
     virtual wxString getMode() = 0;
-    virtual void deselectImages()=0;
+    virtual void deselectImages() = 0;
     virtual wxString* getActiveImages() = 0;
+	virtual int imagesActivatedCount() = 0;
     virtual void onAbout(wxCommandEvent& event) = 0;
     virtual void onExit(wxCommandEvent& event) = 0;
     virtual void onSliderUpdate(wxCommandEvent& event) = 0;

@@ -29,7 +29,7 @@ protected:
     wxString* activeImages;   //Image activate array
     wxButton* addImageButton;   //adding image button
     wxButton* removeImagesButton;   //remove image button
-    wxButton* activateImages;       //activate image button
+    wxButton* activateImagesButton;       //activate image button
     wxSlider* colorToleranceSlider;     //slider for color tolerance
     wxButton* compareButton;            //button for comparation inizialize
     std::vector<ViewTab*> tabs;     //Tab's vector for different results
@@ -66,6 +66,8 @@ public:
     wxString* getActiveImages() override;   //get activated images
 
 	void onAbout(wxCommandEvent &event) override;
+
+	int imagesActivatedCount() override;
 
 	void onExit(wxCommandEvent &event) override;
 

@@ -28,8 +28,7 @@ wxBEGIN_EVENT_TABLE(View,wxFrame)
 	EVT_MENU(wxID_EXIT,View::onExit)
 	EVT_SLIDER(SLIDER_COLOR,View::onSliderUpdate)
 wxEND_EVENT_TABLE()
-View::View(const std::string title, const wxPoint &pos, const wxSize &size, AbstractModel& model, AbstractController& controller): wxFrame(NULL,wxID_ANY,title,pos,size),model(model),controller(controller) {
-
+View::View(const std::string title, const wxPoint &pos, const wxSize &size, AbstractModel& model, AbstractController& c):model(model),controller(c) ,wxFrame(NULL,wxID_ANY,title,pos,size) {
     model.registerObserver(this);  //registration view for successive notification
     /*Definition of View items
      * the buttons for list manipulation and the text information are insert in columns of
@@ -49,7 +48,7 @@ View::View(const std::string title, const wxPoint &pos, const wxSize &size, Abst
 	//Definition of button items
     addImageButton = new wxButton(panel,BUTTON_ADD,_("Aggiungi un immagine"));
     removeImagesButton = new wxButton(panel,BUTTON_REMOVE,_("Rimuovi Immagine"));
-    activateImages = new wxButton(panel,BUTTON_ACTIVATE,_("Attiva Immagine"),wxDefaultPosition,addImageButton->GetSize());
+	activateImagesButton = new wxButton(panel,BUTTON_ACTIVATE,_("Attiva Immagine"),wxDefaultPosition,addImageButton->GetSize());
     compareButton = new wxButton(panel,BUTTON_COMPARE,_("Compara le immagini"));
     toleranceText = new wxStaticText(panel,STATIC_ID,_("Seleziona tolleranza colore:"),wxDefaultPosition,wxDefaultSize);
     comparisonText = new wxStaticText(panel,STATIC_ID,_("Seleziona comparazione:"),wxDefaultPosition,wxDefaultSize);
@@ -87,7 +86,7 @@ View::View(const std::string title, const wxPoint &pos, const wxSize &size, Abst
 	gs->Add(comparisonText,0,wxTOP,5);
 	gs->Add(modeSelector,0);
 	gs->Add(new wxStaticText(panel,STATIC_ID,_("")),0);
-	gs->Add(activateImages,0,wxTOP,14);
+	gs->Add(activateImagesButton,0,wxTOP,14);
 	gs->Add(new wxStaticText(panel,STATIC_ID,_("")),0);
 	gs->Add(compareButton,0,wxTOP,15);
 	gs->AddGrowableCol(0);
@@ -126,54 +125,96 @@ void View::loadImages(wxCommandEvent& event){
 		std::cout << "Caught exception: " << error.what() << std::endl;
 	}
 }
+int View::imagesActivatedCount() {
+	int count = 0;
+	long item = -1;
+	while((item = list->GetNextItem(item,wxLIST_NEXT_ALL,wxLIST_STATE_DONTCARE)) != -1){
+		if (list->GetItemText(item,1).IsSameAs(_("*")))
+		{
+			count++;
+		}
+	}
+	return count;
+}
 /*Deselect the activated images
  * this function is called on activatedSelectImages function for deselect before activate the new images
- * For practical reasons the function scan every image in the list and if in the column next to him is present the "*"
- * symbol it deselect him and clear the activated imsges array
+ * For practical reasons the function scan every row in the list and if in the column next to him is present the "*"
+ * symbol it deselect him and clear the activated images array
  */
 void View::deselectImages() {
 	long item = -1;
 	while((item = list->GetNextItem(item,wxLIST_NEXT_ALL,wxLIST_STATE_DONTCARE)) != -1){
-		if(list->GetItemText(item,1) == _("*")){
+		if(list->GetItemText(item,1).IsSameAs(_("*"))){
 			list->SetItem(item,1,_(""));
 		}
 	}
-
 }
 
 void View::activateSelectedImages(wxCommandEvent& event) {
-	deselectImages();
-	long itemCount=0;
+	int imageActive = imagesActivatedCount();
+	int itemCount=0;
 	long item = -1;
 	wxString arr[2];
+	if(imageActive >= 2 || list->GetSelectedItemCount() >= 2)
+	{
+		deselectImages();
+		imageActive = 0;
+	}
 	while((item = list->GetNextItem(item,wxLIST_NEXT_ALL,wxLIST_STATE_SELECTED)) != -1){
 		if(itemCount < 2){
 			list->SetItem(item,1,_("*"));
-			arr[itemCount] = list->GetItemText(item);
 			itemCount++;
-			activeImages = arr;
+			imageActive++;
 		}
+	}
+	if (imageActive == 2)
+	{
+		itemCount = 0;
+		item = -1;
+		wxString text;
+		while((item = list->GetNextItem(item,wxLIST_NEXT_ALL,wxLIST_STATE_DONTCARE)) != -1){
+			text = list->GetItemText(item,1);
+			if (text.IsSameAs(_("*"))){
+				arr[itemCount]=list->GetItemText(item);
+				itemCount++;
+			}
+
+		}
+		activeImages = arr;
+		std::cout<< *activeImages << std::endl;
+		std::cout << *(activeImages + 1) << std::endl;
 	}
 }
 
 void View::compareImages(wxCommandEvent &event){
 
+	int imagesActive = imagesActivatedCount();
 	wxString mode = getMode();
 	double tolerance = colorToleranceSlider->GetValue();
-	if(mode == _("RGB")){
-		controller.compareRGB(activeImages[0],activeImages[1],tolerance);
+	if(imagesActive < 2){
+		wxMessageBox(_("SELEZIONARE DUE IMMAGINI DA COMPARARE"),_("ERRORE"),wxOK | wxICON_EXCLAMATION);
 	}
-	else if(mode == _("HSV")){
-		controller.compareHSV(activeImages[0],activeImages[1],tolerance);
+	else if(mode.IsSameAs(_("RGB"))){
+		wxString pathImage1 = *activeImages;
+		wxString pathImage2 = *(activeImages + 1);
+		controller.compareRGB(_("x"),_("l"),5);
+
 	}
-	else if(mode == _("ALPHA")){
-		controller.compareAlpha(activeImages[0],activeImages[1],tolerance);
+	else if(mode.IsSameAs(_("HSV"))){
+		wxString pathImage1 = *activeImages;
+		wxString pathImage2 = *(activeImages + 1);
+		std::cout<<"luigi"<<std::endl;
+		this->controller.compareHSV(pathImage1,pathImage2,tolerance);
+	}
+	else if(mode.IsSameAs(_("ALPHA"))){
+		wxString pathImage1 = *activeImages;
+		wxString pathImage2 = *(activeImages + 1);
+		std::cout<<"paperino"<<std::endl;
+		controller.compareAlpha(pathImage1,pathImage2,tolerance);
 	}
 	else{
 		wxMessageBox(_("SCEGLIERE METODO DI COMPARAZIONE"),_("ERRORE"),wxOK | wxICON_EXCLAMATION);
 	}
-
-
 }
 
 void View::resetTabs(){
