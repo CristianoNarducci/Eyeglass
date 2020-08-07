@@ -26,22 +26,9 @@ public:
 	virtual void loadImage(const wxString path) = 0;
 	
 	/*
-	 * Loads a batch of images into the store.
-	 * Invalid files will be skipped.
-	 */
-	virtual void loadImages(const wxArrayString paths) = 0;
-	
-	
-	/*
 	 * Removes the specified image from the storage, if present.
 	 */
 	virtual void removeImage(const wxString path) = 0;
-	
-	/*
-	 * Removes the specified images from the storage, if present.
-	 * Should also remove any diff entry with the specified image as one of the two involved in the comparison.
-	 */
-	virtual void removeImages(const wxArrayString paths) = 0;
 	
 	/*
 	 * Completely purge the image storage.
@@ -109,6 +96,11 @@ public:
 	virtual ~AbstractModel() {};
 
 protected:
+	/*
+	 * Fetches the DiffResult container for internal usage, returning a non costant pointer.
+	 */
+	virtual DiffResult* getDifferences_internal(const wxString path1, const wxString path2) = 0;
+	 
 	/*
 	 * Remove the cached differences where one of the images (or both) are involved.
 	 * The orger of the images doesn't count.

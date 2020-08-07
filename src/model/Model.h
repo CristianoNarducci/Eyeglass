@@ -6,9 +6,15 @@
 	#include <wx/wx.h>
 #endif
 
+// Storage related libs
 #include <map>
 #include <list>
 #include <utility>
+
+// Libraries neede for comparison. Strangely enough, the absolute function for integers requires
+// cstdlib, while the one for floats is defined in cmath. Or so says cppreference
+#include <cmath>
+#include <cstdlib>
 
 #include "AbstractModel.h"
 #include "DiffResult.h"
@@ -25,9 +31,7 @@ public:
 	void removeObserver(Observer *observer) override;
 	void notify(const int eventCode) override;
 	void loadImage(const wxString path) override;
-	void loadImages(const wxArrayString paths) override;
 	void removeImage(const wxString path) override;
-	void removeImages(const wxArrayString paths) override;
 	void removeAllImages() override;
 	const wxImage* getImage(const wxString path) override;
 	const std::map<wxString, wxImage>& getAllImages() override;
@@ -42,6 +46,7 @@ public:
 	virtual ~Model() override;
 
 protected:
+	DiffResult* getDifferences_internal(const wxString path1, const wxString path2) override;
 	void removeCachedDifferences(const wxString path1, const wxString path2 = "") override;
 	void removeAllCachedDifferences() override;
 
