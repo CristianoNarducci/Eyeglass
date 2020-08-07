@@ -38,6 +38,7 @@ const wxImage* Model::getImage(const wxString path) {
 
 const std::map<wxString, wxImage>& Model::getAllImages() {
 	return imageStorage;
+}
 
 double Model::comparePixelAlpha(const char alphaValue1, const char alphaValue2, const double tolerance) {
 	double percentual_difference = std::abs(alphaValue2 - alphaValue1) / 255;
