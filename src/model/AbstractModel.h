@@ -111,6 +111,7 @@ protected:
 	 * Purge every diff cache entry.
 	 */
 	virtual void removeAllCachedDifferences() = 0;
+
 };
 
 #endif

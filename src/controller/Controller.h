@@ -16,6 +16,7 @@ protected:
     AbstractModel& model;
 
 public:
+
     Controller(AbstractModel& model);
     /*Remove images from the storage
      * It can remove multiple image at once*/

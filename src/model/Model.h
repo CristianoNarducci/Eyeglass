@@ -45,6 +45,7 @@ public:
 	
 	virtual ~Model() override;
 
+
 protected:
 	DiffResult* getDifferences_internal(const wxString path1, const wxString path2) override;
 	void removeCachedDifferences(const wxString path1, const wxString path2 = "") override;
