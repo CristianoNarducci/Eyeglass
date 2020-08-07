@@ -16,6 +16,5 @@ public:
     virtual void compareRGB(wxString path1,wxString path2,double tolerance)=0;
     virtual void compareAlpha(wxString path1,wxString path2,double tolerance)=0;
     virtual void compareHSV(wxString path1, wxString path2,double tolerance)=0;
-
 };
 #endif //EYEGLASS_ABSTRACTCONTROLLER_H

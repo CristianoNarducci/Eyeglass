@@ -63,7 +63,7 @@ public:
 
 	wxString getMode() override; //get selected comparation mode
 
-    wxString* getActiveImages() override;   //get activated images
+	wxString* getActiveImages() override;   //get activated images
 
 	void onAbout(wxCommandEvent &event) override;
 

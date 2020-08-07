@@ -19,7 +19,7 @@ public:
     virtual void activateSelectedImages(wxCommandEvent& event) = 0;
     virtual void compareImages(wxCommandEvent& event) = 0;
     virtual void resetTabs() = 0;
-    virtual AbstractModel& getModel() = 0;
+   	virtual AbstractModel& getModel() = 0;
     virtual AbstractController& getController() = 0;
     virtual wxString getMode() = 0;
     virtual void deselectImages() = 0;
