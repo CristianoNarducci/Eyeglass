@@ -28,12 +28,14 @@ wxBEGIN_EVENT_TABLE(View,wxFrame)
 	EVT_MENU(wxID_EXIT,View::onExit)
 	EVT_SLIDER(SLIDER_COLOR,View::onSliderUpdate)
 wxEND_EVENT_TABLE()
-View::View(const std::string title, const wxPoint &pos, const wxSize &size, AbstractModel& model, AbstractController& c):model(model),controller(c) ,wxFrame(NULL,wxID_ANY,title,pos,size) {
+
+View::View(const std::string title, const wxPoint &pos, const wxSize &size, AbstractModel& model, AbstractController& controller):model(model),controller(controller),wxFrame(NULL,wxID_ANY,title,pos,size) {
     model.registerObserver(this);  //registration view for successive notification
     /*Definition of View items
      * the buttons for list manipulation and the text information are insert in columns of
      * a FlexGridSizer for a table-style view.
      * Instead of a wxPanel, we used a wxScrolledWindow for implementing the scroll window function*/
+    activeImages = new wxString[2];
     panel = new wxScrolledWindow(this,PANEL_ID);
     panel->SetScrollRate(5,5);
 	/*Definition of Menutab
@@ -93,6 +95,7 @@ View::View(const std::string title, const wxPoint &pos, const wxSize &size, Abst
 	vbox->Add(gs,0,wxLEFT ,40);
 	panel->SetSizer(vbox); //setting window sizer
 
+
 }
 void View::update(int eventCode) {
 
@@ -115,6 +118,7 @@ void View::loadImages(wxCommandEvent& event){
 	}
 	wxArrayString paths;
 	fileDialog->GetPaths(paths);
+	//controller.loadImages(paths);
 	try {
 		for (auto iterator = paths.begin(); iterator < paths.end(); ++iterator) {
 			list->InsertItem(0,*iterator);
@@ -149,7 +153,6 @@ void View::deselectImages() {
 		}
 	}
 }
-
 void View::activateSelectedImages(wxCommandEvent& event) {
 	int imageActive = imagesActivatedCount();
 	int itemCount=0;
@@ -169,46 +172,48 @@ void View::activateSelectedImages(wxCommandEvent& event) {
 	}
 	if (imageActive == 2)
 	{
-		itemCount = 0;
+		itemCount=0;
 		item = -1;
 		wxString text;
 		while((item = list->GetNextItem(item,wxLIST_NEXT_ALL,wxLIST_STATE_DONTCARE)) != -1){
 			text = list->GetItemText(item,1);
 			if (text.IsSameAs(_("*"))){
-				arr[itemCount]=list->GetItemText(item);
+				activeImages[itemCount] = list->GetItemText(item);
 				itemCount++;
 			}
 
 		}
-		activeImages = arr;
-		std::cout<< *activeImages << std::endl;
-		std::cout << *(activeImages + 1) << std::endl;
+	//	std::cout<<activeImages[0]<<std::endl;
+
 	}
 }
 
 void View::compareImages(wxCommandEvent &event){
-
 	int imagesActive = imagesActivatedCount();
 	wxString mode = getMode();
 	double tolerance = colorToleranceSlider->GetValue();
+	//std::cout<<activeImages[0]<<std::endl;
+
 	if(imagesActive < 2){
 		wxMessageBox(_("SELEZIONARE DUE IMMAGINI DA COMPARARE"),_("ERRORE"),wxOK | wxICON_EXCLAMATION);
 	}
-	else if(mode.IsSameAs(_("RGB"))){
-		wxString pathImage1 = *activeImages;
-		wxString pathImage2 = *(activeImages + 1);
-		controller.compareRGB(_("x"),_("l"),5);
+	else if(mode == "RGB"){
+		/*wxString pathImage1 = activeImages[0];
+		std::cout<<pathImage1<<std::endl;
+		wxString pathImage2 = activeImages[1];
+		std::cout<<pathImage2<<std::endl;
+		controller.compareRGB(pathImage1,pathImage2,tolerance);*/
 
 	}
 	else if(mode.IsSameAs(_("HSV"))){
-		wxString pathImage1 = *activeImages;
-		wxString pathImage2 = *(activeImages + 1);
+		wxString pathImage1 = activeImages[0];
+		wxString pathImage2 = activeImages[1];
 		std::cout<<"luigi"<<std::endl;
-		this->controller.compareHSV(pathImage1,pathImage2,tolerance);
+		controller.compareHSV(pathImage1,pathImage2,tolerance);
 	}
 	else if(mode.IsSameAs(_("ALPHA"))){
-		wxString pathImage1 = *activeImages;
-		wxString pathImage2 = *(activeImages + 1);
+		wxString pathImage1 = activeImages[0];
+		wxString pathImage2 = activeImages[1];
 		std::cout<<"paperino"<<std::endl;
 		controller.compareAlpha(pathImage1,pathImage2,tolerance);
 	}
@@ -231,8 +236,10 @@ wxString View::getMode(){
 }
 
 wxString* View::getActiveImages(){
-    return activeImages;
+	return activeImages;
 }
+
+
 
 void View::onAbout(wxCommandEvent &event){
 

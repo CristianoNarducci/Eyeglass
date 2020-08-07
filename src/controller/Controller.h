@@ -26,9 +26,11 @@ public:
      * It can load multiple images at once*/
     void loadImages(wxArrayString paths) override;
 
+    void prova() override;
+
     /*Compare the active images with RGB mode
      * If the result doesnt reach the tolerance, it consider the images equals*/
-    void compareRGB(wxString path1, wxString path2, double tolerance) override;
+    void compareRGB(wxString& path1, wxString& path2, double tolerance) override;
 
     /*Compare the active images with Alpha method
      * If the result doesnt reach the tolerance,it consider the images equals*/

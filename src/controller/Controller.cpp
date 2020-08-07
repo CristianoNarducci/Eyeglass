@@ -14,15 +14,20 @@ void Controller::removeImages(wxArrayString paths) {
 
 }
 
+void Controller::prova(){
+	std::cout<< "arrivo"<<std::endl;
+}
 void Controller::loadImages(wxArrayString paths) {
 
-    for(int it = 0; it < paths.size(); it++){
+    /*for(int it = 0; it < paths.size(); it++){
         model.loadImage(paths[it]);
-    }
+    }*/
+	std::cout<< "arrivo caricamento"<<std::endl;
+
 }
 
-void Controller::compareRGB(wxString path1, wxString path2, double tolerance) {
-	std::cout<<"PIPPO"<<std::endl;
+void Controller::compareRGB(wxString& path1, wxString& path2, double tolerance) {
+	std::cout<<"PAPERINO"<<std::endl;
 }
 
 void Controller::compareAlpha(wxString path1, wxString path2, double tolerance) {
