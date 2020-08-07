@@ -7,33 +7,26 @@
 Controller::Controller(AbstractModel& model) : model(model){}
 
 void Controller::removeImages(wxArrayString paths) {
-
-    for(int it = 0; it < paths.size();it++){
+    for(int it = 0; it < paths.GetCount();it++){
         model.removeImage(paths[it]);
     }
 
 }
 
-void Controller::prova(){
-	std::cout<< "arrivo"<<std::endl;
-}
 void Controller::loadImages(wxArrayString paths) {
-
-    /*for(int it = 0; it < paths.size(); it++){
+    for(int it = 0; it < paths.GetCount(); it++){
         model.loadImage(paths[it]);
-    }*/
-	std::cout<< "arrivo caricamento"<<std::endl;
-
+    }
 }
 
-void Controller::compareRGB(wxString& path1, wxString& path2, double tolerance) {
-	std::cout<<"PAPERINO"<<std::endl;
+void Controller::compareRGB(wxString path1, wxString path2, double tolerance) {
+	model.compareRGB(path1, path2, tolerance);
 }
 
 void Controller::compareAlpha(wxString path1, wxString path2, double tolerance) {
-	std::cout<<"PAPERINO"<<std::endl;
+	model.compareAlpha(path1, path2, tolerance);
 }
 
 void Controller::compareHSV(wxString path1, wxString path2, double tolerance) {
-	std::cout<<"PLUTO"<<std::endl;
+	model.compareHSV(path1, path2, tolerance);
 }
