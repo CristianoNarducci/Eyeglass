@@ -20,21 +20,23 @@
 #include "DiffResult.h"
 #include "../utils/Observer.h"
 
+
 /*
  * Implements an AbstractModel with a local in-memory storage.
  */
-class Model : public AbstractModel {
+class Model : public AbstractModel{
 public:
 	Model();
 
 	void registerObserver(Observer *observer) override;
 	void removeObserver(Observer *observer) override;
-	void notify(const int eventCode) override;
+	void notify(int eventCode) override;
 	void loadImage(const wxString path) override;
 	void removeImage(const wxString path) override;
 	void removeAllImages() override;
 	const wxImage* getImage(const wxString path) override;
 	const std::map<wxString, wxImage>& getAllImages() override;
+	//TODO ELIMINATE CONST WITH value passage
 	double comparePixelAlpha(const char alphaValue1, const char alphaValue2, const double tolerance) override;
 	double comparePixelRGB(const wxImage::RGBValue RGBValue1, const wxImage::RGBValue RGBValue2, const double tolerance) override;
 	double comparePixelHSV(const wxImage::HSVValue HSVValue1, const wxImage::HSVValue HSVValue2, const double tolerance) override;
@@ -42,7 +44,9 @@ public:
 	void compareRGB(const wxString path1, const wxString path2, const double tolerance) override;
 	void compareHSV(const wxString path1, const wxString path2, const double tolerance) override;
 	const DiffResult* getDifferences(const wxString path1, const wxString path2) override;
-	
+
+	void notify() override;
+
 	virtual ~Model() override;
 
 

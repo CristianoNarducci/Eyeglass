@@ -31,11 +31,10 @@ wxEND_EVENT_TABLE()
 
 View::View(const std::string title, const wxPoint &pos, const wxSize &size, AbstractModel& model, AbstractController& controller):model(model),controller(controller),wxFrame(NULL,wxID_ANY,title,pos,size) {
     model.registerObserver(this);  //registration view for successive notification
-    /*Definition of View items
+    /* Definition of View items
      * the buttons for list manipulation and the text information are insert in columns of
      * a FlexGridSizer for a table-style view.
      * Instead of a wxPanel, we used a wxScrolledWindow for implementing the scroll window function*/
-    activeImages = new wxString[2];
     panel = new wxScrolledWindow(this,PANEL_ID);
     panel->SetScrollRate(5,5);
 	/*Definition of Menutab
@@ -104,9 +103,13 @@ void View::update(int eventCode) {
  * the while cicle it afflict only the image selected*/
 void View::removeImages(wxCommandEvent& event){
 	long item;
+	wxArrayString paths;
 	while((item = list->GetNextItem(-1,wxLIST_NEXT_ALL,wxLIST_STATE_SELECTED)) != -1){
+		paths.Add(list->GetItemText(item));
 		list->DeleteItem(item);
 	}
+	controller.removeImages(paths);
+	deselectImages();
 }
 /*load images on storage
  * It load the paths in the list view but in the model there is a map that associate
@@ -118,7 +121,6 @@ void View::loadImages(wxCommandEvent& event){
 	}
 	wxArrayString paths;
 	fileDialog->GetPaths(paths);
-	//controller.loadImages(paths);
 	try {
 		for (auto iterator = paths.begin(); iterator < paths.end(); ++iterator) {
 			list->InsertItem(0,*iterator);
@@ -128,7 +130,10 @@ void View::loadImages(wxCommandEvent& event){
 	catch (std::exception& error) {
 		std::cout << "Caught exception: " << error.what() << std::endl;
 	}
+	controller.loadImages(paths);
 }
+/* Count the image that are in the list
+ * */
 int View::imagesActivatedCount() {
 	int count = 0;
 	long item = -1;
@@ -140,7 +145,7 @@ int View::imagesActivatedCount() {
 	}
 	return count;
 }
-/*Deselect the activated images
+/* Deselect the activated images
  * this function is called on activatedSelectImages function for deselect before activate the new images
  * For practical reasons the function scan every row in the list and if in the column next to him is present the "*"
  * symbol it deselect him and clear the activated images array
@@ -153,11 +158,14 @@ void View::deselectImages() {
 		}
 	}
 }
+/*
+ * Activate the selected images
+ * when the image count have vaue 2, it store the paths in a vector corresponding in the image active image paths
+ */
 void View::activateSelectedImages(wxCommandEvent& event) {
 	int imageActive = imagesActivatedCount();
 	int itemCount=0;
 	long item = -1;
-	wxString arr[2];
 	if(imageActive >= 2 || list->GetSelectedItemCount() >= 2)
 	{
 		deselectImages();
@@ -170,51 +178,46 @@ void View::activateSelectedImages(wxCommandEvent& event) {
 			imageActive++;
 		}
 	}
-	if (imageActive == 2)
-	{
-		itemCount=0;
+	if (imageActive == 2) {
+		itemCount = 0;
 		item = -1;
 		wxString text;
+		if (!activeImages.empty()){
+			activeImages.clear();
+		}
 		while((item = list->GetNextItem(item,wxLIST_NEXT_ALL,wxLIST_STATE_DONTCARE)) != -1){
 			text = list->GetItemText(item,1);
 			if (text.IsSameAs(_("*"))){
-				activeImages[itemCount] = list->GetItemText(item);
+				activeImages.push_back(list->GetItemText(item));
 				itemCount++;
 			}
 
 		}
-	//	std::cout<<activeImages[0]<<std::endl;
-
 	}
 }
-
+/* Compare images depending of the method chosen by the user
+ * if there is only one image activated or the mode aren't choice the function will visualize an error by a message box
+ * */
 void View::compareImages(wxCommandEvent &event){
 	int imagesActive = imagesActivatedCount();
 	wxString mode = getMode();
 	double tolerance = colorToleranceSlider->GetValue();
-	//std::cout<<activeImages[0]<<std::endl;
-
 	if(imagesActive < 2){
 		wxMessageBox(_("SELEZIONARE DUE IMMAGINI DA COMPARARE"),_("ERRORE"),wxOK | wxICON_EXCLAMATION);
 	}
 	else if(mode == "RGB"){
-		/*wxString pathImage1 = activeImages[0];
-		std::cout<<pathImage1<<std::endl;
+		wxString pathImage1 = activeImages[0];
 		wxString pathImage2 = activeImages[1];
-		std::cout<<pathImage2<<std::endl;
-		controller.compareRGB(pathImage1,pathImage2,tolerance);*/
-
+		controller.compareRGB(pathImage1,pathImage2,tolerance);
 	}
 	else if(mode.IsSameAs(_("HSV"))){
 		wxString pathImage1 = activeImages[0];
 		wxString pathImage2 = activeImages[1];
-		std::cout<<"luigi"<<std::endl;
 		controller.compareHSV(pathImage1,pathImage2,tolerance);
 	}
 	else if(mode.IsSameAs(_("ALPHA"))){
 		wxString pathImage1 = activeImages[0];
 		wxString pathImage2 = activeImages[1];
-		std::cout<<"paperino"<<std::endl;
 		controller.compareAlpha(pathImage1,pathImage2,tolerance);
 	}
 	else{
@@ -235,12 +238,9 @@ wxString View::getMode(){
     return mode;
 }
 
-wxString* View::getActiveImages(){
+std::vector<wxString> View::getActiveImages(){
 	return activeImages;
 }
-
-
-
 void View::onAbout(wxCommandEvent &event){
 
 }

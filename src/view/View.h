@@ -26,7 +26,7 @@ protected:
     wxScrolledWindow* panel;          //application panel
     wxMenu* menuFile;
     wxMenuBar* menu;
-    wxString* activeImages;   //Image activate array
+    std::vector<wxString> activeImages;   //Image activate array
     wxButton* addImageButton;   //adding image button
     wxButton* removeImagesButton;   //remove image button
     wxButton* activateImagesButton;       //activate image button
@@ -63,7 +63,7 @@ public:
 
 	wxString getMode() override; //get selected comparation mode
 
-	wxString* getActiveImages() override;   //get activated images
+	std::vector<wxString> getActiveImages() override;   //get activated images
 
 	void onAbout(wxCommandEvent &event) override;
 

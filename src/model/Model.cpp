@@ -36,6 +36,10 @@ const wxImage* Model::getImage(const wxString path) {
 	return nullptr;
 }
 
+const std::map<wxString, wxImage>& Model::getAllImages() {
+	return imageStorage;
+}
+
 double Model::comparePixelAlpha(const char alphaValue1, const char alphaValue2, const double tolerance) {
 	double percentual_difference = std::abs(alphaValue2 - alphaValue1) / 255;
 	return percentual_difference > tolerance ? percentual_difference : 0;
@@ -180,5 +184,9 @@ void Model::notify(const int eventCode) {
 		(*iter)->update(eventCode);
 		iter++;
 	}
+}
+
+void Model::notify() {
+
 }
 

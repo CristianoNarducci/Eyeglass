@@ -8,6 +8,8 @@
 
 class ViewTab
 {
+	//TODO virtual descructor
+public:
     virtual void reset()=0;  //reset tabs function
     /*Generate the viewtab*/
     virtual void generateDiffView()=0;

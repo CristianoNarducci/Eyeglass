@@ -95,6 +95,8 @@ public:
 	
 	virtual ~AbstractModel() {};
 
+	virtual void notify(int eventCode)=0;
+
 protected:
 	/*
 	 * Fetches the DiffResult container for internal usage, returning a non costant pointer.

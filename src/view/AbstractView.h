@@ -11,6 +11,7 @@
 #endif
 #include "../model/AbstractModel.h"
 #include "../controller/AbstractController.h"
+#include <vector>
 
 class AbstractView{
 public:
@@ -23,7 +24,7 @@ public:
     virtual AbstractController& getController() = 0;
     virtual wxString getMode() = 0;
     virtual void deselectImages() = 0;
-    virtual wxString* getActiveImages() = 0;
+    virtual std::vector<wxString> getActiveImages() = 0;
 	virtual int imagesActivatedCount() = 0;
     virtual void onAbout(wxCommandEvent& event) = 0;
     virtual void onExit(wxCommandEvent& event) = 0;
