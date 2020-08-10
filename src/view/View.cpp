@@ -102,14 +102,18 @@ void View::update(int eventCode) {
 /*Delete the selected images
  * the while cicle it afflict only the image selected*/
 void View::removeImages(wxCommandEvent& event){
+	bool checkDelete = false;
 	long item;
 	wxArrayString paths;
 	while((item = list->GetNextItem(-1,wxLIST_NEXT_ALL,wxLIST_STATE_SELECTED)) != -1){
 		paths.Add(list->GetItemText(item));
 		list->DeleteItem(item);
+		checkDelete = true;
 	}
-	controller.removeImages(paths);
-	deselectImages();
+	if(checkDelete){
+		controller.removeImages(paths);
+		deselectImages();
+	}
 }
 /*load images on storage
  * It load the paths in the list view but in the model there is a map that associate

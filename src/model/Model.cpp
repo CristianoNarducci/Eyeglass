@@ -5,6 +5,7 @@ Model::Model() {}
 Model::~Model() {}
 
 // TODO: Error reporting is missing at the moment
+// TODO : change passage by value in reference in every function
 void Model::loadImage(const wxString path) {
 	wxImage image;
 	
