@@ -118,7 +118,14 @@ void View::loadImages(wxCommandEvent& event){
 	}
 	wxArrayString paths;
 	fileDialog->GetPaths(paths);
-	//controller.loadImages(paths);
+	
+	try {
+		controller.loadImages(paths);
+	} catch(const std::exception& e) {
+		std::cout << e.what() << std::endl;
+	}
+
+	
 	try {
 		for (auto iterator = paths.begin(); iterator < paths.end(); ++iterator) {
 			list->InsertItem(0,*iterator);

@@ -49,21 +49,6 @@ public:
 	virtual const std::map<wxString, wxImage>& getAllImages() = 0;
 	
 	/*
-	 * Returns the percentual of difference between the two alpha values, or 0 if below tolerance.
-	 */
-	virtual double comparePixelAlpha(const char alphaValue1, const char alphaValue2, const double tolerance) = 0;
-	
-	/*
-	 * Returns the percentual of difference between the two RGB values, or 0 if below tolerance.
-	 */
-	virtual double comparePixelRGB(const wxImage::RGBValue RGBValue1, const wxImage::RGBValue RGBValue2, const double tolerance) = 0;
-	
-	/*
-	 * Returns the percentual of difference between the two HSV values, or 0 if below tolerance.
-	 */
-	virtual double comparePixelHSV(const wxImage::HSVValue HSVValue1, const wxImage::HSVValue HSVValue2, const double tolerance) = 0;
-	
-	/*
 	 * For each pixel in both images, compare the alpha value and save the percentual of difference 
 	 * in storage if above the tolerance level. Both images should be of the same size, or the comparison
 	 * will error.

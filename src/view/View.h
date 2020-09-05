@@ -18,6 +18,7 @@
 #include "ViewTab.h"
 #include "../controller/AbstractController.h"
 #include <wx/textctrl.h>
+#include <exception>
 
 
 
