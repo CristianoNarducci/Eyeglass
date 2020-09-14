@@ -10,6 +10,8 @@ void Model::loadImage(const wxString path) {
 	}
 	
 	imageStorage.insert(std::make_pair(path, image));
+	
+	notify(1);
 }
 
 // Also removes the diff cache entry
@@ -116,7 +118,7 @@ void Model::compareAlpha(const wxString path1, const wxString path2, const doubl
 		}
 	}
 	
-	// TODO: notify caller
+	notify(8);
 }
 
 void Model::compareRGB(const wxString path1, const wxString path2, const double tolerance) {
@@ -168,7 +170,7 @@ void Model::compareRGB(const wxString path1, const wxString path2, const double 
 		}
 	}
 	
-	// TODO: notify caller
+	notify(8);
 }
 
 void Model::compareHSV(const wxString path1, const wxString path2, const double tolerance) {
@@ -219,7 +221,7 @@ void Model::compareHSV(const wxString path1, const wxString path2, const double 
 		}
 	}
 	
-	// TODO: notify caller
+	notify(8);
 }
 
 // To implement the unordered usage, first check in one way, then try applying the operation with the
@@ -266,7 +268,7 @@ void Model::removeCachedDifferences(const wxString path1, const wxString path2) 
 			std::pair<wxString, wxString> key = iter->first;
 		
 			if (key.first.IsSameAs(path1) || key.second.IsSameAs(path1)) {
-				diffStorage.erase(key); // TODO: checks if it works for equal string with different addresses. It should, though
+				diffStorage.erase(key);
 			}
 			
 			iter++;
