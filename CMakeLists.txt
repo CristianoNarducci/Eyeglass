@@ -39,8 +39,7 @@ set(PROJECT_SOURCE_FILES
 		src/model/Model.h
 		src/utils/Subject.h
 		src/exception/ImageLoaderException.h
-		src/utils/ImageUtils.h
-		src/utils/ImageUtils.cpp)
+		src/utils/ImageUtils.h)
 set(DEPENDENCIES ${wxWidgets_LIBRARIES})
 
 
