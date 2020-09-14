@@ -26,7 +26,7 @@ public:
 	 * Returns the percentual of difference between the two alpha values, or 0 if below tolerance.
 	 */
 	static double comparePixelAlpha(const char alphaValue1, const char alphaValue2, const double tolerance) {
-		double percentual_difference = std::abs(alphaValue2 - alphaValue1) / 255.0;
+		double percentual_difference = std::fabs(alphaValue2 - alphaValue1) / 255.0;
 		if (percentual_difference <= tolerance) {
 			percentual_difference = 0;
 		}

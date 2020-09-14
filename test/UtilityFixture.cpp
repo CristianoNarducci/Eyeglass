@@ -23,7 +23,7 @@ TEST_F(ImageUtilsSuite ,TestGeometry){
 }
 
 TEST_F(ImageUtilsSuite,TestAlphaPixel){
-	EXPECT_EQ(1,utility.comparePixelAlpha(0,255.0,0));
+	EXPECT_EQ(1,utility.comparePixelAlpha(0,255,0));
 }
 //
 
