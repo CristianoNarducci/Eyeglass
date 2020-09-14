@@ -8,14 +8,14 @@
 #ifndef WX_PRECOMP
 #include <wx/wx.h>
 #endif
-#include "AbstractView.h"
+#include "View.h"
 #include "ViewTab.h"
 #include <wx/listctrl.h>
 
 class DiffListTab:public ViewTab {
 protected:
     wxListView* diffListView;
-    AbstractView& view;
+    View& view;
 
 public:
     void reset() override;

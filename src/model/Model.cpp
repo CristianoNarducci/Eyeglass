@@ -107,9 +107,7 @@ void Model::compareAlpha(const wxString path1, const wxString path2, const doubl
 			for (int y = 0; y < image1->GetHeight(); y++) {
 				for (int x = 0; x < image1->GetWidth(); x++) {
 					unsigned long i = y * image1->GetHeight() + x;
-					double percentual_difference = ImageUtils::comparePixelAlpha(image1_alpha[i], 
-																				image2_alpha[i],
-																				tolerance);
+					double percentual_difference = ImageUtils::comparePixelAlpha(image1_alpha[i],image2_alpha[i],tolerance);
 					if (percentual_difference > 0) {
 						(diff_container->alphaVector).push_back(std::make_tuple(x, y, percentual_difference));
 					}

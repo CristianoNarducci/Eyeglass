@@ -8,14 +8,14 @@
 #ifndef WX_PRECOMP
 #include <wx/wx.h>
 #include "ViewTab.h"
-#include "AbstractView.h"
+#include "View.h"
 
 #endif
 
 class SideBySideTab: public ViewTab {
 protected:
     wxStaticBitmap* images;
-    AbstractView& view;
+    View& view;
 
 public:
     void reset() override;

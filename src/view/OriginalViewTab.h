@@ -7,7 +7,7 @@
 #include <wx/wxprec.h>
 #ifndef WX_PRECOMP
 #include <wx/wx.h>
-#include "AbstractView.h"
+#include "View.h"
 #include "ViewTab.h"
 
 #endif
@@ -15,7 +15,7 @@
 class OriginalViewTab: public ViewTab {
 protected:
     wxStaticBitmap* images;
-    AbstractView& view;
+    View& view;
 
 public:
 
