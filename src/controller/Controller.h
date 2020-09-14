@@ -8,35 +8,34 @@
 #ifndef WX_PRECOMP
 #include <wx/wx.h>
 #endif
-#include "AbstractController.h"
-#include "../model/AbstractModel.h"
+#include "../model/Model.h"
 
-class Controller: public AbstractController {
+class Controller {
 protected:
-    AbstractModel& model;
+    Model& model;
 
 public:
 
-    Controller(AbstractModel& model);
+    Controller(Model& model);
     /*Remove images from the storage
      * It can remove multiple image at once*/
-    void removeImages(wxArrayString paths) override;
+    virtual void removeImages(wxArrayString paths);
 
     /*Load images on the storage
      * It can load multiple images at once*/
-    void loadImages(wxArrayString paths) override;
+    virtual void loadImages(wxArrayString paths);
 
     /*Compare the active images with RGB mode
      * If the result doesnt reach the tolerance, it consider the images equals*/
-    void compareRGB(wxString path1, wxString path2, double tolerance) override;
+    virtual void compareRGB(wxString path1, wxString path2, double tolerance);
 
     /*Compare the active images with Alpha method
      * If the result doesnt reach the tolerance,it consider the images equals*/
-    void compareAlpha(wxString path1, wxString path2, double tolerance) override;
+    virtual void compareAlpha(wxString path1, wxString path2, double tolerance);
 
     /*Compare the active images with HSV method
      * If the result doesnt reach the tolerance,it consider the images equals*/
-    void compareHSV(wxString path1, wxString path2, double tolerance) override;
+    virtual void compareHSV(wxString path1, wxString path2, double tolerance);
 };
 
 

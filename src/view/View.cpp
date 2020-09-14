@@ -29,7 +29,7 @@ wxBEGIN_EVENT_TABLE(View,wxFrame)
 	EVT_SLIDER(SLIDER_COLOR,View::onSliderUpdate)
 wxEND_EVENT_TABLE()
 
-View::View(const std::string title, const wxPoint &pos, const wxSize &size, AbstractModel& model, AbstractController& controller):model(model),controller(controller),wxFrame(NULL,wxID_ANY,title,pos,size) {
+View::View(const std::string title, const wxPoint &pos, const wxSize &size, Model& model, Controller& controller):model(model),controller(controller),wxFrame(NULL,wxID_ANY,title,pos,size) {
     model.registerObserver(this);  //registration view for successive notification
     /* Definition of View items
      * the buttons for list manipulation and the text information are insert in columns of
@@ -116,7 +116,7 @@ void View::removeImages(wxCommandEvent& event){
 	}
 }
 /*load images on storage
- * It load the paths in the list view but in the model there is a map that associate
+ * It load the paths in the list view but in the Model there is a map that associate
  * the wxImage object with his relative path*/
 void View::loadImages(wxCommandEvent& event){
 	wxFileDialog* fileDialog=new wxFileDialog(this, _("Scegli una o più foto"),wxEmptyString,wxEmptyString,wxFileSelectorDefaultWildcardStr,wxFD_MULTIPLE);
@@ -241,7 +241,7 @@ void View::resetTabs(){
 
 }
 
-AbstractModel& View::getModel(){
+Model& View::getModel(){
     return model;
 }
 
@@ -268,7 +268,7 @@ void View::onSliderUpdate(wxCommandEvent &event){
 	sliderValue->SetValue(stringValue + " %");
 }
 
-AbstractController &View::getController() {
+Controller &View::getController() {
 	return controller;
 }
 

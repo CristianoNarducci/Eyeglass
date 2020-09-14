@@ -2,8 +2,6 @@
 
 Model::Model() {}
 
-Model::~Model() {}
-
 void Model::loadImage(const wxString path) {
 	wxImage image;
 	

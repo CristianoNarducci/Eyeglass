@@ -9,20 +9,20 @@
 #ifndef WX_PRECOMP
 #include <wx/wx.h>
 #endif
-#include "AbstractView.h"
+
 #include <iostream>
 #include <vector>
 #include <wx/listctrl.h>
-#include "../model/AbstractModel.h"
+#include "../model/Model.h"
 #include "../utils/Observer.h"
 #include "ViewTab.h"
-#include "../controller/AbstractController.h"
+#include "../controller/Controller.h"
 #include <wx/textctrl.h>
 #include <exception>
 
 
 
-class View: public wxFrame, public AbstractView, public Observer {
+class View: public wxFrame, public Observer {
 protected:
     wxScrolledWindow* panel;          //application panel
     wxMenu* menuFile;
@@ -36,45 +36,45 @@ protected:
     std::vector<ViewTab*> tabs;     //Tab's vector for different results
     wxComboBox* modeSelector;       //Comparation mode selector
     wxListView* list;
-    AbstractModel& model;
-    AbstractController& controller;
+    Model& model;
+    Controller& controller;
 	wxTextCtrl* sliderValue;
 	wxStaticText* toleranceText;
 	wxStaticText* comparisonText;
 
 public:
 
-    View(const std::string title, const wxPoint& pos, const wxSize& size,AbstractModel& model, AbstractController& controller);
+    View(const std::string title, const wxPoint& pos, const wxSize& size,Model& model, Controller& controller);
 
-    void update(int eventCode) override;
+    void update(int eventCode);
 
-    void removeImages(wxCommandEvent &event) override; //Remove images from list
+    void removeImages(wxCommandEvent &event); //Remove images from list
 
-    void loadImages(wxCommandEvent &event) override;    //upload the images to the list
+    void loadImages(wxCommandEvent &event);    //upload the images to the list
 
-    void activateSelectedImages(wxCommandEvent &event) override;    //activate the selected image
+    void activateSelectedImages(wxCommandEvent &event);    //activate the selected image
 
-    void compareImages(wxCommandEvent &event) override; //compare activated images
+    void compareImages(wxCommandEvent &event); //compare activated images
 
-    void resetTabs() override;      //reset tabs
+    void resetTabs();      //reset tabs
 
-    AbstractModel& getModel() override;
+    Model& getModel();
 
-	AbstractController& getController() override;
+	Controller& getController();
 
-	wxString getMode() override; //get selected comparation mode
+	wxString getMode(); //get selected comparation mode
 
-	std::vector<wxString> getActiveImages() override;   //get activated images
+	std::vector<wxString> getActiveImages();   //get activated images
 
-	void onAbout(wxCommandEvent &event) override;
+	void onAbout(wxCommandEvent &event);
 
-	int imagesActivatedCount() override;
+	int imagesActivatedCount();
 
-	void onExit(wxCommandEvent &event) override;
+	void onExit(wxCommandEvent &event);
 
-	void onSliderUpdate(wxCommandEvent &event) override;	//it change the textbox value of comparison tolerance
+	void onSliderUpdate(wxCommandEvent &event);	//it change the textbox value of comparison tolerance
 
-	void deselectImages() override;  //deselect the activate images
+	void deselectImages();  //deselect the activate images
 
 wxDECLARE_EVENT_TABLE();
 };

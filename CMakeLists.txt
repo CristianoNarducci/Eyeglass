@@ -17,7 +17,6 @@ add_executable(Eyeglass src/main.cpp)
 
 set(PROJECT_SOURCE_FILES
 		src/main.cpp
-		src/view/AbstractView.h
 		src/view/View.cpp
 		src/view/View.h
 		src/utils/Observer.h
@@ -32,7 +31,6 @@ set(PROJECT_SOURCE_FILES
 		src/view/LayerTab.h
 		src/view/HeatmapTab.cpp
 		src/view/HeatmapTab.h
-		src/controller/AbstractController.h
 		src/controller/Controller.cpp
 		src/controller/Controller.h
 		src/model/Model.cpp
