@@ -23,51 +23,36 @@ public:
 	
 	void update(int eventCode);
 	
-	//~ void removeImages(wxCommandEvent &event);			// Removes images from the list
-	//~ void loadImages(wxCommandEvent &event);				// Loads images into the program
-	//~ void activateSelectedImages(wxCommandEvent &event);	// Activates the selected images
-	//~ void compareImages(wxCommandEvent &event);			// Starts the comparison of the activated images
-	//~ void resetTabs();      //reset tabs
-	//~ Model& getModel();
-	//~ Controller& getController();
-	//~ wxString getMode(); //get selected comparation mode
-	//~ std::vector<wxString> getActiveImages();   //get activated images
-	//~ void onAbout(wxCommandEvent &event);
-	//~ int imagesActivatedCount();
-	//~ void onExit(wxCommandEvent &event);
-	//~ void onSliderUpdate(wxCommandEvent &event);	//it change the textbox value of comparison tolerance
-	//~ void deselectImages();  //deselect the activate images
-
-wxDECLARE_EVENT_TABLE();
+	wxDECLARE_EVENT_TABLE();
 
 protected:
-	void removeImages(wxCommandEvent &event);			// Removes images from the list
-	void loadImages(wxCommandEvent &event);				// Loads images into the program
-	void activateSelectedImages(wxCommandEvent &event);	// Activates the selected images
-	void compareImages(wxCommandEvent &event);			// Starts the comparison of the activated images
-	void resetTabs();      //reset tabs
+	void removeImages(wxCommandEvent &event);			// Removes images from the list.
+	void loadImages(wxCommandEvent &event);				// Loads images into the program.
+	void activateSelectedImages(wxCommandEvent &event);	// Activates the selected images.
+	void compareImages(wxCommandEvent &event);			// Starts the comparison of the activated images.
+	void resetTabs();									// Resets the result view tabs.
 	Model& getModel();
 	Controller& getController();
-	wxString getMode(); //get selected comparation mode
-	std::vector<wxString> getActiveImages();   //get activated images
+	wxString getMode();									// Returns the comparison mode selected in the dropdown.
+	std::vector<wxString> getActiveImages();			// Returns the active images names.
 	void onAbout(wxCommandEvent &event);
 	int imagesActivatedCount();
 	void onExit(wxCommandEvent &event);
-	void onSliderUpdate(wxCommandEvent &event);	//it change the textbox value of comparison tolerance
-	void deselectImages();  //deselect the activate images
+	void onSliderUpdate(wxCommandEvent &event);			// Detects a slider event and updates the value in the near textbox.
+	void deselectImages();								// Deselects the active images.
 	
-	wxScrolledWindow* panel;			// Application panel
+	wxScrolledWindow* panel;				// Application panel.
 	wxMenu* menuFile;
 	wxMenuBar* menu;
-	std::vector<wxString> activeImages;	// Holds the name of the images currently under comparison.
+	std::vector<wxString> activeImages;		// Holds the name of the images currently under comparison.
 	wxButton* addImageButton;
 	wxButton* removeImagesButton;
 	wxButton* activateImagesButton;
 	wxSlider* colorToleranceSlider;
 	wxButton* compareButton;
-	std::vector<ViewTab*> tabs;			// Vector which holds all the views for the results.
-	wxComboBox* modeSelector;			// Comparison mode selector.
-	wxListView* list;					// List of loaded images
+	std::vector<ViewTab*> tabs;				// Vector which holds all the views for the results.
+	wxComboBox* modeSelector;				// Comparison mode selector.
+	wxListView* list;						// List of loaded images.
 	Model& model;
 	Controller& controller;
 	wxTextCtrl* sliderValue;

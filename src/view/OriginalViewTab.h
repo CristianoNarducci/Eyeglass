@@ -12,7 +12,7 @@
 class OriginalViewTab: public ViewTab {
 protected:
 	wxStaticBitmap* images;
-	AbstractView& view;
+	View& view;
 
 public:
 	void reset() override;

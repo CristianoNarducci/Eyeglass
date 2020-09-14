@@ -14,7 +14,7 @@
 class DiffListTab: public ViewTab {
 protected:
 	wxListView* diffListView;
-	AbstractView& view;
+	View& view;
 
 public:
 	void reset() override;
