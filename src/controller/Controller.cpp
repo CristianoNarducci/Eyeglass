@@ -1,13 +1,9 @@
-//
-// Created by cristiano on 17/07/20.
-//
-
 #include "Controller.h"
 
-Controller::Controller(Model& model) : model(model){}
+Controller::Controller(Model& model) : model(model) {}
 
 void Controller::removeImages(wxArrayString paths) {
-    for(int it = 0; it < paths.GetCount();it++){
+    for(int it = 0; it < paths.GetCount(); it++){
         model.removeImage(paths[it]);
     }
 }
