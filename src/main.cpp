@@ -7,7 +7,7 @@
 #include "controller/Controller.h"
 #include "view/View.h"
 
-class App : public wxApp {
+class App: public wxApp {
 public:
 	virtual bool OnInit() {
 		// wx needs to have all the image loaders/handlers manually loaded, otherwise the program won't work.

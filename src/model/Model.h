@@ -19,7 +19,7 @@
 #include "../exception/ImageLoaderException.h"
 
 
-class Model : public Subject {
+class Model: public Subject {
 public:
 	Model();
 

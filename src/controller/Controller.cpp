@@ -1,6 +1,6 @@
 #include "Controller.h"
 
-Controller::Controller(Model& model) : model(model) {}
+Controller::Controller(Model& model): model(model) {}
 
 void Controller::removeImages(wxArrayString paths) {
     for(int it = 0; it < paths.GetCount(); it++){
