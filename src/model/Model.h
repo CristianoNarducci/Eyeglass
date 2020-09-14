@@ -115,7 +115,7 @@ protected:
 	 * The storage where images are saved, after being loaded.
 	 * Each image is saved along with its path, which is used as a key for unique identification and retrieval.
 	 */
-	std::map<wxString, wxImage> imageStorage; // TODO: create map with a comparison object which uses wxString IsSameAs, otherwise matches could fail
+	std::map<wxString, wxImage> imageStorage;
 	
 	/*
 	 * A cache for comparison results.
@@ -123,7 +123,7 @@ protected:
 	 * but in reality the order should be ignored; if matching doesn't work at first, try swapping the
 	 * paths.
 	 */
-	std::map<std::pair<wxString, wxString>, DiffResult> diffStorage; // TODO: create map with a comparison object which uses wxString IsSameAs, otherwise matches could fail 
+	std::map<std::pair<wxString, wxString>, DiffResult> diffStorage;
 };
 
 #endif
