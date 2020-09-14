@@ -7,7 +7,7 @@
  */
 class Observer {
 public:
-    virtual void update(const int eventCode) = 0;
+    virtual void update(int eventCode) = 0;
     
     virtual ~Observer() {};
 };

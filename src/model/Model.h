@@ -18,16 +18,17 @@
 
 #include "../exception/ImageLoaderException.h"
 
+
 /*
  * Implements an AbstractModel with a local in-memory storage.
  */
-class Model : public AbstractModel {
+class Model : public AbstractModel{
 public:
 	Model();
 
 	void registerObserver(Observer *observer) override;
 	void removeObserver(Observer *observer) override;
-	void notify(const int eventCode) override;
+	void notify(int eventCode) override;
 	void loadImage(const wxString path) override;
 	void removeImage(const wxString path) override;
 	void removeAllImages() override;

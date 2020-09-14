@@ -12,7 +12,7 @@
 #include "ViewTab.h"
 #include <wx/listctrl.h>
 
-class DiffListTab:ViewTab {
+class DiffListTab:public ViewTab {
 protected:
     wxListView* diffListView;
     AbstractView& view;
