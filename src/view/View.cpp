@@ -61,8 +61,7 @@ View::View(const std::string title, const wxPoint &pos, const wxSize &size, Mode
     sliderValue = new wxTextCtrl(panel,VALUE_SLIDER,"50.0 %", wxDefaultPosition, wxDefaultSize, wxTE_CENTRE);
 	sliderValue->SetEditable(false);
 	
-    modeSelector = new wxComboBox(panel,MODE_SELECTOR,"Seleziona");
-    modeSelector->Append("RGB");
+    modeSelector = new wxComboBox(panel,MODE_SELECTOR, "RGB");
     modeSelector->Append("HSV");
     modeSelector->Append("ALPHA");
     modeSelector->SetEditable(false);
@@ -236,17 +235,14 @@ void View::compareImages(wxCommandEvent &event){
 	if(imagesActive < 2){
 		wxMessageBox(_("SELEZIONARE DUE IMMAGINI DA COMPARARE"),_("ERRORE"),wxOK | wxICON_EXCLAMATION);
 	}
-	else if(mode == "RGB"){
+	else if(mode.IsSameAs("RGB")) {
 		controller.compareRGB(activeImages[0], activeImages[1], tolerance);
 	}
-	else if(mode.IsSameAs(_("HSV"))){
+	else if(mode.IsSameAs("HSV")) {
 		controller.compareHSV(activeImages[0], activeImages[1], tolerance);
 	}
-	else if(mode.IsSameAs(_("ALPHA"))){
+	else if(mode.IsSameAs("ALPHA")) {
 		controller.compareAlpha(activeImages[0], activeImages[1], tolerance);
-	}
-	else{
-		wxMessageBox(_("SCEGLIERE METODO DI COMPARAZIONE"),_("ERRORE"),wxOK | wxICON_EXCLAMATION);
 	}
 }
 

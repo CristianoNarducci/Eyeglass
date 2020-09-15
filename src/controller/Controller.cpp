@@ -2,6 +2,11 @@
 
 Controller::Controller(Model& model): model(model) {}
 
+
+void Controller::removeCachedDifferences() {
+	model.removeCachedDifferences();
+}
+
 void Controller::removeImages(wxArrayString paths) {
     for(int it = 0; it < paths.GetCount(); it++){
         model.removeImage(paths[it]);
