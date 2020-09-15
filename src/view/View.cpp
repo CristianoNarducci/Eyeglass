@@ -30,71 +30,90 @@ wxBEGIN_EVENT_TABLE(View,wxFrame)
 wxEND_EVENT_TABLE()
 
 View::View(const std::string title, const wxPoint &pos, const wxSize &size, Model& model, Controller& controller):model(model),controller(controller),wxFrame(NULL,wxID_ANY,title,pos,size) {
-    model.registerObserver(this);  //registration view for successive notification
+    model.registerObserver(this);
+    
     /* Definition of View items
      * the buttons for list manipulation and the text information are insert in columns of
      * a FlexGridSizer for a table-style view.
      * Instead of a wxPanel, we used a wxScrolledWindow for implementing the scroll window function*/
     panel = new wxScrolledWindow(this,PANEL_ID);
     panel->SetScrollRate(5,5);
+    
 	/*Definition of Menutab
 	 * It's used for author's information and quick keys*/
-    menuFile= new wxMenu;;
+    menuFile = new wxMenu;
     menuFile->Append(ABOUT,"Eyeglass");
 	menuFile->AppendSeparator();
 	menuFile->Append(wxID_EXIT);
 	menu = new wxMenuBar;
 	menu->Append(menuFile,"&File");
 	SetMenuBar(menu);
-	//Definition of button items
-    addImageButton = new wxButton(panel,BUTTON_ADD,_("Aggiungi un immagine"));
-    removeImagesButton = new wxButton(panel,BUTTON_REMOVE,_("Rimuovi Immagine"));
-	activateImagesButton = new wxButton(panel,BUTTON_ACTIVATE,_("Attiva Immagine"),wxDefaultPosition,addImageButton->GetSize());
-    compareButton = new wxButton(panel,BUTTON_COMPARE,_("Compara le immagini"));
-    toleranceText = new wxStaticText(panel,STATIC_ID,_("Seleziona tolleranza colore:"),wxDefaultPosition,wxDefaultSize);
-    comparisonText = new wxStaticText(panel,STATIC_ID,_("Seleziona comparazione:"),wxDefaultPosition,wxDefaultSize);
-    colorToleranceSlider= new wxSlider(panel,SLIDER_COLOR,500,0,1000,wxDefaultPosition,removeImagesButton->GetSize());
-	//Definition of color tolerance slider
-    sliderValue = new wxTextCtrl(panel,VALUE_SLIDER,_("50.0 %"),wxDefaultPosition,removeImagesButton->GetSize(),wxTE_CENTRE);
+	
+	// Main interface elements params
+    addImageButton = new wxButton(panel, BUTTON_ADD, "Aggiungi immagini");
+    removeImagesButton = new wxButton(panel, BUTTON_REMOVE, "Rimuovi immagini");
+	activateImagesButton = new wxButton(panel, BUTTON_ACTIVATE, "Attiva immagini");
+    compareButton = new wxButton(panel, BUTTON_COMPARE, "Compara immagini");
+    toleranceText = new wxStaticText(panel, STATIC_ID, "Soglia di tolleranza:");
+    comparisonText = new wxStaticText(panel, STATIC_ID, "Modo comparazione:");
+    toleranceSlider = new wxSlider(panel, SLIDER_COLOR, 500, 0, 1000);
+    
+    sliderValue = new wxTextCtrl(panel,VALUE_SLIDER,"50.0 %", wxDefaultPosition, wxDefaultSize, wxTE_CENTRE);
 	sliderValue->SetEditable(false);
-	/*Definition of comparison mode of combobox
-	 * the initial text "seleziona" aren't a value
-	 * the option for comparison are : HSV, RGB and ALPHA
-	 * the combobox obviously is not editable*/
-    modeSelector = new wxComboBox(panel,MODE_SELECTOR,_("Seleziona"),wxDefaultPosition,compareButton->GetSize());
-    modeSelector->Append(_("RGB"));
-    modeSelector->Append(_("HSV"));
-    modeSelector->Append(_("ALPHA"));
+	
+    modeSelector = new wxComboBox(panel,MODE_SELECTOR,"Seleziona");
+    modeSelector->Append("RGB");
+    modeSelector->Append("HSV");
+    modeSelector->Append("ALPHA");
     modeSelector->SetEditable(false);
-    /*Definition of image list
-     * the image address that the user select are stored in there */
-    list = new wxListView(panel, LIST_ID,wxDefaultPosition, wxSize(500, 400));
-    list->InsertColumn(0, "Images",wxLIST_FORMAT_LEFT,250);
-    list->InsertColumn(1,"Activated Images",wxLIST_FORMAT_CENTER,150);
-	wxBoxSizer* hbox = new wxBoxSizer(wxHORIZONTAL);
-	wxBoxSizer* vbox = new wxBoxSizer(wxVERTICAL);
-	wxFlexGridSizer* gs = new wxFlexGridSizer(4,3,10,10);
-	hbox->Add(list,0,wxLEFT  | wxBOTTOM, 15);
-	vbox->Add(hbox,0,wxALIGN_LEFT | wxTOP ,90);
-	/*Adding item in a GridSizer
-	 * Border have been inserted for alignment issues with slider and combobox*/
-	gs->Add(addImageButton,0);
-	gs->Add(new wxStaticText(panel,STATIC_ID,_("")),0);
-	gs->Add(removeImagesButton,0);
-	gs->Add(toleranceText,0,wxTOP,5);
-	gs->Add(colorToleranceSlider,0);
-	gs->Add(sliderValue,0);
-	gs->Add(comparisonText,0,wxTOP,5);
-	gs->Add(modeSelector,0);
-	gs->Add(new wxStaticText(panel,STATIC_ID,_("")),0);
-	gs->Add(activateImagesButton,0,wxTOP,14);
-	gs->Add(new wxStaticText(panel,STATIC_ID,_("")),0);
-	gs->Add(compareButton,0,wxTOP,15);
-	gs->AddGrowableCol(0);
-	vbox->Add(gs,0,wxLEFT ,40);
-	panel->SetSizer(vbox); //setting window sizer
 
-
+    list = new wxListView(panel, LIST_ID);
+    list->InsertColumn(0, "Immagini", wxLIST_FORMAT_LEFT, 350);
+    list->InsertColumn(1, "Attiva", wxLIST_FORMAT_CENTER, 100);
+    
+	// Main panel sizer
+    wxBoxSizer* panelSizer = new wxBoxSizer(wxHORIZONTAL);
+    panel->SetSizer(panelSizer);
+    
+    // Sidebar sizers and controls
+    wxFlexGridSizer* sidebarSizer = new wxFlexGridSizer(6, 1, 0, 0);
+    sidebarSizer->AddGrowableRow(0, 16);
+    sidebarSizer->AddGrowableRow(1, 0);
+    sidebarSizer->AddGrowableRow(2, 0);
+    sidebarSizer->AddGrowableRow(3, 0);
+    sidebarSizer->AddGrowableRow(4, 0);
+    sidebarSizer->AddGrowableRow(5, 0);
+    panelSizer->Add(sidebarSizer, 1, wxEXPAND | wxALIGN_LEFT);
+    
+    sidebarSizer->Add(list, 1, wxEXPAND);
+    
+    sidebarSizer->AddSpacer(4);
+    
+    wxBoxSizer* storageControlSizer = new wxBoxSizer(wxHORIZONTAL);
+    sidebarSizer->Add(storageControlSizer, 1, wxEXPAND | wxBOTTOM);
+    storageControlSizer->Add(addImageButton, 1, wxALL, 4);
+    storageControlSizer->Add(activateImagesButton, 1, wxALL, 4);
+    storageControlSizer->Add(removeImagesButton, 1, wxALL, 4);
+    
+    sidebarSizer->AddSpacer(16);
+    
+    wxBoxSizer* toleranceControlSizer = new wxBoxSizer(wxHORIZONTAL);
+    sidebarSizer->Add(toleranceControlSizer, 1, wxEXPAND | wxBOTTOM);
+    toleranceControlSizer->Add(toleranceText, 1, wxALL, 4);
+    toleranceControlSizer->Add(toleranceSlider, 1, wxALL, 4);
+    toleranceControlSizer->Add(sliderValue, 1, wxALL, 4);
+    
+    wxBoxSizer* modeControlSizer = new wxBoxSizer(wxHORIZONTAL);
+    sidebarSizer->Add(modeControlSizer, 1, wxEXPAND | wxBOTTOM);
+    modeControlSizer->Add(comparisonText, 1, wxALL, 4);
+    modeControlSizer->Add(modeSelector, 1, wxALL, 4);
+    modeControlSizer->Add(compareButton, 1, wxALL, 4);
+    
+    // Result view area
+    wxNotebook* viewtabsNotebook = new wxNotebook(panel, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxNB_BOTTOM);
+    wxBoxSizer* container = new wxBoxSizer(wxHORIZONTAL);
+    container->Add(viewtabsNotebook, 1, wxEXPAND);
+    panelSizer->Add(container, 1, wxEXPAND);
 }
 void View::update(int eventCode) {
 
@@ -213,24 +232,18 @@ void View::activateSelectedImages(wxCommandEvent& event) {
 void View::compareImages(wxCommandEvent &event){
 	int imagesActive = imagesActivatedCount();
 	wxString mode = getMode();
-	double tolerance = colorToleranceSlider->GetValue();
+	double tolerance = toleranceSlider->GetValue();
 	if(imagesActive < 2){
 		wxMessageBox(_("SELEZIONARE DUE IMMAGINI DA COMPARARE"),_("ERRORE"),wxOK | wxICON_EXCLAMATION);
 	}
 	else if(mode == "RGB"){
-		wxString pathImage1 = activeImages[0];
-		wxString pathImage2 = activeImages[1];
-		controller.compareRGB(pathImage1,pathImage2,tolerance);
+		controller.compareRGB(activeImages[0], activeImages[1], tolerance);
 	}
 	else if(mode.IsSameAs(_("HSV"))){
-		wxString pathImage1 = activeImages[0];
-		wxString pathImage2 = activeImages[1];
-		controller.compareHSV(pathImage1,pathImage2,tolerance);
+		controller.compareHSV(activeImages[0], activeImages[1], tolerance);
 	}
 	else if(mode.IsSameAs(_("ALPHA"))){
-		wxString pathImage1 = activeImages[0];
-		wxString pathImage2 = activeImages[1];
-		controller.compareAlpha(pathImage1,pathImage2,tolerance);
+		controller.compareAlpha(activeImages[0], activeImages[1], tolerance);
 	}
 	else{
 		wxMessageBox(_("SCEGLIERE METODO DI COMPARAZIONE"),_("ERRORE"),wxOK | wxICON_EXCLAMATION);
@@ -262,7 +275,7 @@ void View::onExit(wxCommandEvent &event){
 }
 
 void View::onSliderUpdate(wxCommandEvent &event){
-	long intValue = colorToleranceSlider->GetValue();
+	long intValue = toleranceSlider->GetValue();
 	wxString stringValue;
 	stringValue << (intValue/10.0);
 	sliderValue->SetValue(stringValue + " %");

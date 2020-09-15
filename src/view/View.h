@@ -9,6 +9,7 @@
 #include <iostream>
 #include <vector>
 #include <wx/listctrl.h>
+#include <wx/notebook.h>
 #include "../model/Model.h"
 #include "../utils/Observer.h"
 #include "ViewTab.h"
@@ -48,7 +49,7 @@ protected:
 	wxButton* addImageButton;
 	wxButton* removeImagesButton;
 	wxButton* activateImagesButton;
-	wxSlider* colorToleranceSlider;
+	wxSlider* toleranceSlider;
 	wxButton* compareButton;
 	std::vector<ViewTab*> tabs;				// Vector which holds all the views for the results.
 	wxComboBox* modeSelector;				// Comparison mode selector.
