@@ -1,5 +1,4 @@
 #include "gtest/gtest.h"
-#include "../src/utils/ImageUtils.h"
 #ifndef WX_PRECOMP
 #include <wx/wx.h>
 #endif
