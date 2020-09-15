@@ -72,7 +72,10 @@ View::View(const std::string title, const wxPoint &pos, const wxSize &size, Mode
     list->InsertColumn(1, "Attiva", wxLIST_FORMAT_CENTER, 100);
     
 	// Main panel sizer
-    wxBoxSizer* panelSizer = new wxBoxSizer(wxHORIZONTAL);
+    //wxBoxSizer* panelSizer = new wxBoxSizer(wxHORIZONTAL);
+    wxFlexGridSizer* panelSizer = new wxFlexGridSizer(1, 2, 0, 0);
+    panelSizer->AddGrowableRow(0, 16);
+    panelSizer->AddGrowableCol(1, 16);
     panel->SetSizer(panelSizer);
     
     // Sidebar sizers and controls
@@ -83,7 +86,7 @@ View::View(const std::string title, const wxPoint &pos, const wxSize &size, Mode
     sidebarSizer->AddGrowableRow(3, 0);
     sidebarSizer->AddGrowableRow(4, 0);
     sidebarSizer->AddGrowableRow(5, 0);
-    panelSizer->Add(sidebarSizer, 1, wxEXPAND | wxALIGN_LEFT);
+    panelSizer->Add(sidebarSizer, 1, wxEXPAND);
     
     sidebarSizer->Add(list, 1, wxEXPAND);
     
@@ -111,9 +114,15 @@ View::View(const std::string title, const wxPoint &pos, const wxSize &size, Mode
     
     // Result view area
     wxNotebook* viewtabsNotebook = new wxNotebook(panel, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxNB_BOTTOM);
-    wxBoxSizer* container = new wxBoxSizer(wxHORIZONTAL);
+    wxBoxSizer* container = new wxBoxSizer(wxVERTICAL);
     container->Add(viewtabsNotebook, 1, wxEXPAND);
     panelSizer->Add(container, 1, wxEXPAND);
+    
+    wxWindow* testPage = new wxWindow(viewtabsNotebook, wxID_ANY);
+    viewtabsNotebook->AddPage(testPage, "test page", true);
+    
+    wxWindow* testPage2 = new wxWindow(viewtabsNotebook, wxID_ANY);
+    viewtabsNotebook->AddPage(testPage2, "peepo");
 }
 void View::update(int eventCode) {
 
@@ -234,7 +243,8 @@ void View::compareImages(wxCommandEvent &event){
 	wxString mode = getMode();
 	double tolerance = toleranceSlider->GetValue();
 	if(imagesActive < 2){
-		wxMessageBox(_("SELEZIONARE DUE IMMAGINI DA COMPARARE"),_("ERRORE"),wxOK | wxICON_EXCLAMATION);
+		wxMessageBox("Nel frattempo, attiva due immagini per iniziare una comparazione", 
+						"Vivi a lungo e prospera", wxOK | wxICON_EXCLAMATION);
 	}
 	else if(mode.IsSameAs("RGB")) {
 		controller.compareRGB(activeImages[0], activeImages[1], tolerance);
