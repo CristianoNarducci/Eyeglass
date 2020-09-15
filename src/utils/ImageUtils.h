@@ -9,7 +9,6 @@
 // Libraries neede for comparison. Strangely enough, the absolute function for integers requires
 // cstdlib, while the one for floats is defined in cmath. Or so says cppreference
 #include <cmath>
-#include <cstdlib>
 
 // Collection of utilities built upon wxImage and related classes, like pixels and colors.
 class ImageUtils {
@@ -25,8 +24,8 @@ public:
 	/*
 	 * Returns the percentual of difference between the two alpha values, or 0 if below tolerance.
 	 */
-	static double comparePixelAlpha(const char alphaValue1, const char alphaValue2, const double tolerance) {
-		double percentual_difference = std::fabs(alphaValue2 - alphaValue1) / 255.0;
+	static double comparePixelAlpha(const unsigned char alphaValue1, const unsigned char alphaValue2, const double tolerance) {
+		double percentual_difference = std::abs(alphaValue2 - alphaValue1) / 255.0;
 		if (percentual_difference <= tolerance) {
 			percentual_difference = 0;
 		}

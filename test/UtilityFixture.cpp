@@ -16,14 +16,18 @@ protected:
 	ImageUtils utility;
 	wxImage image1;
 	wxImage image2;
+	wxImage::RGBValue image1RGB;
+	wxImage::RGBValue image2RGB;
 };
 TEST_F(ImageUtilsSuite ,TestGeometry){
 	ASSERT_FALSE(utility.isGeometryEqual(image1,image2));
 	ASSERT_TRUE(utility.isGeometryEqual(image1,image1));
 }
-
 TEST_F(ImageUtilsSuite,TestAlphaPixel){
 	EXPECT_EQ(1,utility.comparePixelAlpha(0,255,0));
+}
+TEST_F(ImageUtilsSuite,TestRGBPixel){
+
 }
 //
 
