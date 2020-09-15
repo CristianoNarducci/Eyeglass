@@ -55,7 +55,7 @@ public:
 	static double comparePixelHSV(const wxImage::HSVValue HSVValue1, const wxImage::HSVValue HSVValue2, const double tolerance) {
 		// The multiplication by 2 is just to take the value on par with the others, otherwise it would be max 0.5
 		// std::remainder is needed only for floating poin remainders
-		double H_distance = (std::remainder(std::abs(HSVValue2.hue - HSVValue1.hue) + 0.5, 1.0) - 0.5) * 2.0;
+		double H_distance = std::remainder(std::abs(HSVValue2.hue - HSVValue1.hue), 1.0) * 2.0;
 		double S_distance = std::abs(HSVValue2.saturation - HSVValue1.saturation);
 		double V_distance = std::abs(HSVValue2.value - HSVValue1.value);
 		
