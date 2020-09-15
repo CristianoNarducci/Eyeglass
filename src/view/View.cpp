@@ -62,6 +62,7 @@ View::View(const std::string title, const wxPoint &pos, const wxSize &size, Mode
 	sliderValue->SetEditable(false);
 	
     modeSelector = new wxComboBox(panel,MODE_SELECTOR, "RGB");
+    modeSelector->Append("RGB");
     modeSelector->Append("HSV");
     modeSelector->Append("ALPHA");
     modeSelector->SetEditable(false);
