@@ -11,9 +11,14 @@
 class Controller {
 public:
 	Controller(Model& model);
+	
+	/*
+	 * Removes the cached differences, if any.
+	 */
+	virtual void removeCachedDifferences();
 
 	/*
-	 * Remove the specified images from the storage.
+	 * Removes the specified images from the storage.
 	 * It can remove multiple image at once.
 	 */
 	virtual void removeImages(wxArrayString paths);

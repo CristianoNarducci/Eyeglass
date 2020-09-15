@@ -81,31 +81,19 @@ public:
 	virtual void compareHSV(const wxString path1, const wxString path2, const double tolerance);
 	
 	/*
-	 * Returns the group of differences found between the two images.
-	 * The order of the images doesn't count.
+	 * Returns the cached differences. If no comparison was performed, every list will be empty.
 	 */
-	virtual const DiffResult* getDifferences(const wxString path1, const wxString path2);
+	virtual const DiffResult& getDifferences();
+	
+	/*
+	 * Removes the cached differences, if any.
+	 */
+	virtual void removeCachedDifferences();
 	
 	virtual ~Model() {};
 
 
 protected:
-	/*
-	 * Fetches the DiffResult container for internal usage, returning a non costant pointer.
-	 */
-	virtual DiffResult* getDifferences_internal(const wxString path1, const wxString path2);
-	 
-	/*
-	 * Remove the cached differences where one of the images (or both) are involved.
-	 * The orger of the images doesn't count.
-	 */
-	virtual void removeCachedDifferences(const wxString path1, const wxString path2 = "");
-	
-	/*
-	 * Purge every diff cache entry.
-	 */
-	virtual void removeAllCachedDifferences();
-
 	/*
 	 * Holds a list of observer which want to be notified of changes.
 	 */
@@ -119,11 +107,9 @@ protected:
 	
 	/*
 	 * A cache for comparison results.
-	 * The comparison retrieval key is comprised of both image paths. The key pair might be ordered,
-	 * but in reality the order should be ignored; if matching doesn't work at first, try swapping the
-	 * paths.
+	 * Contains always the latest comparison result, given one was performed of course.
 	 */
-	std::map<std::pair<wxString, wxString>, DiffResult> diffStorage;
+	DiffResult diffStorage;
 };
 
 #endif
