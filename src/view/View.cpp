@@ -116,7 +116,7 @@ View::View(const std::string title, const wxPoint& pos, const wxSize& size, Mode
 	generateTabs();
 }
 
-
+// FIXME: Re-adding already added images results in the model ignoring them, while the list adds them again
 void View::loadImages(wxCommandEvent& event) {
 	wxFileDialog* fileDialog=new wxFileDialog(this, "Seleziona le immagini da analizzare", wxEmptyString, 
 												wxEmptyString, wxFileSelectorDefaultWildcardStr, wxFD_MULTIPLE);
@@ -137,6 +137,7 @@ void View::loadImages(wxCommandEvent& event) {
 			continue;
 		}
 		
+		
 		list->InsertItem(0, *iterator);
 	}
 	
@@ -153,25 +154,36 @@ void View::loadImages(wxCommandEvent& event) {
 
 void View::removeImages(wxCommandEvent& event) {
 	long item;
+	bool activeImageAffected = false;
 	
 	while ((item = list->GetNextItem(-1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED)) != -1) {
 		if (activeImages.Index(list->GetItemText(item)) != wxNOT_FOUND) {
 			activeImages.Remove(list->GetItemText(item));
+			activeImageAffected = true;
 		}
 		controller.removeImage(list->GetItemText(item));
 		
 		list->DeleteItem(item);
 	}
 	
-	// disables the images if the removal impacts one of the actives.
-	if (activeImages.GetCount() < 2) {
-		deselectImages();
+	if (activeImageAffected) {
+		markTabsForUpdate();
+		updateSelectedTab();
 	}
 }
 
 void View::activateSelectedImages(wxCommandEvent& event) {
+	// If there are already two active images, moving the selection will deselect the currently active ones.
 	if (activeImages.GetCount() > 1 || list->GetSelectedItemCount() > 1) {
-		deselectImages();
+		long item = -1;
+		while ((item = list->GetNextItem(item, wxLIST_NEXT_ALL, wxLIST_STATE_DONTCARE)) != -1) {
+			if (list->GetItemText(item, 1).IsSameAs("*")){
+				list->SetItem(item, 1, "");
+			}
+		}
+		
+		activeImages.Empty();
+		controller.removeCachedDifferences();
 	}
 	
 	long item = -1;
@@ -185,21 +197,6 @@ void View::activateSelectedImages(wxCommandEvent& event) {
 	}
 	
 	// Update the selected tab immmediately and mark the others for update.
-	markTabsForUpdate();
-	updateSelectedTab();
-}
-
-// If the currently active images are deselected, tabs and the diff cache need to be cleaned.
-void View::deselectImages() {
-	long item = -1;
-	while ((item = list->GetNextItem(item, wxLIST_NEXT_ALL, wxLIST_STATE_DONTCARE)) != -1) {
-		if (list->GetItemText(item, 1).IsSameAs("*")){
-			list->SetItem(item, 1, "");
-		}
-	}
-	
-	activeImages.Empty();
-	controller.removeCachedDifferences();
 	markTabsForUpdate();
 	updateSelectedTab();
 }
