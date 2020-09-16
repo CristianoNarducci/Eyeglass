@@ -4,6 +4,6 @@ void OriginalViewTab::reset() {
 
 }
 
-void OriginalViewTab::generateDiffView() {
+void OriginalViewTab::generateView() {
 
 }

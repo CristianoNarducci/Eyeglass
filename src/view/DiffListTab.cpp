@@ -4,6 +4,6 @@ void DiffListTab::reset() {
 
 }
 
-void DiffListTab::generateDiffView() {
+void DiffListTab::generateView() {
 
 }

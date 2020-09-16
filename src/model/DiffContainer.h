@@ -9,11 +9,11 @@
  * Each list keeps record of a tuple of x,y coordinates and the percentual of difference
  * between the two images.
  */
-class DiffResult {
+class DiffContainer {
 public:
-	std::list<std::tuple<int, int, double>> alphaVector;
-	std::list<std::tuple<int, int, double>> RGBVector;
-	std::list<std::tuple<int, int, double>> HSVVector;
+	std::list<std::tuple<int, int, double>> alpha;
+	std::list<std::tuple<int, int, double>> RGB;
+	std::list<std::tuple<int, int, double>> HSV;
 };
 
 #endif

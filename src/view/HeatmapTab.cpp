@@ -4,6 +4,6 @@ void HeatmapTab::reset() {
 
 }
 
-void HeatmapTab::generateDiffView() {
+void HeatmapTab::generateView() {
 
 }

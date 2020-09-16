@@ -6,7 +6,7 @@ void Model::loadImage(const wxString path) {
 	wxImage image;
 	
 	if (!image.LoadFile(path)) {
-		throw ImageLoaderException("Could not load " + std::string(path.mb_str()));
+		throw ImageLoaderException();
 	}
 	
 	imageStorage.insert(std::make_pair(path, image));
@@ -50,8 +50,7 @@ void Model::compareAlpha(const wxString path1, const wxString path2, const doubl
 	}
 	
 	if (!ImageUtils::isGeometryEqual(*image1, *image2)) {
-		throw std::domain_error(std::string(path1.mb_str()) + " and " + std::string(path2.mb_str())
-											+ " have different gemetries");
+		throw ImageGeometryException();
 	}
 	
 	// Clear the previous results from the cache.
@@ -73,7 +72,7 @@ void Model::compareAlpha(const wxString path1, const wxString path2, const doubl
 																				image2_alpha[i],
 																				tolerance);
 					if (percentual_difference > 0) {
-						diffStorage.alphaVector.push_back(std::make_tuple(x, y, percentual_difference));
+						diffContainer.alpha.push_back(std::make_tuple(x, y, percentual_difference));
 					}
 				}
 			}
@@ -90,7 +89,7 @@ void Model::compareAlpha(const wxString path1, const wxString path2, const doubl
 																				255,
 																				tolerance);
 					if (percentual_difference > 0) {
-						diffStorage.alphaVector.push_back(std::make_tuple(x, y, percentual_difference));
+						diffContainer.alpha.push_back(std::make_tuple(x, y, percentual_difference));
 					}
 				}
 			}
@@ -103,7 +102,7 @@ void Model::compareAlpha(const wxString path1, const wxString path2, const doubl
 																				image2_alpha[i],
 																				tolerance);
 					if (percentual_difference > 0) {
-						diffStorage.alphaVector.push_back(std::make_tuple(x, y, percentual_difference));
+						diffContainer.alpha.push_back(std::make_tuple(x, y, percentual_difference));
 					}
 				}
 			}
@@ -125,9 +124,7 @@ void Model::compareRGB(const wxString path1, const wxString path2, const double 
 	}
 	
 	if (!ImageUtils::isGeometryEqual(*image1, *image2)) {
-		std::cout << "Buggers! Different geometry ahead!" << std::endl;
-		throw std::runtime_error(std::string(path1.mb_str()) + " and " + std::string(path2.mb_str())
-											+ " have different gemetries"); // TODO: Not good Padawan, not good! This throws up real quick :(
+		throw ImageGeometryException();
 	}
 	
 	// Clear the previous results from the cache.
@@ -151,7 +148,7 @@ void Model::compareRGB(const wxString path1, const wxString path2, const double 
 																		image2_pixel,
 																		tolerance);
 			if (percentual_difference > 0) {
-				diffStorage.RGBVector.push_back(std::make_tuple(x, y, percentual_difference));
+				diffContainer.RGB.push_back(std::make_tuple(x, y, percentual_difference));
 			}
 		}
 	}
@@ -171,8 +168,7 @@ void Model::compareHSV(const wxString path1, const wxString path2, const double 
 	}
 	
 	if (!ImageUtils::isGeometryEqual(*image1, *image2)) {
-		throw std::domain_error(std::string(path1.mb_str()) + " and " + std::string(path2.mb_str())
-											+ " have different gemetries");
+		throw ImageGeometryException();
 	}
 	
 	// Clear the previous results from the cache.
@@ -195,7 +191,7 @@ void Model::compareHSV(const wxString path1, const wxString path2, const double 
 																		wxImage::RGBtoHSV(image2_pixel),
 																		tolerance);
 			if (percentual_difference > 0) {
-				diffStorage.HSVVector.push_back(std::make_tuple(x, y, percentual_difference));
+				diffContainer.HSV.push_back(std::make_tuple(x, y, percentual_difference));
 			}
 		}
 	}
@@ -203,14 +199,14 @@ void Model::compareHSV(const wxString path1, const wxString path2, const double 
 	notify(8);
 }
 
-const DiffResult& Model::getDifferences() {
-	return diffStorage;
+const DiffContainer& Model::getDifferences() {
+	return diffContainer;
 }
 
 void Model::removeCachedDifferences() {
-	diffStorage.alphaVector.clear();
-	diffStorage.RGBVector.clear();
-	diffStorage.HSVVector.clear();
+	diffContainer.alpha.clear();
+	diffContainer.RGB.clear();
+	diffContainer.HSV.clear();
 }
 
 void Model::registerObserver(Observer* observer) {

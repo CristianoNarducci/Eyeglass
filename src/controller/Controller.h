@@ -8,44 +8,21 @@
 
 #include "../model/Model.h"
 
+/*
+ * The controller acts as a request dispatcher from the view to the model, in an MVC architecture.
+ */
 class Controller {
 public:
 	Controller(Model& model);
 	
-	/*
-	 * Removes the cached differences, if any.
-	 */
 	virtual void removeCachedDifferences();
-
-	/*
-	 * Removes the specified images from the storage.
-	 * It can remove multiple image at once.
-	 */
-	virtual void removeImages(wxArrayString paths);
-
-	/*
-	 * Loads images on the storage.
-	 * It can load multiple images at once.
-	 */
-	virtual void loadImages(wxArrayString paths);
-
-	/* 
-	 * Compares the active images RGB values.
-	 * If the result doesn't reach the tolerance, it considers the images equals.
-	 */
+	virtual void removeImage(wxString path);
+	virtual void loadImage(wxString path);
 	virtual void compareRGB(wxString path1, wxString path2, double tolerance);
-
-	/*
-	 * Compares the active images Alpha values.
-	 * If the result doesn't reach the tolerance,it considers the images equals.
-	 */
 	virtual void compareAlpha(wxString path1, wxString path2, double tolerance);
-
-	/*
-	 * Compares the active imagesHSV values.
-	 * If the result doesn't reach the tolerance, it considers the images equals.
-	 */
 	virtual void compareHSV(wxString path1, wxString path2, double tolerance);
+	
+	virtual ~Controller() {};
 
 protected:
 	Model& model;

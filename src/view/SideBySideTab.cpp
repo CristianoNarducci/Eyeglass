@@ -4,6 +4,6 @@ void SideBySideTab::reset() {
 
 }
 
-void SideBySideTab::generateDiffView() {
+void SideBySideTab::generateView() {
 
 }
