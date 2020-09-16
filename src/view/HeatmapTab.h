@@ -7,16 +7,12 @@
 #endif
 
 #include "ViewTab.h"
-#include "View.h"
 
 class HeatmapTab: public ViewTab {
-protected:
-	wxStaticBitmap* images;
-	View& view;
-
 public:
-	void reset() override;
-	void generateView() override;
+	HeatmapTab(wxWindow* parent);
+	void update(const DiffContainer& diffContainer, wxString path1, const wxImage* image1, 
+													wxString path2, const wxImage* image2) override;
 };
 
 #endif

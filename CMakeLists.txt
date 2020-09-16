@@ -30,6 +30,7 @@ set(PROJECT_SOURCE_FILES
 		src/view/View.h
 		src/view/View.cpp
 		src/view/ViewTab.h
+		src/view/ViewTab.cpp
 		src/view/OriginalViewTab.h
 		src/view/OriginalViewTab.cpp
 		src/view/SideBySideTab.h

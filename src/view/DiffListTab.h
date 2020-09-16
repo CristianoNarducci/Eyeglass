@@ -7,18 +7,12 @@
 #endif
 
 #include "ViewTab.h"
-#include "View.h"
 
-#include <wx/listctrl.h>
-
-class DiffListTab: public ViewTab {
-protected:
-	wxListView* diffListView;
-	View& view;
-
+class DiffListTab: public ViewTab  {
 public:
-	void reset() override;
-	void generateView() override;
+	DiffListTab(wxWindow* parent);
+	void update(const DiffContainer& diffContainer, wxString path1, const wxImage* image1, 
+													wxString path2, const wxImage* image2) override;
 };
 
 #endif
