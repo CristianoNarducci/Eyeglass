@@ -4,6 +4,6 @@ void LayerTab::reset() {
 
 }
 
-void LayerTab::generateDiffView() {
+void LayerTab::generateView() {
 
 }

@@ -11,14 +11,18 @@
 #include <list>
 #include <utility>
 
-#include "DiffResult.h"
+#include "DiffContainer.h"
 #include "../utils/Observer.h"
 #include "../utils/Subject.h"
 #include "../utils/ImageUtils.h"
 
 #include "../exception/ImageLoaderException.h"
+#include "../exception/ImageGeometryException.h"
 
-
+/*
+ * Stores the images which need to be examined and the results of the latest examination.
+ * The image comparison logic is also implemented here.
+ */
 class Model: public Subject {
 public:
 	Model();
@@ -83,7 +87,7 @@ public:
 	/*
 	 * Returns the cached differences. If no comparison was performed, every list will be empty.
 	 */
-	virtual const DiffResult& getDifferences();
+	virtual const DiffContainer& getDifferences();
 	
 	/*
 	 * Removes the cached differences, if any.
@@ -109,7 +113,7 @@ protected:
 	 * A cache for comparison results.
 	 * Contains always the latest comparison result, given one was performed of course.
 	 */
-	DiffResult diffStorage;
+	DiffContainer diffContainer;
 };
 
 #endif

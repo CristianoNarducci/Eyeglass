@@ -18,7 +18,7 @@ protected:
 
 public:
 	void reset() override;
-	void generateDiffView() override;
+	void generateView() override;
 };
 
 #endif

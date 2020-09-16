@@ -2,12 +2,10 @@
 #define EYEGLASS_IMAGELOADEREXCEPTION_H
 
 #include <stdexcept>
-#include <string>
 
-class ImageLoaderException: public std::runtime_error {
+class ImageLoaderException: public std::exception {
 public:
-	ImageLoaderException(): runtime_error("Could not load the image") {}
-	ImageLoaderException(const std::string what): runtime_error(what) {}
+	ImageLoaderException(): exception() {}
 };
 
 #endif

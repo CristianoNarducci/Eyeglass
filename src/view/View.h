@@ -6,59 +6,97 @@
 	#include <wx/wx.h>
 #endif
 
-#include <iostream>
-#include <vector>
+#include <list>
+
 #include <wx/listctrl.h>
 #include <wx/notebook.h>
-#include "../model/Model.h"
-#include "../utils/Observer.h"
-#include "ViewTab.h"
-#include "../controller/Controller.h"
 #include <wx/textctrl.h>
-#include <exception>
 
+#include "../utils/Observer.h"
+#include "../model/Model.h"
+#include "../controller/Controller.h"
 
+#include "ViewTab.h"
+//~ #include "OriginalViewTab.h"
+//~ #include "DiffListTab.h"
+//~ #include "SideBySideTab.h"
+//~ #include "LayerTab.h"
+//~ #include "HeatmapTab.h"
+
+#include "../exception/ImageLoaderException.h"
+#include "../exception/ImageGeometryException.h"
+
+/*
+ * The view of the program. The controls are implemented here, while images and results visualization
+ * is responsibility of a list of "sub-views" which can be toggled at will.
+ */
 class View: public wxFrame, public Observer {
 public:
 	View(const std::string title, const wxPoint& pos, const wxSize& size,Model& model, Controller& controller);
 	
 	void update(int eventCode);
-	
-	wxDECLARE_EVENT_TABLE();
-
-protected:
-	void removeImages(wxCommandEvent &event);			// Removes images from the list.
-	void loadImages(wxCommandEvent &event);				// Loads images into the program.
-	void activateSelectedImages(wxCommandEvent &event);	// Activates the selected images.
-	void compareImages(wxCommandEvent &event);			// Starts the comparison of the activated images.
-	void resetTabs();									// Resets the result view tabs.
 	Model& getModel();
 	Controller& getController();
-	wxString getMode();									// Returns the comparison mode selected in the dropdown.
-	std::vector<wxString> getActiveImages();			// Returns the active images names.
-	void onAbout(wxCommandEvent &event);
-	int imagesActivatedCount();
-	void onExit(wxCommandEvent &event);
-	void onSliderUpdate(wxCommandEvent &event);			// Detects a slider event and updates the value in the near textbox.
-	void deselectImages();								// Deselects the active images.
+	wxString getMode();
+	wxArrayString getActiveImages();
 	
-	wxScrolledWindow* panel;				// Application panel.
-	wxMenu* menuFile;
+	wxDECLARE_EVENT_TABLE();
+	
+	virtual ~View() {};
+
+protected:
+	void loadImages(wxCommandEvent& event);
+	void removeImages(wxCommandEvent& event);
+	void activateSelectedImages(wxCommandEvent& event);
+	void deselectImages();
+	void compareImages(wxCommandEvent& event);
+	void resetTabs();
+	void onAbout(wxCommandEvent& event);
+	void onExit(wxCommandEvent& event);
+	void onSliderUpdate(wxCommandEvent& event);
+	
+	/*
+	 * The main application panel, where each element resides.
+	 */
+	wxScrolledWindow* panel;
+	
+	/*
+	 * The top menu bar with its clickable dropdown menus.
+	 */
 	wxMenuBar* menu;
-	std::vector<wxString> activeImages;		// Holds the name of the images currently under comparison.
-	wxButton* addImageButton;
+	wxMenu* appDropdownMenu;
+	
+	/*
+	 * The storage and comparison controls.
+	 */
+	wxListView* list;
+	wxButton* addImagesButton;
 	wxButton* removeImagesButton;
 	wxButton* activateImagesButton;
+	wxButton* compareImagesButton;
 	wxSlider* toleranceSlider;
-	wxButton* compareButton;
-	std::vector<ViewTab*> tabs;				// Vector which holds all the views for the results.
-	wxComboBox* modeSelector;				// Comparison mode selector.
-	wxListView* list;						// List of loaded images.
-	Model& model;
-	Controller& controller;
-	wxTextCtrl* sliderValue;
+	wxComboBox* modeSelector;
+	
+	/*
+	 * Labels and indicators.
+	 */
+	wxTextCtrl* toleranceSliderValue;
+	
 	wxStaticText* toleranceText;
 	wxStaticText* comparisonText;
+	
+	/*
+	 * Holds the paths of the currently active images. It also serves as a counter for them.
+	 */
+	wxArrayString activeImages;
+	
+	/*
+	 * All the viewtabs this program can use to display the results of a comparison.
+	 */
+	std::list<ViewTab*> tabs;
+	
+	Model& model;
+	Controller& controller;
 };
 
 #endif
