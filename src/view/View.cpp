@@ -116,7 +116,6 @@ View::View(const std::string title, const wxPoint& pos, const wxSize& size, Mode
 	generateTabs();
 }
 
-// FIXME: Re-adding already added images results in the model ignoring them, while the list adds them again
 void View::loadImages(wxCommandEvent& event) {
 	wxFileDialog* fileDialog=new wxFileDialog(this, "Seleziona le immagini da analizzare", wxEmptyString, 
 												wxEmptyString, wxFileSelectorDefaultWildcardStr, wxFD_MULTIPLE);
@@ -130,15 +129,19 @@ void View::loadImages(wxCommandEvent& event) {
 	// Tries to load each image. The ones not loaded will be put into a separate array.
 	wxArrayString pathsNotLoaded;
 	for (auto iterator = paths.begin(); iterator < paths.end(); ++iterator) {
-		try {
-			controller.loadImage(*iterator);
-		} catch (ImageLoaderException& error) {
-			pathsNotLoaded.Add(*iterator);
-			continue;
+		// Do not try to re-add images. While the storage does not do that, the list does.
+		// While this might not be the most elegant way, I feel that is best, between filtering the list
+		// or regenerating the list from scratch every time.
+		if (model.getImage(*iterator) == nullptr) {
+			try {
+				controller.loadImage(*iterator);
+			} catch (ImageLoaderException& error) {
+				pathsNotLoaded.Add(*iterator);
+				continue;
+			}
+		
+			list->InsertItem(0, *iterator);
 		}
-		
-		
-		list->InsertItem(0, *iterator);
 	}
 	
 	// Shows which images have not been loaded.
