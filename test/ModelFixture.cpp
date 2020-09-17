@@ -1,7 +1,8 @@
 //
 #include "gtest/gtest.h"
 #include "../src/model/Model.h"
-#include "../src/model/DiffContainer.h"
+#include "../src/model/PixelDiff.h"
+#include <list>
 #include <wx/wxprec.h>
 #ifndef WX_PRECOMP
 #include <wx/wx.h>
@@ -23,7 +24,7 @@ protected:
 			model.loadImage(images[i]);
 		}
 	}
-	DiffContainer differencesTest;
+	const std::list<PixelDiff*>* diffStorage;
 	Model model;
 	wxArrayString images;
 	wxString testImageComparison= "/home/cristiano/Scrivania/proge/Eyeglass/test/testImages/testAlpha.png";
@@ -31,13 +32,11 @@ protected:
 
 };
 /*This test checks if the function removeCacheDifference
- * if the method works the tuple of HSV.RGB and alpha will result empty*/
+ * if the method works the list of results will be empty*/
 TEST_F(ModelSuite,testRemoveDiff){
 	model.compareAlpha(testImageComparison,testImageComparison2,0);
 	model.removeCachedDifferences();
-	EXPECT_TRUE(model.getDifferences().HSV.empty());
-	EXPECT_TRUE(model.getDifferences().RGB.empty());
-	EXPECT_TRUE(model.getDifferences().alpha.empty());
+	EXPECT_TRUE(model.getDifferences().empty());
 }
 	/*This test verify that the remove imageModel function works.
 	 * In the model, if a image is not stored, it return a nullptr pointer,otherwise the wxImage object*/
@@ -56,17 +55,17 @@ TEST_F(ModelSuite,testLoad){
 	 * it control the cartesian position of the pixel and the result of difference*/
 TEST_F(ModelSuite,testAlpha){
 	model.compareAlpha(testImageComparison,testImageComparison2,0);
-	differencesTest = model.getDifferences();
-	int x = std::get<0>(*(differencesTest.alpha.begin()));
-	int y = std::get<1>(*(differencesTest.alpha.begin()));
-	double result = std::get<2>(*(differencesTest.alpha.begin()));
+	diffStorage = &model.getDifferences();
+	int x = diffStorage->front()->x;
+	int y = diffStorage->front()->y;
+	double result = diffStorage->front()->percentual_diff;
 	EXPECT_EQ(0,x);
 	EXPECT_EQ(0,y);
 	EXPECT_DOUBLE_EQ(0.30196078431372547,result);
 	//Test of last pixel
-	x = std::get<0>((differencesTest.alpha.back()));
-	y = std::get<1>((differencesTest.alpha.back()));
-	result=std::get<2>((differencesTest.alpha.back()));
+	x = diffStorage->back()->x;
+	y = diffStorage->back()->y;
+	result = diffStorage->back()->percentual_diff;
 	EXPECT_EQ(15,x);
 	EXPECT_EQ(15,y);
 	EXPECT_DOUBLE_EQ(0.30196078431372547,result);
@@ -75,16 +74,16 @@ TEST_F(ModelSuite,testAlpha){
 	 * it control the cartesian position of the pixel and the result of difference*/
 TEST_F(ModelSuite,testRGB){
 	model.compareRGB(testImageComparison,testImageComparison2,0);
-	differencesTest = model.getDifferences();
-	int x = std::get<0>(*(differencesTest.RGB.begin()));
-	int y = std::get<1>(*(differencesTest.RGB.begin()));
-	double result = std::get<2>(*(differencesTest.RGB.begin()));
+	diffStorage = &model.getDifferences();
+	int x = diffStorage->front()->x;
+	int y = diffStorage->front()->y;
+	double result = diffStorage->front()->percentual_diff;
 	EXPECT_EQ(0,x);
 	EXPECT_EQ(0,y);
 	EXPECT_DOUBLE_EQ(0.36078431372549019,result);
-	x = std::get<0>((differencesTest.RGB.back()));
-	y = std::get<1>((differencesTest.RGB.back()));
-	result=std::get<2>((differencesTest.RGB.back()));
+	x = diffStorage->back()->x;
+	y = diffStorage->back()->y;
+	result = diffStorage->back()->percentual_diff;
 	//Test of last pixel
 	EXPECT_EQ(15,x);
 	EXPECT_EQ(15,y);
@@ -97,17 +96,17 @@ TEST_F(ModelSuite,testRGB){
 	 * it control the cartesian position of the pixel and the result of difference*/
 TEST_F(ModelSuite,testHSV){
 	model.compareHSV(testImageComparison,testImageComparison2,0);
-	differencesTest = model.getDifferences();
-	int x = std::get<0>(*(differencesTest.HSV.begin()));
-	int y =std::get<1>(*(differencesTest.HSV.begin()));
-	double result = std::get<2>(*(differencesTest.HSV.begin()));
+	diffStorage = &model.getDifferences();
+	int x = diffStorage->front()->x;
+	int y = diffStorage->front()->y;
+	double result = diffStorage->front()->percentual_diff;
 	EXPECT_EQ(0,x);
 	EXPECT_EQ(0,y);
 	EXPECT_DOUBLE_EQ(0.38373983739837403,result);
 	//Test of last pixel
-	x = std::get<0>((differencesTest.HSV.back()));
-	y = std::get<1>((differencesTest.HSV.back()));
-	result=std::get<2>((differencesTest.HSV.back()));
+	x = diffStorage->back()->x;
+	y = diffStorage->back()->y;
+	result = diffStorage->back()->percentual_diff;
 	EXPECT_EQ(15,x);
 	EXPECT_EQ(15,y);
 	EXPECT_DOUBLE_EQ(0.16151761517615179,result);
