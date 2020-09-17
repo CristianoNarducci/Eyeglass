@@ -6,6 +6,8 @@
 	#include <wx/wx.h>
 #endif
 
+#include <memory>
+
 // Storage related libs
 #include <map>
 #include <list>
@@ -27,20 +29,20 @@ class Model: public Subject {
 public:
 	Model();
 
-	void registerObserver(Observer *observer) override;
-	void removeObserver(Observer *observer) override;
+	void registerObserver(Observer& observer) override;
+	void removeObserver(Observer& observer) override;
 	void notify(int eventCode) override;
 	
 	/*
 	 * Loads an image into the storage.
 	 * If the selected file is invalid, the image is discarded. 
 	 */
-	virtual void loadImage(const wxString path);
+	virtual void loadImage(wxString path);
 	
 	/*
 	 * Removes the specified image from the storage, if present.
 	 */
-	virtual void removeImage(const wxString path);
+	virtual void removeImage(wxString path);
 	
 	/*
 	 * Completely purge the image storage.
@@ -52,13 +54,13 @@ public:
 	 * The images in storage should not be modified directly, as doing so prevents the original image
 	 * from being reused in another round of comparison.
 	 */
-	virtual const wxImage* getImage(const wxString path);
+	virtual const std::shared_ptr<wxImage> getImage(wxString path);
 	
 	/*
 	 * Returns a map containing all the images in storage, with their path identifier.
 	 * The returned data is immutable.
 	 */
-	virtual const std::map<wxString, wxImage>& getAllImages();
+	virtual const std::map<wxString, std::shared_ptr<wxImage>>& getAllImages();
 	
 	/*
 	 * For each pixel in both images, compare the alpha value and save the percentual of difference 
@@ -66,7 +68,7 @@ public:
 	 * will error.
 	 * The order of the images doesn't count.
 	 */
-	virtual void compareAlpha(const wxString path1, const wxString path2, const double tolerance);
+	virtual void compareAlpha(wxString path1, wxString path2, double tolerance);
 	
 	/*
 	 * For each pixel in both images, compare the RGB value and save the percentual of difference 
@@ -74,7 +76,7 @@ public:
 	 * will error.
 	 * The order of the images doesn't count.
 	 */
-	virtual void compareRGB(const wxString path1, const wxString path2, const double tolerance);
+	virtual void compareRGB(wxString path1, wxString path2, double tolerance);
 	
 	/*
 	 * For each pixel in both images, compare the HSV value and save the percentual of difference 
@@ -82,12 +84,12 @@ public:
 	 * will error.
 	 * The order of the images doesn't count.
 	 */
-	virtual void compareHSV(const wxString path1, const wxString path2, const double tolerance);
+	virtual void compareHSV(wxString path1, wxString path2, double tolerance);
 	
 	/*
 	 * Returns the cached differences. If no comparison was performed, every list will be empty.
 	 */
-	virtual const std::list<PixelDiff*>& getDifferences();
+	virtual const std::list<std::shared_ptr<PixelDiff>>& getDifferences();
 	
 	/*
 	 * Removes the cached differences, if any.
@@ -107,13 +109,13 @@ protected:
 	 * The storage where images are saved, after being loaded.
 	 * Each image is saved along with its path, which is used as a key for unique identification and retrieval.
 	 */
-	std::map<wxString, wxImage> imageStorage;
+	std::map<wxString, std::shared_ptr<wxImage>> imageStorage;
 	
 	/*
 	 * A cache for comparison results.
 	 * Contains always the latest comparison result, given one was performed of course.
 	 */
-	std::list<PixelDiff*> diffStorage;
+	std::list<std::shared_ptr<PixelDiff>> diffStorage;
 };
 
 #endif

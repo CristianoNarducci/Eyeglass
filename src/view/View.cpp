@@ -30,7 +30,7 @@ wxEND_EVENT_TABLE()
 
 View::View(const std::string title, const wxPoint& pos, const wxSize& size, Model& model, Controller& controller): 
 									model(model), controller(controller), wxFrame(NULL, wxID_ANY, title, pos, size) {
-	model.registerObserver(this);
+	model.registerObserver(*this);
 	
 	panel = new wxScrolledWindow(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxBORDER_THEME);
 	panel->SetScrollRate(5, 5);
@@ -131,7 +131,7 @@ void View::loadImages(wxCommandEvent& event) {
 		// Do not try to re-add images. While the storage does not do that, the list does.
 		// While this might not be the most elegant way, I feel that is best, between filtering the list
 		// or regenerating the list from scratch every time.
-		if (model.getImage(*iterator) == nullptr) {
+		if (!model.getImage(*iterator)) {
 			try {
 				controller.loadImage(*iterator);
 			} catch (ImageLoaderException& error) {
@@ -238,9 +238,6 @@ void View::generateTabs() {
 	
 	DiffListTab* diffTab = new DiffListTab(tabsNotebook);
 	tabsNotebook->AddPage(diffTab, "Lista di differenze");
-	
-	SideBySideTab* sideTab = new SideBySideTab(tabsNotebook);
-	tabsNotebook->AddPage(sideTab, "Lato a Lato");
 	
 	LayerTab* layerTab = new LayerTab(tabsNotebook);
 	tabsNotebook->AddPage(layerTab, "Vista a livelli");
