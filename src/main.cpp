@@ -15,7 +15,7 @@ public:
 		
 		Model *model = new Model();
 		Controller *controller = new Controller(*model);
-		View *eyeglass = new View("Eyeglass",wxPoint(300,500),wxSize(1440,720),*model,*controller);
+		View *eyeglass = new View("Eyeglass", wxPoint(300, 500), wxSize(1440, 720), *model, *controller);
 		eyeglass->Show(true);
 		
 		return true;

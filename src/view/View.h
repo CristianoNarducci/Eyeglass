@@ -31,7 +31,7 @@
  */
 class View: public wxFrame, public Observer {
 public:
-	View(const std::string title, const wxPoint& pos, const wxSize& size,Model& model, Controller& controller);
+	View(const std::string title, const wxPoint& pos, const wxSize& size, Model& model, Controller& controller);
 	
 	void update(int eventCode) override;
 	
