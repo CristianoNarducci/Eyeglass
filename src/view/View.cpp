@@ -44,12 +44,12 @@ View::View(const std::string title, const wxPoint& pos, const wxSize& size, Mode
 	SetMenuBar(menu);
 	
 	// Main interface elements
-	addImagesButton = new wxButton(panel, ADD_IMAGES_BUTTON, "Aggiungi immagini");
-	removeImagesButton = new wxButton(panel, REMOVE_IMAGES_BUTTON, "Rimuovi immagini");
-	activateImagesButton = new wxButton(panel, ACTIVATE_IMAGES_BUTTON, "Attiva immagini");
-	compareImagesButton = new wxButton(panel, COMPARE_IMAGES_BUTTON, "Compara immagini");
-	toleranceText = new wxStaticText(panel, wxID_ANY, "Soglia di tolleranza:");
-	comparisonText = new wxStaticText(panel, wxID_ANY, "Modo comparazione:");
+	addImagesButton = new wxButton(panel, ADD_IMAGES_BUTTON, "Aggiungi immagini", wxDefaultPosition, wxSize(150, 30));
+	removeImagesButton = new wxButton(panel, REMOVE_IMAGES_BUTTON, "Rimuovi immagini", wxDefaultPosition, wxSize(150, 30));
+	activateImagesButton = new wxButton(panel, ACTIVATE_IMAGES_BUTTON, "Attiva immagini", wxDefaultPosition, wxSize(150, 30));
+	compareImagesButton = new wxButton(panel, COMPARE_IMAGES_BUTTON, "Compara immagini", wxDefaultPosition, wxSize(150, 30));
+	toleranceText = new wxStaticText(panel, wxID_ANY, "Soglia di tolleranza", wxDefaultPosition, wxDefaultSize, wxALIGN_CENTRE_HORIZONTAL);
+	comparisonText = new wxStaticText(panel, wxID_ANY, "Modalita' di comparazione", wxDefaultPosition, wxDefaultSize, wxALIGN_CENTRE_HORIZONTAL);
 	toleranceSlider = new wxSlider(panel, TOLERANCE_SLIDER, 500, 0, 1000);
 	
 	toleranceSliderValue = new wxTextCtrl(panel, wxID_ANY, "50.0 %", wxDefaultPosition, wxDefaultSize, wxTE_CENTRE);
@@ -63,8 +63,8 @@ View::View(const std::string title, const wxPoint& pos, const wxSize& size, Mode
 	modeSelector->SetSelection(0);
 	
 	list = new wxListView(panel, wxID_ANY);
-	list->InsertColumn(0, "Immagini", wxLIST_FORMAT_LEFT, 350);
-	list->InsertColumn(1, "Attiva", wxLIST_FORMAT_CENTER, 100);
+	list->InsertColumn(0, "Immagini", wxLIST_FORMAT_LEFT, 280);
+	list->InsertColumn(1, "S", wxLIST_FORMAT_CENTER, 40);
 	
 	// Main panel sizer
 	wxFlexGridSizer* panelSizer = new wxFlexGridSizer(1, 2, 16, 16);
@@ -73,13 +73,18 @@ View::View(const std::string title, const wxPoint& pos, const wxSize& size, Mode
 	panel->SetSizer(panelSizer);
 	
 	// Sidebar sizers and controls
-	wxFlexGridSizer* sidebarSizer = new wxFlexGridSizer(6, 1, 0, 0);
+	wxFlexGridSizer* sidebarSizer = new wxFlexGridSizer(10, 1, 0, 0);
 	sidebarSizer->AddGrowableRow(0, 16);
 	sidebarSizer->AddGrowableRow(1, 0);
 	sidebarSizer->AddGrowableRow(2, 0);
 	sidebarSizer->AddGrowableRow(3, 0);
 	sidebarSizer->AddGrowableRow(4, 0);
 	sidebarSizer->AddGrowableRow(5, 0);
+	sidebarSizer->AddGrowableRow(6, 0);
+	sidebarSizer->AddGrowableRow(7, 0);
+	sidebarSizer->AddGrowableRow(8, 0);
+	sidebarSizer->AddGrowableRow(9, 0);
+	
 	panelSizer->Add(sidebarSizer, 1, wxEXPAND);
 	
 	sidebarSizer->Add(list, 1, wxEXPAND);
@@ -89,20 +94,31 @@ View::View(const std::string title, const wxPoint& pos, const wxSize& size, Mode
 	wxBoxSizer* storageControlSizer = new wxBoxSizer(wxHORIZONTAL);
 	sidebarSizer->Add(storageControlSizer, 1, wxEXPAND | wxBOTTOM);
 	storageControlSizer->Add(addImagesButton, 1, wxALL | wxALIGN_CENTER_VERTICAL, 4);
-	storageControlSizer->Add(activateImagesButton, 1, wxALL | wxALIGN_CENTER_VERTICAL, 4);
 	storageControlSizer->Add(removeImagesButton, 1, wxALL | wxALIGN_CENTER_VERTICAL, 4);
+	
+	wxBoxSizer* activeImagesControlSizer = new wxBoxSizer(wxHORIZONTAL);
+	sidebarSizer->Add(activeImagesControlSizer, 1, wxEXPAND | wxBOTTOM);
+	activeImagesControlSizer->Add(activateImagesButton, 1, wxALL | wxALIGN_CENTER_VERTICAL, 4);
 	
 	sidebarSizer->AddSpacer(16);
 	
+	wxBoxSizer* toleranceControlText = new wxBoxSizer(wxHORIZONTAL);
+	sidebarSizer->Add(toleranceControlText, 1, wxEXPAND | wxBOTTOM);
+	toleranceControlText->Add(toleranceText, 1, wxEXPAND | wxALIGN_TOP, 4);
+	
 	wxBoxSizer* toleranceControlSizer = new wxBoxSizer(wxHORIZONTAL);
 	sidebarSizer->Add(toleranceControlSizer, 1, wxEXPAND | wxBOTTOM);
-	toleranceControlSizer->Add(toleranceText, 1, wxALL | wxALIGN_CENTER_VERTICAL, 4);
-	toleranceControlSizer->Add(toleranceSlider, 1, wxALL | wxALIGN_CENTER_VERTICAL, 4);
+	toleranceControlSizer->Add(toleranceSlider, 2, wxALL | wxALIGN_CENTER_VERTICAL, 4);
 	toleranceControlSizer->Add(toleranceSliderValue, 1, wxALL | wxALIGN_CENTER_VERTICAL, 4);
+	
+	sidebarSizer->AddSpacer(16);
+	
+	wxBoxSizer* modeControlText = new wxBoxSizer(wxHORIZONTAL);
+	sidebarSizer->Add(modeControlText, 1, wxEXPAND | wxBOTTOM);
+	modeControlText->Add(comparisonText, 1, wxEXPAND | wxALIGN_TOP, 4);
 	
 	wxBoxSizer* modeControlSizer = new wxBoxSizer(wxHORIZONTAL);
 	sidebarSizer->Add(modeControlSizer, 1, wxEXPAND | wxBOTTOM);
-	modeControlSizer->Add(comparisonText, 1, wxALL | wxALIGN_CENTER_VERTICAL, 4);
 	modeControlSizer->Add(modeSelector, 1, wxALL | wxALIGN_CENTER_VERTICAL, 4);
 	modeControlSizer->Add(compareImagesButton, 1, wxALL | wxALIGN_CENTER_VERTICAL, 4);
 	
