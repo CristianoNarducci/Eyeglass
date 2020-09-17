@@ -13,13 +13,13 @@ class ModelSuite : public ::testing::Test{
 	 * There is a DiffContainer object  where are stored the result, in tuple form, of comparison both in RGB,HSV and in Alpha*/
 protected:
 	virtual void SetUp(){
-		images.Add(_("/home/cristiano/Scrivania/proge/Eyeglass/test/testImages/car.png"));
-		images.Add(_("/home/cristiano/Scrivania/proge/Eyeglass/test/testImages/cat.jpg"));
-		images.Add(_("/home/cristiano/Scrivania/proge/Eyeglass/test/testImages/dog.jpg"));
-		images.Add(_("/home/cristiano/Scrivania/proge/Eyeglass/test/testImages/river.jpeg"));
-		images.Add(_("/home/cristiano/Scrivania/proge/Eyeglass/test/testImages/house.jpeg"));
-		images.Add(_("/home/cristiano/Scrivania/proge/Eyeglass/test/testImages/testAlpha.png"));
-		images.Add(_("/home/cristiano/Scrivania/proge/Eyeglass/test/testImages/testAlpha2.png"));
+		images.Add(_("car.png"));
+		images.Add(_("cat.jpg"));
+		images.Add(_("dog.jpg"));
+		images.Add(_("river.jpeg"));
+		images.Add(_("house.jpeg"));
+		images.Add(_("testAlpha.png"));
+		images.Add(_("testAlpha2.png"));
 		for (int i = 0; i < images.size(); i++) {
 			model.loadImage(images[i]);
 		}
@@ -31,8 +31,8 @@ protected:
 	const std::list<PixelDiff*>* diffStorage;
 	Model model;
 	wxArrayString images;
-	wxString testImageComparison= "/home/cristiano/Scrivania/proge/Eyeglass/test/testImages/testAlpha.png";
-	wxString testImageComparison2 = "/home/cristiano/Scrivania/proge/Eyeglass/test/testImages/testAlpha2.png";
+	wxString testImageComparison= "testAlpha.png";
+	wxString testImageComparison2 = "testAlpha2.png";
 
 };
 /*This test checks if the function removeCacheDifference
@@ -52,8 +52,8 @@ TEST_F(ModelSuite,testRemove){
 	 * The function acts the opposite of the previous one, so if an image is loaded inside, it return the wxImage, otherwise
 	 * nullptr pointer*/
 TEST_F(ModelSuite,testLoad){
-	model.loadImage(_("/home/cristiano/Scrivania/proge/Eyeglass/test/testImages/plane.jpg"));
-	EXPECT_NE(nullptr,model.getImage("/home/cristiano/Scrivania/proge/Eyeglass/test/testImages/plane.jpg"));
+	model.loadImage(_("plane.jpg"));
+	EXPECT_NE(nullptr,model.getImage("plane.jpg"));
 }
 	/*This test verify that the comparison with Alpha works
 	 * it control the cartesian position of the pixel and the result of difference*/
@@ -65,14 +65,15 @@ TEST_F(ModelSuite,testAlpha){
 	double result = diffStorage->front()->percentual_diff;
 	EXPECT_EQ(0,x);
 	EXPECT_EQ(0,y);
-	EXPECT_DOUBLE_EQ(0.30196078431372547,result);
+	EXPECT_NEAR(0.30196,result,0.00002);
 	//Test of last pixel
 	x = diffStorage->back()->x;
 	y = diffStorage->back()->y;
 	result = diffStorage->back()->percentual_diff;
 	EXPECT_EQ(15,x);
 	EXPECT_EQ(15,y);
-	EXPECT_DOUBLE_EQ(0.30196078431372547,result);
+	EXPECT_NEAR(0.30196,result,0.00002);
+
 }
 /*This test verify that the comparison with RGB works
 	 * it control the cartesian position of the pixel and the result of difference*/
@@ -84,14 +85,14 @@ TEST_F(ModelSuite,testRGB){
 	double result = diffStorage->front()->percentual_diff;
 	EXPECT_EQ(0,x);
 	EXPECT_EQ(0,y);
-	EXPECT_DOUBLE_EQ(0.36078431372549019,result);
+	EXPECT_NEAR(0.36078,result,0.00002);
 	x = diffStorage->back()->x;
 	y = diffStorage->back()->y;
 	result = diffStorage->back()->percentual_diff;
 	//Test of last pixel
 	EXPECT_EQ(15,x);
 	EXPECT_EQ(15,y);
-	EXPECT_DOUBLE_EQ(0.31633986928104574,result);
+	EXPECT_NEAR(0.31633,result,0.0002);
 	model.removeCachedDifferences();
 
 
@@ -106,14 +107,13 @@ TEST_F(ModelSuite,testHSV){
 	double result = diffStorage->front()->percentual_diff;
 	EXPECT_EQ(0,x);
 	EXPECT_EQ(0,y);
-	EXPECT_DOUBLE_EQ(0.38373983739837403,result);
+	EXPECT_NEAR(0.38373,result,0.00002);
 	//Test of last pixel
 	x = diffStorage->back()->x;
 	y = diffStorage->back()->y;
 	result = diffStorage->back()->percentual_diff;
 	EXPECT_EQ(15,x);
 	EXPECT_EQ(15,y);
-	EXPECT_DOUBLE_EQ(0.16151761517615179,result);
+	EXPECT_NEAR(0.161517,result,0.00002);
 }
 //
-

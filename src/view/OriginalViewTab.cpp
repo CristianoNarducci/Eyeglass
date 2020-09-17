@@ -24,6 +24,7 @@ void OriginalViewTab::update(const std::list<PixelDiff*>& diffContainer, wxStrin
 	if (markedForUpdate) {
 		if (image1 != nullptr) {
 			wxImage img = *image1;
+			img.Rescale(500,500,wxIMAGE_QUALITY_BICUBIC);
 			wxBitmap* bmp = new wxBitmap(img);
 			staticBitmap1->SetBitmap(*bmp);
 		}else {
@@ -34,6 +35,7 @@ void OriginalViewTab::update(const std::list<PixelDiff*>& diffContainer, wxStrin
 		}
 		if(image2 != nullptr) {
 			wxImage img = *image2;
+			img.Rescale(500,500,wxIMAGE_QUALITY_BICUBIC);
 			wxBitmap* bmp = new wxBitmap(img);
 			staticBitmap2->SetSize(image2->GetWidth(),image2->GetHeight());
 			staticBitmap2->SetBitmap(*bmp);
