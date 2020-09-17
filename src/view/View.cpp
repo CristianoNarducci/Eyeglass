@@ -108,6 +108,7 @@ View::View(const std::string title, const wxPoint& pos, const wxSize& size, Mode
 	
 	// Result view area
 	tabsNotebook = new wxNotebook(panel, TAB_NOTEBOOK, wxDefaultPosition, wxDefaultSize, wxNB_BOTTOM);
+	//tabsNotebook->InvalidateBestSize();
 	wxBoxSizer* container = new wxBoxSizer(wxVERTICAL);
 	container->Add(tabsNotebook, 1, wxEXPAND);
 	panelSizer->Add(container, 1, wxEXPAND);
@@ -267,7 +268,9 @@ void View::updateSelectedTab() {
 		wxString path1 = activeImages.GetCount() > 0 ? activeImages[0] : "";
 		wxString path2 = activeImages.GetCount() > 1 ? activeImages[1] : "";
 		tab->update(model.getDifferences(), path1, model.getImage(path1), path2, model.getImage(path2));
+		tab->FitInside();
 	}
+
 }
 
 void View::onTabChanged(wxBookCtrlEvent& event) {
