@@ -24,6 +24,10 @@ protected:
 			model.loadImage(images[i]);
 		}
 	}
+	virtual void TearDown(){
+		model.removeAllImages();
+		images.clear();
+	}
 	const std::list<PixelDiff*>* diffStorage;
 	Model model;
 	wxArrayString images;
