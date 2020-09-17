@@ -9,9 +9,10 @@
 // Storage related libs
 #include <map>
 #include <list>
-#include <utility>
+//~ #include <utility>
 
-#include "DiffContainer.h"
+#include "PixelDiff.h"
+
 #include "../utils/Observer.h"
 #include "../utils/Subject.h"
 #include "../utils/ImageUtils.h"
@@ -87,7 +88,7 @@ public:
 	/*
 	 * Returns the cached differences. If no comparison was performed, every list will be empty.
 	 */
-	virtual const DiffContainer& getDifferences();
+	virtual const std::list<PixelDiff*>& getDifferences();
 	
 	/*
 	 * Removes the cached differences, if any.
@@ -113,7 +114,7 @@ protected:
 	 * A cache for comparison results.
 	 * Contains always the latest comparison result, given one was performed of course.
 	 */
-	DiffContainer diffContainer;
+	std::list<PixelDiff*> diffStorage;
 };
 
 #endif

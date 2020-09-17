@@ -11,8 +11,8 @@
 class HeatmapTab: public ViewTab {
 public:
 	HeatmapTab(wxWindow* parent);
-	void update(const DiffContainer& diffContainer, wxString path1, const wxImage* image1, 
-													wxString path2, const wxImage* image2) override;
+	void update(const std::list<PixelDiff*>& diffContainer, wxString path1, const wxImage* image1, 
+															wxString path2, const wxImage* image2) override;
 };
 
 #endif

@@ -32,7 +32,6 @@ View::View(const std::string title, const wxPoint& pos, const wxSize& size, Mode
 									model(model), controller(controller), wxFrame(NULL, wxID_ANY, title, pos, size) {
 	model.registerObserver(this);
 	
-	// TODO: Check if wxBORDER_THEME setting actually does something (could be just my wayland/sway theme, but I see no border here)
 	panel = new wxScrolledWindow(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxBORDER_THEME);
 	panel->SetScrollRate(5, 5);
 	
@@ -206,7 +205,7 @@ void View::activateSelectedImages(wxCommandEvent& event) {
 
 void View::compareImages(wxCommandEvent& event) {
 	wxString mode = modeSelector->GetStringSelection();
-	double tolerance = toleranceSlider->GetValue();
+	double tolerance = toleranceSlider->GetValue() / 1000.0;
 	
 	try {
 		if (activeImages.GetCount() < 2){

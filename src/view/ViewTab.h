@@ -6,7 +6,9 @@
 	#include <wx/wx.h>
 #endif
 
-#include "../model/DiffContainer.h"
+#include "../model/PixelDiff.h"
+
+#include <list>
 
 /*
  * Inteface for a group of small views which are responsible for showing images and computation results
@@ -23,8 +25,9 @@ public:
 	/*
 	 * Updates the tab with the content provided as parameter, but only if marked for updated beforehand.
 	 */
-	virtual void update(const DiffContainer& diffContainer, wxString path1, const wxImage* image1, 
-															wxString path2, const wxImage* image2) = 0;
+	virtual void update(const std::list<PixelDiff*>& diffContainer,
+													wxString path1, const wxImage* image1, 
+													wxString path2, const wxImage* image2) = 0;
 	
 	virtual ~ViewTab() {};
 

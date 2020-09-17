@@ -53,7 +53,6 @@ void Model::compareAlpha(const wxString path1, const wxString path2, const doubl
 		throw ImageGeometryException();
 	}
 	
-	// Clear the previous results from the cache.
 	removeCachedDifferences();
 	
 	// Alpha data is returned as an array of chars, one for pixel.
@@ -72,7 +71,7 @@ void Model::compareAlpha(const wxString path1, const wxString path2, const doubl
 																				image2_alpha[i],
 																				tolerance);
 					if (percentual_difference > 0) {
-						diffContainer.alpha.push_back(std::make_tuple(x, y, percentual_difference));
+						diffStorage.push_back(new PixelDiff(x, y, percentual_difference));
 					}
 				}
 			}
@@ -89,7 +88,7 @@ void Model::compareAlpha(const wxString path1, const wxString path2, const doubl
 																				255,
 																				tolerance);
 					if (percentual_difference > 0) {
-						diffContainer.alpha.push_back(std::make_tuple(x, y, percentual_difference));
+						diffStorage.push_back(new PixelDiff(x, y, percentual_difference));
 					}
 				}
 			}
@@ -102,7 +101,7 @@ void Model::compareAlpha(const wxString path1, const wxString path2, const doubl
 																				image2_alpha[i],
 																				tolerance);
 					if (percentual_difference > 0) {
-						diffContainer.alpha.push_back(std::make_tuple(x, y, percentual_difference));
+						diffStorage.push_back(new PixelDiff(x, y, percentual_difference));
 					}
 				}
 			}
@@ -127,7 +126,6 @@ void Model::compareRGB(const wxString path1, const wxString path2, const double 
 		throw ImageGeometryException();
 	}
 	
-	// Clear the previous results from the cache.
 	removeCachedDifferences();
 	
 	// The rgb data is returned as a char array which is made of alternating rgb triplets.
@@ -148,7 +146,7 @@ void Model::compareRGB(const wxString path1, const wxString path2, const double 
 																		image2_pixel,
 																		tolerance);
 			if (percentual_difference > 0) {
-				diffContainer.RGB.push_back(std::make_tuple(x, y, percentual_difference));
+				diffStorage.push_back(new PixelDiff(x, y, percentual_difference));
 			}
 		}
 	}
@@ -171,7 +169,6 @@ void Model::compareHSV(const wxString path1, const wxString path2, const double 
 		throw ImageGeometryException();
 	}
 	
-	// Clear the previous results from the cache.
 	removeCachedDifferences();
 	
 	// Unfortunately there's no builtin function to get hsv data directly, so we read rgb data as described
@@ -191,7 +188,7 @@ void Model::compareHSV(const wxString path1, const wxString path2, const double 
 																		wxImage::RGBtoHSV(image2_pixel),
 																		tolerance);
 			if (percentual_difference > 0) {
-				diffContainer.HSV.push_back(std::make_tuple(x, y, percentual_difference));
+				diffStorage.push_back(new PixelDiff(x, y, percentual_difference));
 			}
 		}
 	}
@@ -199,14 +196,12 @@ void Model::compareHSV(const wxString path1, const wxString path2, const double 
 	notify(8);
 }
 
-const DiffContainer& Model::getDifferences() {
-	return diffContainer;
+const std::list<PixelDiff*>& Model::getDifferences() {
+	return diffStorage;
 }
 
 void Model::removeCachedDifferences() {
-	diffContainer.alpha.clear();
-	diffContainer.RGB.clear();
-	diffContainer.HSV.clear();
+	diffStorage.clear();
 }
 
 void Model::registerObserver(Observer* observer) {

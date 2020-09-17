@@ -19,7 +19,7 @@ set(PROJECT_SOURCE_FILES
 		src/main.cpp
 		src/model/Model.h
 		src/model/Model.cpp
-		src/model/DiffContainer.h
+		src/model/PixelDiff.h
 		src/utils/ImageUtils.h
 		src/utils/Subject.h
 		src/utils/Observer.h
