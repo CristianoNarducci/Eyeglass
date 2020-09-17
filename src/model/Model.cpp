@@ -2,19 +2,19 @@
 
 Model::Model() {}
 
-void Model::loadImage(const wxString path) {
+void Model::loadImage(wxString path) {
 	wxImage image;
 	
 	if (!image.LoadFile(path)) {
 		throw ImageLoaderException();
 	}
 	
-	imageStorage.insert(std::make_pair(path, image));
+	imageStorage.insert(std::make_pair(path, std::make_shared<wxImage>(image)));
 	
 	notify(1);
 }
 
-void Model::removeImage(const wxString path) {
+void Model::removeImage(wxString path) {
 	imageStorage.erase(path);
 }
 
@@ -22,30 +22,30 @@ void Model::removeAllImages() {
 	imageStorage.clear();
 }
 
-const wxImage* Model::getImage(const wxString path) {
-	std::map<wxString, wxImage>::const_iterator iter;
+const std::shared_ptr<wxImage> Model::getImage(wxString path) {
+	std::map<wxString, std::shared_ptr<wxImage>>::const_iterator iter;
 	
 	iter = imageStorage.find(path);
 	if (iter != imageStorage.end()) {
-		return & (iter->second);
+		return iter->second;
 	}
 	
-	return nullptr;
+	return std::shared_ptr<wxImage>(nullptr);
 }
 
-const std::map<wxString, wxImage>& Model::getAllImages() {
+const std::map<wxString, std::shared_ptr<wxImage>>& Model::getAllImages() {
 	return imageStorage;
 }
 
 // An image without the alpha channel is interpreted as having every pixel alpha value set to 255
-void Model::compareAlpha(const wxString path1, const wxString path2, const double tolerance) {
-	const wxImage* image1 = getImage(path1);
-	const wxImage* image2 = getImage(path2);
+void Model::compareAlpha(wxString path1, wxString path2, double tolerance) {
+	const std::shared_ptr<wxImage> image1 = getImage(path1);
+	const std::shared_ptr<wxImage> image2 = getImage(path2);
 	
-	if (image1 == nullptr) {
+	if (!image1) {
 		throw std::invalid_argument("Could not find " + std::string(path1.mb_str()) + "in the image storage");
 	}
-	if (image2 == nullptr) {
+	if (!image2) {
 		throw std::invalid_argument("Could not find " + std::string(path2.mb_str()) + "in the image storage");
 	}
 	
@@ -71,7 +71,7 @@ void Model::compareAlpha(const wxString path1, const wxString path2, const doubl
 																				image2_alpha[i],
 																				tolerance);
 					if (percentual_difference > 0) {
-						diffStorage.push_back(new PixelDiff(x, y, percentual_difference));
+						diffStorage.push_back(std::make_shared<PixelDiff>(x, y, percentual_difference));
 					}
 				}
 			}
@@ -88,7 +88,7 @@ void Model::compareAlpha(const wxString path1, const wxString path2, const doubl
 																				255,
 																				tolerance);
 					if (percentual_difference > 0) {
-						diffStorage.push_back(new PixelDiff(x, y, percentual_difference));
+						diffStorage.push_back(std::make_shared<PixelDiff>(x, y, percentual_difference));
 					}
 				}
 			}
@@ -99,7 +99,7 @@ void Model::compareAlpha(const wxString path1, const wxString path2, const doubl
 					unsigned long i = y * image1->GetHeight() + x;
 					double percentual_difference = ImageUtils::comparePixelAlpha(image1_alpha[i], image2_alpha[i], tolerance);
 					if (percentual_difference > 0) {
-						diffStorage.push_back(new PixelDiff(x, y, percentual_difference));
+						diffStorage.push_back(std::make_shared<PixelDiff>(x, y, percentual_difference));
 					}
 				}
 			}
@@ -109,14 +109,14 @@ void Model::compareAlpha(const wxString path1, const wxString path2, const doubl
 	notify(8);
 }
 
-void Model::compareRGB(const wxString path1, const wxString path2, const double tolerance) {
-	const wxImage* image1 = getImage(path1);
-	const wxImage* image2 = getImage(path2);
+void Model::compareRGB(wxString path1, wxString path2, double tolerance) {
+	const std::shared_ptr<wxImage> image1 = getImage(path1);
+	const std::shared_ptr<wxImage> image2 = getImage(path2);
 	
-	if (image1 == nullptr) {
+	if (!image1) {
 		throw std::invalid_argument("Could not find " + std::string(path1.mb_str()) + "in the image storage");
 	}
-	if (image2 == nullptr) {
+	if (!image2) {
 		throw std::invalid_argument("Could not find " + std::string(path2.mb_str()) + "in the image storage");
 	}
 	
@@ -144,7 +144,7 @@ void Model::compareRGB(const wxString path1, const wxString path2, const double 
 																		image2_pixel,
 																		tolerance);
 			if (percentual_difference > 0) {
-				diffStorage.push_back(new PixelDiff(x, y, percentual_difference));
+				diffStorage.push_back(std::make_shared<PixelDiff>(x, y, percentual_difference));
 			}
 		}
 	}
@@ -152,14 +152,14 @@ void Model::compareRGB(const wxString path1, const wxString path2, const double 
 	notify(8);
 }
 
-void Model::compareHSV(const wxString path1, const wxString path2, const double tolerance) {
-	const wxImage* image1 = getImage(path1);
-	const wxImage* image2 = getImage(path2);
+void Model::compareHSV(wxString path1, wxString path2, double tolerance) {
+	const std::shared_ptr<wxImage> image1 = getImage(path1);
+	const std::shared_ptr<wxImage> image2 = getImage(path2);
 	
-	if (image1 == nullptr) {
+	if (!image1) {
 		throw std::invalid_argument("Could not find " + std::string(path1.mb_str()) + "in the image storage");
 	}
-	if (image2 == nullptr) {
+	if (!image2) {
 		throw std::invalid_argument("Could not find " + std::string(path2.mb_str()) + "in the image storage");
 	}
 	
@@ -186,7 +186,7 @@ void Model::compareHSV(const wxString path1, const wxString path2, const double 
 																		wxImage::RGBtoHSV(image2_pixel),
 																		tolerance);
 			if (percentual_difference > 0) {
-				diffStorage.push_back(new PixelDiff(x, y, percentual_difference));
+				diffStorage.push_back(std::make_shared<PixelDiff>(x, y, percentual_difference));
 			}
 		}
 	}
@@ -194,7 +194,7 @@ void Model::compareHSV(const wxString path1, const wxString path2, const double 
 	notify(8);
 }
 
-const std::list<PixelDiff*>& Model::getDifferences() {
+const std::list<std::shared_ptr<PixelDiff>>& Model::getDifferences() {
 	return diffStorage;
 }
 
@@ -202,12 +202,12 @@ void Model::removeCachedDifferences() {
 	diffStorage.clear();
 }
 
-void Model::registerObserver(Observer* observer) {
-	observers.push_back(observer);
+void Model::registerObserver(Observer& observer) {
+	observers.push_back(&observer);
 }
 
-void Model::removeObserver(Observer* observer) {
-	observers.remove(observer);
+void Model::removeObserver(Observer& observer) {
+	observers.remove(&observer);
 }
 
 void Model::notify(const int eventCode) {

@@ -28,11 +28,10 @@ long_line_behaviour=1
 long_line_column=90
 
 [files]
-current_page=0
-FILE_NAME_0=4499;C++;0;EUTF-8;1;1;0;%2Fhome%2Ffoxubuntu%2FProjects%2Funiversity%2FEyeglass%2Ftest%2FModelFixture.cpp;0;4
+current_page=-1
 
 [VTE]
-last_dir=/home/foxubuntu/Projects/university/Eyeglass/cmake-build-debug/test
+last_dir=/home/foxubuntu/Projects/university/Eyeglass
 
 [build-menu]
 NF_00_LB=CMake

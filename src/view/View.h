@@ -6,6 +6,8 @@
 	#include <wx/wx.h>
 #endif
 
+#include <memory>
+
 #include <wx/listctrl.h>
 #include <wx/notebook.h>
 #include <wx/bookctrl.h>
@@ -18,7 +20,6 @@
 #include "ViewTab.h"
 #include "OriginalViewTab.h"
 #include "DiffListTab.h"
-#include "SideBySideTab.h"
 #include "LayerTab.h"
 #include "HeatmapTab.h"
 

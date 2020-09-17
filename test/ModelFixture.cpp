@@ -2,6 +2,7 @@
 #include "gtest/gtest.h"
 #include "../src/model/Model.h"
 #include "../src/model/PixelDiff.h"
+#include <memory>
 #include <list>
 #include <wx/wxprec.h>
 #ifndef WX_PRECOMP
@@ -28,7 +29,6 @@ protected:
 		model.removeAllImages();
 		images.clear();
 	}
-	const std::list<PixelDiff*>* diffStorage;
 	Model model;
 	wxArrayString images;
 	wxString testImageComparison= "testAlpha.png";
@@ -59,17 +59,17 @@ TEST_F(ModelSuite,testLoad){
 	 * it control the cartesian position of the pixel and the result of difference*/
 TEST_F(ModelSuite,testAlpha){
 	model.compareAlpha(testImageComparison,testImageComparison2,0);
-	diffStorage = &model.getDifferences();
-	int x = diffStorage->front()->x;
-	int y = diffStorage->front()->y;
-	double result = diffStorage->front()->percentual_diff;
+	const std::list<std::shared_ptr<PixelDiff>>& diffStorage = model.getDifferences();
+	int x = diffStorage.front()->x;
+	int y = diffStorage.front()->y;
+	double result = diffStorage.front()->percentual_diff;
 	EXPECT_EQ(0,x);
 	EXPECT_EQ(0,y);
 	EXPECT_NEAR(0.30196,result,0.00002);
 	//Test of last pixel
-	x = diffStorage->back()->x;
-	y = diffStorage->back()->y;
-	result = diffStorage->back()->percentual_diff;
+	x = diffStorage.back()->x;
+	y = diffStorage.back()->y;
+	result = diffStorage.back()->percentual_diff;
 	EXPECT_EQ(15,x);
 	EXPECT_EQ(15,y);
 	EXPECT_NEAR(0.30196,result,0.00002);
@@ -79,16 +79,16 @@ TEST_F(ModelSuite,testAlpha){
 	 * it control the cartesian position of the pixel and the result of difference*/
 TEST_F(ModelSuite,testRGB){
 	model.compareRGB(testImageComparison,testImageComparison2,0);
-	diffStorage = &model.getDifferences();
-	int x = diffStorage->front()->x;
-	int y = diffStorage->front()->y;
-	double result = diffStorage->front()->percentual_diff;
+	const std::list<std::shared_ptr<PixelDiff>>& diffStorage = model.getDifferences();
+	int x = diffStorage.front()->x;
+	int y = diffStorage.front()->y;
+	double result = diffStorage.front()->percentual_diff;
 	EXPECT_EQ(0,x);
 	EXPECT_EQ(0,y);
 	EXPECT_NEAR(0.36078,result,0.00002);
-	x = diffStorage->back()->x;
-	y = diffStorage->back()->y;
-	result = diffStorage->back()->percentual_diff;
+	x = diffStorage.back()->x;
+	y = diffStorage.back()->y;
+	result = diffStorage.back()->percentual_diff;
 	//Test of last pixel
 	EXPECT_EQ(15,x);
 	EXPECT_EQ(15,y);
@@ -101,17 +101,17 @@ TEST_F(ModelSuite,testRGB){
 	 * it control the cartesian position of the pixel and the result of difference*/
 TEST_F(ModelSuite,testHSV){
 	model.compareHSV(testImageComparison,testImageComparison2,0);
-	diffStorage = &model.getDifferences();
-	int x = diffStorage->front()->x;
-	int y = diffStorage->front()->y;
-	double result = diffStorage->front()->percentual_diff;
+	const std::list<std::shared_ptr<PixelDiff>>& diffStorage = model.getDifferences();
+	int x = diffStorage.front()->x;
+	int y = diffStorage.front()->y;
+	double result = diffStorage.front()->percentual_diff;
 	EXPECT_EQ(0,x);
 	EXPECT_EQ(0,y);
 	EXPECT_NEAR(0.38373,result,0.00002);
 	//Test of last pixel
-	x = diffStorage->back()->x;
-	y = diffStorage->back()->y;
-	result = diffStorage->back()->percentual_diff;
+	x = diffStorage.back()->x;
+	y = diffStorage.back()->y;
+	result = diffStorage.back()->percentual_diff;
 	EXPECT_EQ(15,x);
 	EXPECT_EQ(15,y);
 	EXPECT_NEAR(0.161517,result,0.00002);

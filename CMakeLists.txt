@@ -33,8 +33,6 @@ set(PROJECT_SOURCE_FILES
 		src/view/ViewTab.cpp
 		src/view/OriginalViewTab.h
 		src/view/OriginalViewTab.cpp
-		src/view/SideBySideTab.h
-		src/view/SideBySideTab.cpp
 		src/view/LayerTab.h
 		src/view/LayerTab.cpp
 		src/view/HeatmapTab.h
