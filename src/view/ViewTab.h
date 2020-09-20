@@ -17,7 +17,7 @@
  * In addition to this, they are enabled to do some heavylifting regarding visualization and image manipulation
  * (altough only for the temporary visualization - the image storage is not impacted).
  */
-class ViewTab: public wxScrolledWindow {
+class ViewTab: public wxWindow {
 public:
 	ViewTab(wxWindow* parent);
 	

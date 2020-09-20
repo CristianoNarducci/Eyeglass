@@ -6,8 +6,6 @@
 	#include <wx/wx.h>
 #endif
 
-#include <cmath>
-
 /*
  * Collection of utilities useful in visualization of images.
  */
@@ -43,7 +41,7 @@ public:
 											wxImageResizeQuality quality = wxIMAGE_QUALITY_BICUBIC) {
 		double imageRatio = image.GetWidth() / double(image.GetHeight());
 		
-		if (imageRatio > 1.0) {
+		if (containerWidth / imageRatio <= containerHeight) {
 			image.Rescale(containerWidth, containerWidth / imageRatio, quality);
 		} else {
 			image.Rescale(containerHeight * imageRatio, containerHeight, quality);

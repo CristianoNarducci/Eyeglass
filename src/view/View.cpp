@@ -32,8 +32,7 @@ View::View(const std::string title, const wxPoint& pos, const wxSize& size, Mode
 									model(model), controller(controller), wxFrame(NULL, wxID_ANY, title, pos, size) {
 	model.registerObserver(*this);
 	
-	panel = new wxScrolledWindow(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxBORDER_THEME);
-	panel->SetScrollRate(5, 5);
+	panel = new wxWindow(this, wxID_ANY, wxDefaultPosition, wxDefaultSize);
 	
 	appDropdownMenu = new wxMenu;
 	appDropdownMenu->Append(ABOUT, "Informazioni sul progetto");
