@@ -1,5 +1,9 @@
 #include "OriginalViewTab.h"
 
+wxBEGIN_EVENT_TABLE(OriginalViewTab, wxWindow)
+	EVT_SIZE(OriginalViewTab::onTabResize)
+wxEND_EVENT_TABLE()
+
 OriginalViewTab::OriginalViewTab(wxWindow* parent): ViewTab(parent) {
 	wxBitmap* bmp1 = new wxBitmap(DisplayUtils::generateBlankImage(1, 1));
 	wxBitmap* bmp2= new wxBitmap(DisplayUtils::generateBlankImage(1, 1));
@@ -43,6 +47,7 @@ void OriginalViewTab::repaintTab() {
 	wxSize image1NewSize;
 	wxSize image2NewSize;
 	
+	// Recalculate the size of the images and the new page layout.
 	if (tabSize.GetWidth() > tabSize.GetHeight()) {
 		imageContainerWidth = tabSize.GetWidth() / 2;
 		imageContainerHeight = tabSize.GetHeight();
@@ -65,6 +70,7 @@ void OriginalViewTab::repaintTab() {
 		image2Pos.y = imageContainerHeight;
 	}
 	
+	// If there's space around the resized image, center the images.
 	image1Pos.x += (imageContainerWidth - image1NewSize.GetWidth()) / 2;
 	image1Pos.y += (imageContainerHeight - image1NewSize.GetHeight()) / 2;
 	image2Pos.x += (imageContainerWidth - image2NewSize.GetWidth()) / 2;
@@ -79,4 +85,8 @@ void OriginalViewTab::repaintTab() {
 	wxBitmap* bmp2 = new wxBitmap(tempImage2);
 	staticBitmap2->SetBitmap(*bmp2);
 	staticBitmap2->SetPosition(image2Pos);
+}
+
+void OriginalViewTab::onTabResize(wxSizeEvent& event) {
+	repaintTab();
 }
