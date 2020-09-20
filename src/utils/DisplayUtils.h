@@ -35,8 +35,8 @@ public:
 	 * When the largest side of the object has the same length of one side of the container, the growth stops.
 	 * This means that the object might not fill the container entirely.
 	 */
-	static wxSize calculateLargestProportionalSize(int objectWidth, int objectHeight,
-														int containerWidth, int containerHeight) {
+	static wxSize getLargestProportionalSize(int objectWidth, int objectHeight,
+												int containerWidth, int containerHeight) {
 		double objectRatio = objectWidth / double(objectHeight);
 		
 		if (containerWidth / objectRatio <= containerHeight) {

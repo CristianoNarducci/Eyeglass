@@ -20,6 +20,11 @@ public:
 													wxString path2, const std::shared_ptr<const wxImage> image2) override;
 
 protected:
+	void repaintTab();
+	
+	wxImage image1;
+	wxImage image2;
+	
 	wxGenericStaticBitmap* staticBitmap1;
 	wxGenericStaticBitmap* staticBitmap2;
 };

@@ -12,58 +12,71 @@ void OriginalViewTab::update(const std::list<std::shared_ptr<const PixelDiff>>& 
 													wxString path1, const std::shared_ptr<const wxImage> image1, 
 													wxString path2, const std::shared_ptr<const wxImage> image2) {
 	if (markedForUpdate) {
-		wxSize size = this->GetClientSize();
-		
-		int containerWidth;
-		int containerHeight;
-		wxPoint bitmap1Point;
-		wxPoint bitmap2Point;
-		
-		if (size.GetWidth() > size.GetHeight()) {
-			containerWidth = size.GetWidth() / 2;
-			containerHeight = size.GetHeight();
-			
-			bitmap1Point.x = 0;
-			bitmap1Point.y = 0;
-			bitmap2Point.x = containerWidth;
-			bitmap2Point.y = 0;
-		} else {
-			containerWidth = size.GetWidth();
-			containerHeight = size.GetHeight() / 2;
-			
-			bitmap1Point.x = 0;
-			bitmap1Point.y = 0;
-			bitmap2Point.x = 0;
-			bitmap2Point.y = containerHeight;
-		}
-		
 		if (image1) {
-			wxImage img = *image1;
-			wxSize newSize = DisplayUtils::calculateLargestProportionalSize(img.GetWidth(), img.GetHeight(),
-																			containerWidth, containerHeight);
-			img.Rescale(newSize.GetWidth(), newSize.GetHeight());
-			wxBitmap* bmp = new wxBitmap(img);
-			staticBitmap1->SetBitmap(*bmp);
-			staticBitmap1->SetPosition(bitmap1Point);
+			this->image1 = *image1;
 		} else {
-			wxBitmap* bmp = new wxBitmap(DisplayUtils::generateBlankImage(1, 1));
-			staticBitmap1->SetBitmap(*bmp);
-			staticBitmap1->SetPosition(bitmap1Point);
+			this->image1 = DisplayUtils::generateBlankImage(1, 1);
 		}
 		
 		if (image2) {
-			wxImage img = *image2;
-			wxSize newSize = DisplayUtils::calculateLargestProportionalSize(img.GetWidth(), img.GetHeight(),
-																			containerWidth, containerHeight);
-			img.Rescale(newSize.GetWidth(), newSize.GetHeight());
-			wxBitmap* bmp = new wxBitmap(img);
-			staticBitmap2->SetBitmap(*bmp);
-			staticBitmap2->SetPosition(bitmap2Point);
+			this->image2 = *image2;
 		} else {
-			wxBitmap* bmp = new wxBitmap(DisplayUtils::generateBlankImage(1, 1));
-			staticBitmap2->SetBitmap(*bmp);
+			this->image2 = DisplayUtils::generateBlankImage(1, 1);
 		}
 		
+		repaintTab();
 		markedForUpdate = false;
 	}
+}
+
+void OriginalViewTab::repaintTab() {
+	wxSize tabSize = this->GetClientSize();
+	
+	int imageContainerWidth;
+	int imageContainerHeight;
+	
+	wxImage tempImage1 = image1;
+	wxImage tempImage2 = image2;
+	
+	wxPoint image1Pos;
+	wxPoint image2Pos;
+	wxSize image1NewSize;
+	wxSize image2NewSize;
+	
+	if (tabSize.GetWidth() > tabSize.GetHeight()) {
+		imageContainerWidth = tabSize.GetWidth() / 2;
+		imageContainerHeight = tabSize.GetHeight();
+		
+		image1NewSize = DisplayUtils::getLargestProportionalSize(image1.GetWidth(), image1.GetHeight(),
+																imageContainerWidth, imageContainerHeight);
+		image2NewSize = DisplayUtils::getLargestProportionalSize(image2.GetWidth(), image2.GetHeight(),
+																imageContainerWidth, imageContainerHeight);
+		
+		image2Pos.x = imageContainerWidth;
+	} else {
+		imageContainerWidth = tabSize.GetWidth();
+		imageContainerHeight = tabSize.GetHeight() / 2;
+		
+		image1NewSize = DisplayUtils::getLargestProportionalSize(image1.GetWidth(), image1.GetHeight(),
+																imageContainerWidth, imageContainerHeight);
+		image2NewSize = DisplayUtils::getLargestProportionalSize(image2.GetWidth(), image2.GetHeight(),
+																imageContainerWidth, imageContainerHeight);
+		
+		image2Pos.y = imageContainerHeight;
+	}
+	
+	image1Pos.x += (imageContainerWidth - image1NewSize.GetWidth()) / 2;
+	image1Pos.y += (imageContainerHeight - image1NewSize.GetHeight()) / 2;
+	image2Pos.x += (imageContainerWidth - image2NewSize.GetWidth()) / 2;
+	image2Pos.y += (imageContainerHeight - image2NewSize.GetHeight()) / 2;
+	
+	tempImage1.Rescale(image1NewSize.GetWidth(), image1NewSize.GetHeight());
+	wxBitmap* bmp1 = new wxBitmap(tempImage1);
+	staticBitmap1->SetBitmap(*bmp1);
+	staticBitmap1->SetPosition(image1Pos);
+	
+	tempImage2.Rescale(image2NewSize.GetWidth(), image2NewSize.GetHeight());
+	wxBitmap* bmp2 = new wxBitmap(tempImage2);
+	staticBitmap2->SetBitmap(*bmp2);
+	staticBitmap2->SetPosition(image2Pos);
 }
