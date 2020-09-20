@@ -59,7 +59,7 @@ TEST_F(ModelSuite,testLoad){
 	 * it control the cartesian position of the pixel and the result of difference*/
 TEST_F(ModelSuite,testAlpha){
 	model.compareAlpha(testImageComparison,testImageComparison2,0);
-	const std::list<std::shared_ptr<PixelDiff>>& diffStorage = model.getDifferences();
+	const std::list<std::shared_ptr<const PixelDiff>>& diffStorage = model.getDifferences();
 	int x = diffStorage.front()->x;
 	int y = diffStorage.front()->y;
 	double result = diffStorage.front()->percentual_diff;
@@ -79,7 +79,7 @@ TEST_F(ModelSuite,testAlpha){
 	 * it control the cartesian position of the pixel and the result of difference*/
 TEST_F(ModelSuite,testRGB){
 	model.compareRGB(testImageComparison,testImageComparison2,0);
-	const std::list<std::shared_ptr<PixelDiff>>& diffStorage = model.getDifferences();
+	const std::list<std::shared_ptr<const PixelDiff>>& diffStorage = model.getDifferences();
 	int x = diffStorage.front()->x;
 	int y = diffStorage.front()->y;
 	double result = diffStorage.front()->percentual_diff;
@@ -101,7 +101,7 @@ TEST_F(ModelSuite,testRGB){
 	 * it control the cartesian position of the pixel and the result of difference*/
 TEST_F(ModelSuite,testHSV){
 	model.compareHSV(testImageComparison,testImageComparison2,0);
-	const std::list<std::shared_ptr<PixelDiff>>& diffStorage = model.getDifferences();
+	const std::list<std::shared_ptr<const PixelDiff>>& diffStorage = model.getDifferences();
 	int x = diffStorage.front()->x;
 	int y = diffStorage.front()->y;
 	double result = diffStorage.front()->percentual_diff;

@@ -22,25 +22,25 @@ void Model::removeAllImages() {
 	imageStorage.clear();
 }
 
-const std::shared_ptr<wxImage> Model::getImage(wxString path) {
-	std::map<wxString, std::shared_ptr<wxImage>>::const_iterator iter;
+const std::shared_ptr<const wxImage> Model::getImage(wxString path) {
+	std::map<wxString, const std::shared_ptr<const wxImage>>::const_iterator iter;
 	
 	iter = imageStorage.find(path);
 	if (iter != imageStorage.end()) {
 		return iter->second;
 	}
 	
-	return std::shared_ptr<wxImage>(nullptr);
+	return std::shared_ptr<const wxImage>(nullptr);
 }
 
-const std::map<wxString, std::shared_ptr<wxImage>>& Model::getAllImages() {
+const std::map<wxString, const std::shared_ptr<const wxImage>>& Model::getAllImages() {
 	return imageStorage;
 }
 
 // An image without the alpha channel is interpreted as having every pixel alpha value set to 255
 void Model::compareAlpha(wxString path1, wxString path2, double tolerance) {
-	const std::shared_ptr<wxImage> image1 = getImage(path1);
-	const std::shared_ptr<wxImage> image2 = getImage(path2);
+	const std::shared_ptr<const wxImage> image1 = getImage(path1);
+	const std::shared_ptr<const wxImage> image2 = getImage(path2);
 	
 	if (!image1) {
 		throw std::invalid_argument("Could not find " + std::string(path1.mb_str()) + "in the image storage");
@@ -110,8 +110,8 @@ void Model::compareAlpha(wxString path1, wxString path2, double tolerance) {
 }
 
 void Model::compareRGB(wxString path1, wxString path2, double tolerance) {
-	const std::shared_ptr<wxImage> image1 = getImage(path1);
-	const std::shared_ptr<wxImage> image2 = getImage(path2);
+	const std::shared_ptr<const wxImage> image1 = getImage(path1);
+	const std::shared_ptr<const wxImage> image2 = getImage(path2);
 	
 	if (!image1) {
 		throw std::invalid_argument("Could not find " + std::string(path1.mb_str()) + "in the image storage");
@@ -153,8 +153,8 @@ void Model::compareRGB(wxString path1, wxString path2, double tolerance) {
 }
 
 void Model::compareHSV(wxString path1, wxString path2, double tolerance) {
-	const std::shared_ptr<wxImage> image1 = getImage(path1);
-	const std::shared_ptr<wxImage> image2 = getImage(path2);
+	const std::shared_ptr<const wxImage> image1 = getImage(path1);
+	const std::shared_ptr<const wxImage> image2 = getImage(path2);
 	
 	if (!image1) {
 		throw std::invalid_argument("Could not find " + std::string(path1.mb_str()) + "in the image storage");
@@ -194,7 +194,7 @@ void Model::compareHSV(wxString path1, wxString path2, double tolerance) {
 	notify(8);
 }
 
-const std::list<std::shared_ptr<PixelDiff>>& Model::getDifferences() {
+const std::list<std::shared_ptr<const PixelDiff>>& Model::getDifferences() {
 	return diffStorage;
 }
 

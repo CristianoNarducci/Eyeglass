@@ -54,13 +54,13 @@ public:
 	 * The images in storage should not be modified directly, as doing so prevents the original image
 	 * from being reused in another round of comparison.
 	 */
-	virtual const std::shared_ptr<wxImage> getImage(wxString path);
+	virtual const std::shared_ptr<const wxImage> getImage(wxString path);
 	
 	/*
 	 * Returns a map containing all the images in storage, with their path identifier.
 	 * The returned data is immutable.
 	 */
-	virtual const std::map<wxString, std::shared_ptr<wxImage>>& getAllImages();
+	virtual const std::map<wxString, const std::shared_ptr<const wxImage>>& getAllImages();
 	
 	/*
 	 * For each pixel in both images, compare the alpha value and save the percentual of difference 
@@ -89,7 +89,7 @@ public:
 	/*
 	 * Returns the cached differences. If no comparison was performed, every list will be empty.
 	 */
-	virtual const std::list<std::shared_ptr<PixelDiff>>& getDifferences();
+	virtual const std::list<std::shared_ptr<const PixelDiff>>& getDifferences();
 	
 	/*
 	 * Removes the cached differences, if any.
@@ -109,13 +109,13 @@ protected:
 	 * The storage where images are saved, after being loaded.
 	 * Each image is saved along with its path, which is used as a key for unique identification and retrieval.
 	 */
-	std::map<wxString, std::shared_ptr<wxImage>> imageStorage;
+	std::map<wxString, const std::shared_ptr<const wxImage>> imageStorage;
 	
 	/*
 	 * A cache for comparison results.
 	 * Contains always the latest comparison result, given one was performed of course.
 	 */
-	std::list<std::shared_ptr<PixelDiff>> diffStorage;
+	std::list<std::shared_ptr<const PixelDiff>> diffStorage;
 };
 
 #endif

@@ -67,7 +67,7 @@ View::View(const std::string title, const wxPoint& pos, const wxSize& size, Mode
 	list->InsertColumn(1, "S", wxLIST_FORMAT_CENTER, 40);
 	
 	// Main panel sizer
-	wxFlexGridSizer* panelSizer = new wxFlexGridSizer(1, 2, 16, 16);
+	wxFlexGridSizer* panelSizer = new wxFlexGridSizer(1, 2, 8, 8);
 	panelSizer->AddGrowableRow(0, 16);
 	panelSizer->AddGrowableCol(1, 16);
 	panel->SetSizer(panelSizer);

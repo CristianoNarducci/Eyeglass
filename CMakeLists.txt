@@ -20,6 +20,7 @@ set(PROJECT_SOURCE_FILES
 		src/model/Model.h
 		src/model/Model.cpp
 		src/model/PixelDiff.h
+		src/utils/DisplayUtils.h
 		src/utils/ImageUtils.h
 		src/utils/Subject.h
 		src/utils/Observer.h
