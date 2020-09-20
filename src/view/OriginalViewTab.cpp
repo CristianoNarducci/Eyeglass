@@ -39,9 +39,12 @@ void OriginalViewTab::update(const std::list<std::shared_ptr<const PixelDiff>>& 
 		
 		if (image1) {
 			wxImage img = *image1;
-			DisplayUtils::proportionallyRescaleImage(img, containerWidth, containerHeight);
+			wxSize newSize = DisplayUtils::calculateLargestProportionalSize(img.GetWidth(), img.GetHeight(),
+																			containerWidth, containerHeight);
+			img.Rescale(newSize.GetWidth(), newSize.GetHeight());
 			wxBitmap* bmp = new wxBitmap(img);
 			staticBitmap1->SetBitmap(*bmp);
+			staticBitmap1->SetPosition(bitmap1Point);
 		} else {
 			wxBitmap* bmp = new wxBitmap(DisplayUtils::generateBlankImage(1, 1));
 			staticBitmap1->SetBitmap(*bmp);
@@ -50,7 +53,9 @@ void OriginalViewTab::update(const std::list<std::shared_ptr<const PixelDiff>>& 
 		
 		if (image2) {
 			wxImage img = *image2;
-			DisplayUtils::proportionallyRescaleImage(img, containerWidth, containerHeight);
+			wxSize newSize = DisplayUtils::calculateLargestProportionalSize(img.GetWidth(), img.GetHeight(),
+																			containerWidth, containerHeight);
+			img.Rescale(newSize.GetWidth(), newSize.GetHeight());
 			wxBitmap* bmp = new wxBitmap(img);
 			staticBitmap2->SetBitmap(*bmp);
 			staticBitmap2->SetPosition(bitmap2Point);
