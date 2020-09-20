@@ -22,12 +22,25 @@ public:
 	wxDECLARE_EVENT_TABLE();
 
 protected:
+	/*
+	 * Repaints the tab, resizing the images and changing layout when needed.
+	 */
 	void repaintTab();
+	
 	void onTabResize(wxSizeEvent& event);
 	
+	/*
+	 * A copy of the original images passed on update.
+	 * It is used as a restart-point from which the displayed images are created, by repaintTab.
+	 */
 	wxImage image1;
 	wxImage image2;
 	
+	/*
+	 * Components that display the images.
+	 * wxWidgets documentation suggests the strict use of wxGenericStaticBitmap, instead of just wxStaticBitmap,
+	 * for large images.
+	 */
 	wxGenericStaticBitmap* staticBitmap1;
 	wxGenericStaticBitmap* staticBitmap2;
 };
