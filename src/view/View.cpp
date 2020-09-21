@@ -224,8 +224,8 @@ void View::compareImages(wxCommandEvent& event) {
 	
 	try {
 		if (activeImages.GetCount() < 2){
-			wxMessageBox("Nel frattempo, attiva due immagini per iniziare una comparazione", 
-							"Vivi a lungo e prospera", wxOK | wxICON_EXCLAMATION);
+			wxMessageBox("E' necessario attivare due immagini per eseguire una comparazione.", 
+							"Requisiti non soddisfatti", wxOK | wxICON_EXCLAMATION);
 		} else if (mode.IsSameAs("RGB")) {
 			controller.compareRGB(activeImages[0], activeImages[1], tolerance);
 		} else if (mode.IsSameAs("HSV")) {
@@ -234,8 +234,8 @@ void View::compareImages(wxCommandEvent& event) {
 			controller.compareAlpha(activeImages[0], activeImages[1], tolerance);
 		}
 	} catch (ImageGeometryException& error) {
-		wxMessageBox("Causa: geometria diversa. \nE' necessario che le immagini abbiano altezze e larghezze uguali",
-						"Impossibile confrontare le immagini scelte", wxOK | wxICON_EXCLAMATION);
+		wxMessageBox("E' necessario che le immagini abbiano altezze e larghezze uguali per poterle confrontare.",
+						"Requisiti non soddisfatti", wxOK | wxICON_EXCLAMATION);
 	}
 }
 
@@ -257,7 +257,7 @@ void View::generateTabs() {
 	tabsNotebook->AddPage(diffTab, "Lista di differenze");
 	
 	LayerTab* layerTab = new LayerTab(tabsNotebook);
-	tabsNotebook->AddPage(layerTab, "Vista a livelli");
+	tabsNotebook->AddPage(layerTab, "Vista sovrapposta");
 	
 	HeatmapTab* heatmapTab = new HeatmapTab(tabsNotebook);
 	tabsNotebook->AddPage(heatmapTab, "Heatmap");
@@ -305,11 +305,12 @@ void View::onAbout(wxCommandEvent& event) {
 }
 
 void View::onHelp(wxCommandEvent &event) {
-	const char* message = "Per iniziare caricare quante immagini si desidera con il pulsante 'Aggiungi Immagini'. \n"
-						"Una volta fatto cio' sara' possibile sia rimuovere le immagini all'interno della lista sia la possibilita' di aggiungerne altre. \n"
-						"Per selezionare un' immagine da utilizzare nella comparazione cliccare sul pulsante 'Attiva Immagini'. \n"
-						"L'applicazione e' progettata in modo da poterne attivare solo due alla volta. \n"
-						"Selezionare infine tolleranza e metodo di comparazione,quindi visualizzare i risultati sull'apposita vista.";
+	const char* message = "Per iniziare, caricare quante immagini si desidera con il pulsante 'Aggiungi Immagini'. \n"
+						"Una volta fatto cio' sara' possibile sia rimuovere le immagini della lista sia aggiungerne altre. \n"
+						"Per selezionare le immagini da utilizzare nella comparazione, cliccarne il nome nella lista, quindi sul "
+						"pulsante 'Attiva Immagini'. E' possibile selezionarne piu' per volta, tenendo premuto control o shift. \n "
+						"L'applicazione e' progettata, comunque, in modo da poterne attivare solo due alla volta. \n"
+						"Selezionare infine tolleranza e metodo di comparazione, quindi visualizzare i risultati nella vista desiderata.";
 	wxMessageBox(message, "Guida all'utilizzo", wxOK | wxICON_QUESTION);
 }
 
