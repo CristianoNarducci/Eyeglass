@@ -17,7 +17,7 @@ public:
 													wxString path2, const std::shared_ptr<const wxImage> image2) override;
 
 protected:
-	std::shared_ptr<wxListView> list;
+	wxListView* list;
 };
 
 #endif
