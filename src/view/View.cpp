@@ -191,7 +191,7 @@ void View::activateSelectedImages(wxCommandEvent& event) {
 	if (activeImages.GetCount() > 1 || list->GetSelectedItemCount() > 1) {
 		long item = -1;
 		while ((item = list->GetNextItem(item, wxLIST_NEXT_ALL, wxLIST_STATE_DONTCARE)) != -1) {
-			if (list->GetItemText(item, 1).IsSameAs("*")){
+			if (list->GetItemText(item, 1).IsSameAs("1") || list->GetItemText(item, 1).IsSameAs("2")){
 				list->SetItem(item, 1, "");
 			}
 		}
@@ -202,8 +202,9 @@ void View::activateSelectedImages(wxCommandEvent& event) {
 	
 	long item = -1;
 	while ((item = list->GetNextItem(item, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED)) != -1) {
+		int count = activeImages.GetCount() + 1;
 		if (activeImages.GetCount() < 2) {
-			list->SetItem(item, 1, "*");
+			list->SetItem(item, 1, std::to_string(count));
 			activeImages.Add(list->GetItemText(item));
 		} else {
 			break;
