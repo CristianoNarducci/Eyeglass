@@ -29,7 +29,7 @@ wxEND_EVENT_TABLE()
 View::View(const std::string title, const wxPoint& pos, const wxSize& size, Model& model, Controller& controller): 
 									model(model), controller(controller), wxFrame(NULL, wxID_ANY, title, pos, size) {
 	model.registerObserver(*this);
-	
+	this->SetMinSize(wxSize(800,600));
 	panel = new wxWindow(this, wxID_ANY, wxDefaultPosition, wxDefaultSize);
 	
 	appDropdownMenu = new wxMenu;
