@@ -24,7 +24,7 @@ public:
 protected:
 	/*
 	 * Repaints the tab, resizing the images and changing layout when needed.
-	 * It also cuts the images where the slider says
+	 * It also cuts the images where the slider says.
 	 */
 	void repaintTab();
 	

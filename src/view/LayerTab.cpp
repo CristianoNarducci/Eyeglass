@@ -65,23 +65,41 @@ void LayerTab::repaintTab() {
 	image2NewSize = DisplayUtils::getLargestProportionalSize(image2.GetWidth(), image2.GetHeight(),
 																tabSize.GetWidth(), tabSize.GetHeight() - sliderHeight);
 	
+	// Prefer the image with the smaller width.
+	int smallerWidth;
+	if (image1NewSize.GetWidth() < image2NewSize.GetWidth()) {
+		smallerWidth = image1NewSize.GetWidth();
+	} else {
+		smallerWidth = image2NewSize.GetWidth();
+	}
+	
+	tempImage1.Rescale(image1NewSize.GetWidth(), image1NewSize.GetHeight());
+	tempImage2.Rescale(image2NewSize.GetWidth(), image2NewSize.GetHeight());
+	
+	// If an image is wider than the other after the rescale, cut a portion from its center,
+	// the size of the smaller image.
+	if (image1NewSize.GetWidth() > image2NewSize.GetWidth()) {
+		tempImage1 = tempImage1.GetSubImage(wxRect(image1NewSize.GetWidth() / 2 - smallerWidth / 2, 0,
+															smallerWidth, image1NewSize.GetHeight()));
+		image1NewSize.SetWidth(smallerWidth);
+	} else {
+		tempImage2 = tempImage2.GetSubImage(wxRect(image2NewSize.GetWidth() / 2 - smallerWidth / 2, 0,
+															smallerWidth, image2NewSize.GetHeight()));
+		image2NewSize.SetWidth(smallerWidth);
+	}
+	
 	// If there's space around the resized image, center the images.
-	image1Pos.x += (tabSize.GetWidth() - image1NewSize.GetWidth()) / 2;
+	image1Pos.x += (tabSize.GetWidth() - smallerWidth) / 2;
 	image1Pos.y += (tabSize.GetHeight() - image1NewSize.GetHeight()) / 2 - sliderHeight / 2;
-	image2Pos.x += (tabSize.GetWidth() - image2NewSize.GetWidth()) / 2;
+	image2Pos.x += (tabSize.GetWidth() - smallerWidth) / 2;
 	image2Pos.y += (tabSize.GetHeight() - image2NewSize.GetHeight()) / 2 - sliderHeight / 2;
 	
-	// Calculate the offset to maintain position after the cut, along with the new sizes.
-	double image1CutPercent = 1.0 - slider->GetValue() / 1000.0;
-	double image2CutPercent = slider->GetValue() / 1000.0;
-	
-	int image1CutLength = image1NewSize.GetWidth() * image1CutPercent;
-	int image2CutLength = image2NewSize.GetWidth() * image2CutPercent;
-	
-	image2Pos.x += image2CutLength;
+	// If the images are still visible, cut away the non-visible part.
+	// When one image becomes fully hidden, display an invisible pixel instead.
+	int image1CutLength = (1.0 - slider->GetValue() / 1000.0) * smallerWidth;
+	int image2CutLength = smallerWidth - image1CutLength;
 	
 	if (image1NewSize.GetWidth() - image1CutLength > 0) {
-		tempImage1.Rescale(image1NewSize.GetWidth(), image1NewSize.GetHeight());
 		tempImage1 = tempImage1.GetSubImage(wxRect(0, 0, image1NewSize.GetWidth() - image1CutLength, image1NewSize.GetHeight()));
 	} else {
 		tempImage1 = DisplayUtils::generateBlankImage(1, 1);
@@ -91,8 +109,8 @@ void LayerTab::repaintTab() {
 	staticBitmap1->SetPosition(image1Pos);
 	
 	if (image2NewSize.GetWidth() - image2CutLength > 0) {
-		tempImage2.Rescale(image2NewSize.GetWidth(), image2NewSize.GetHeight());
 		tempImage2 = tempImage2.GetSubImage(wxRect(image2CutLength, 0, image2NewSize.GetWidth() - image2CutLength, image2NewSize.GetHeight()));
+		image2Pos.x += image2CutLength;
 	} else {
 		tempImage2 = DisplayUtils::generateBlankImage(1, 1);
 	}
@@ -101,8 +119,8 @@ void LayerTab::repaintTab() {
 	staticBitmap2->SetPosition(image2Pos);
 	
 	// Resize and move the slider to the bottom of the tab, centered horizontally.
-	int sliderWidth = image1NewSize.GetWidth() > image2NewSize.GetWidth() ? image1NewSize.GetWidth() : image2NewSize.GetWidth();
-	int sliderX = (tabSize.GetWidth() - sliderWidth) / 2;
+	int sliderWidth = smallerWidth;
+	int sliderX = image1Pos.x;
 	int sliderY = tabSize.GetHeight() - sliderHeight;
 	
 	slider->SetSize(sliderX, sliderY, sliderWidth, sliderHeight);
