@@ -123,7 +123,6 @@ View::View(const std::string title, const wxPoint& pos, const wxSize& size, Mode
 	
 	// Result view area
 	tabsNotebook = new wxNotebook(panel, TAB_NOTEBOOK, wxDefaultPosition, wxDefaultSize, wxNB_BOTTOM);
-	//tabsNotebook->InvalidateBestSize();
 	wxBoxSizer* container = new wxBoxSizer(wxVERTICAL);
 	container->Add(tabsNotebook, 1, wxEXPAND);
 	panelSizer->Add(container, 1, wxEXPAND);
