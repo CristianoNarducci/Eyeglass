@@ -210,7 +210,7 @@ void Model::removeObserver(Observer& observer) {
 	observers.remove(&observer);
 }
 
-void Model::notify(const int eventCode) {
+void Model::notify(int eventCode) {
 	std::list<Observer*>::iterator iter = observers.begin();
 	
 	while(iter != observers.end())
