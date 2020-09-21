@@ -58,10 +58,7 @@ public:
 		double S_distance = std::abs(HSVValue2.saturation - HSVValue1.saturation);
 		double V_distance = std::abs(HSVValue2.value - HSVValue1.value);
 		
-		// I might be wrong, but while skimming the wikipedia article about HSV I did not seem to find anything
-		// about one of these fields being more important than the other two.
-		// So, as for rgb, every channel has a weight of 1
-		double percentual_difference = (H_distance + S_distance + V_distance) / 3.0;
+		double percentual_difference = std::sqrt(H_distance * H_distance + S_distance * S_distance + V_distance * V_distance);
 		if (percentual_difference <= tolerance) {
 			percentual_difference = 0;
 		}
