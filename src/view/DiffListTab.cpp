@@ -18,7 +18,7 @@ void DiffListTab::update(const std::list<std::shared_ptr<const PixelDiff>>& diff
 	if (markedForUpdate) {
 		list->DeleteAllItems();
 		
-		if (image1 && image2) {
+		if (image1 && image1->IsOk() && image2 && image2->IsOk()) {
 			long itemIndex = 0;
 			long nextIndex;
 			for (auto it = diffContainer.begin(); it != diffContainer.end(); it++) {

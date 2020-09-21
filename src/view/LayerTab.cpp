@@ -12,35 +12,36 @@ wxBEGIN_EVENT_TABLE(LayerTab, wxWindow)
 wxEND_EVENT_TABLE()
 
 LayerTab::LayerTab(wxWindow* parent): ViewTab(parent) {
-	image1 = DisplayUtils::generateBlankImage(1, 1);
-	image2 = DisplayUtils::generateBlankImage(1, 1);
+	blankImage = std::make_shared<wxImage>(DisplayUtils::generateBlankImage(1, 1));
 	
-	wxBitmap* bmp1 = new wxBitmap(image1);
-	wxBitmap* bmp2 = new wxBitmap(image2);
+	image1 = blankImage;
+	image2 = blankImage;
+
+	std::shared_ptr<wxBitmap> bmp1 = std::make_shared<wxBitmap>(*image1);
+	std::shared_ptr<wxBitmap> bmp2 = std::make_shared<wxBitmap>(*image2);
 	
 	staticBitmap1 = new wxGenericStaticBitmap(this, wxID_ANY, *bmp1, wxPoint(0, 0));
 	staticBitmap2 = new wxGenericStaticBitmap(this, wxID_ANY, *bmp2, wxPoint(1, 0));
 	
-	delete bmp1;
-	delete bmp2;
-	
 	// The order here is important, otherwise the slider would be covered by other UI elements.
 	slider = new wxSlider(this, CUT_SLIDER, 1000, 0, 1000);
+	slider->Disable();
 }
 
 void LayerTab::update(const std::list<std::shared_ptr<const PixelDiff>>& diffContainer, 
 					std::shared_ptr<const wxImage> image1, std::shared_ptr<const wxImage> image2) {
 	if (markedForUpdate) {
-		if (image1) {
-			this->image1 = *image1;
+		if (image1 && image2) {
+			this->image1 = image1;
+			this->image2 = image2;
+			
+			slider->Enable();
 		} else {
-			this->image1 = DisplayUtils::generateBlankImage(1, 1);
-		}
-		
-		if (image2) {
-			this->image2 = *image2;
-		} else {
-			this->image2 = DisplayUtils::generateBlankImage(1, 1);
+			this->image1 = blankImage;
+			this->image2 = blankImage;
+			
+			slider->SetValue(1000);
+			slider->Disable();
 		}
 		
 		repaintTab();
@@ -51,8 +52,8 @@ void LayerTab::update(const std::list<std::shared_ptr<const PixelDiff>>& diffCon
 void LayerTab::repaintTab() {
 	wxSize tabSize = this->GetClientSize();
 	
-	wxImage tempImage1 = image1;
-	wxImage tempImage2 = image2;
+	wxImage tempImage1 = *image1;
+	wxImage tempImage2 = *image2;
 	
 	wxPoint image1Pos;
 	wxPoint image2Pos;
@@ -62,9 +63,9 @@ void LayerTab::repaintTab() {
 	int sliderHeight = 40;
 	
 	// Recalculate the size of the images and the new page layout.
-	image1NewSize = DisplayUtils::getLargestProportionalSize(image1.GetWidth(), image1.GetHeight(),
+	image1NewSize = DisplayUtils::getLargestProportionalSize(image1->GetWidth(), image1->GetHeight(),
 																tabSize.GetWidth(), tabSize.GetHeight() - sliderHeight);
-	image2NewSize = DisplayUtils::getLargestProportionalSize(image2.GetWidth(), image2.GetHeight(),
+	image2NewSize = DisplayUtils::getLargestProportionalSize(image2->GetWidth(), image2->GetHeight(),
 																tabSize.GetWidth(), tabSize.GetHeight() - sliderHeight);
 	
 	// Prefer the image with the smaller width.
@@ -104,23 +105,21 @@ void LayerTab::repaintTab() {
 	if (image1NewSize.GetWidth() - image1CutLength > 0) {
 		tempImage1 = tempImage1.GetSubImage(wxRect(0, 0, image1NewSize.GetWidth() - image1CutLength, image1NewSize.GetHeight()));
 	} else {
-		tempImage1 = DisplayUtils::generateBlankImage(1, 1);
+		tempImage1 = *blankImage;
 	}
-	wxBitmap* bmp1 = new wxBitmap(tempImage1);
+	std::shared_ptr<wxBitmap> bmp1 = std::make_shared<wxBitmap>(tempImage1);
 	staticBitmap1->SetBitmap(*bmp1);
 	staticBitmap1->SetPosition(image1Pos);
-	delete bmp1;
 	
 	if (image2NewSize.GetWidth() - image2CutLength > 0) {
 		tempImage2 = tempImage2.GetSubImage(wxRect(image2CutLength, 0, image2NewSize.GetWidth() - image2CutLength, image2NewSize.GetHeight()));
 		image2Pos.x += image2CutLength;
 	} else {
-		tempImage2 = DisplayUtils::generateBlankImage(1, 1);
+		tempImage2 = *blankImage;
 	}
-	wxBitmap* bmp2 = new wxBitmap(tempImage2);
+	std::shared_ptr<wxBitmap> bmp2 = std::make_shared<wxBitmap>(tempImage2);
 	staticBitmap2->SetBitmap(*bmp2);
 	staticBitmap2->SetPosition(image2Pos);
-	delete bmp2;
 	
 	// Resize and move the slider to the bottom of the tab, centered horizontally.
 	int sliderWidth = smallerWidth;

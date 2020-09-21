@@ -132,8 +132,8 @@ View::View(const std::string title, const wxPoint& pos, const wxSize& size, Mode
 }
 
 void View::loadImages(wxCommandEvent& event) {
-	wxFileDialog* fileDialog=new wxFileDialog(this, "Seleziona le immagini da analizzare", wxEmptyString, 
-												wxEmptyString, wxFileSelectorDefaultWildcardStr, wxFD_MULTIPLE);
+	std::shared_ptr<wxFileDialog> fileDialog = std::make_shared<wxFileDialog>(this, "Seleziona le immagini da analizzare", wxEmptyString, 
+																				wxEmptyString, wxFileSelectorDefaultWildcardStr, wxFD_MULTIPLE);
 	if (fileDialog->ShowModal() == wxID_CANCEL) {
 		return;
 	}
@@ -188,6 +188,7 @@ void View::removeImages(wxCommandEvent& event) {
 	}
 	
 	if (activeImageAffected) {
+		controller.removeCachedDifferences();
 		markTabsForUpdate();
 		updateSelectedTab();
 	}

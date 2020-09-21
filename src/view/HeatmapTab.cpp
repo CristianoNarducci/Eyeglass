@@ -5,21 +5,22 @@ wxBEGIN_EVENT_TABLE(HeatmapTab, wxWindow)
 wxEND_EVENT_TABLE()
 
 HeatmapTab::HeatmapTab(wxWindow* parent): ViewTab(parent) {
-	image = DisplayUtils::generateBlankImage(1, 1);
+	blankImage = std::make_shared<wxImage>(DisplayUtils::generateBlankImage(1, 1));
 	
-	wxBitmap* bmp = new wxBitmap(image);
+	image = *blankImage;
+	
+	std::shared_ptr<wxBitmap> bmp = std::make_shared<wxBitmap>(image);
 	staticBitmap = new wxGenericStaticBitmap(this, wxID_ANY, *bmp, wxPoint(0, 0));
-	delete bmp;
 }
 
 void HeatmapTab::update(const std::list<std::shared_ptr<const PixelDiff>>& diffContainer, 
 					std::shared_ptr<const wxImage> image1, std::shared_ptr<const wxImage> image2) {
 	if (markedForUpdate) {
-		if (image1) {
+		if (image1 && image2) {
 			image = *image1;
 			generateHeatmap(diffContainer);
 		} else {
-			image = DisplayUtils::generateBlankImage(1, 1);
+			image = *blankImage;
 		}
 		
 		repaintTab();
@@ -44,10 +45,9 @@ void HeatmapTab::repaintTab() {
 	imagePos.y = (tabSize.GetHeight() - imageNewSize.GetHeight()) / 2;
 	
 	tempImage.Rescale(imageNewSize.GetWidth(), imageNewSize.GetHeight());
-	wxBitmap* bmp = new wxBitmap(tempImage);
+	std::shared_ptr<wxBitmap> bmp = std::make_shared<wxBitmap>(tempImage);
 	staticBitmap->SetBitmap(*bmp);
 	staticBitmap->SetPosition(imagePos);
-	delete bmp;
 }
 
 void HeatmapTab::generateHeatmap(const std::list<std::shared_ptr<const PixelDiff>>& diffContainer) {

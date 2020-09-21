@@ -32,8 +32,13 @@ protected:
 	 * A copy of the original images passed on update.
 	 * It is used as a restart-point from which the displayed images are created, by repaintTab.
 	 */
-	wxImage image1;
-	wxImage image2;
+	std::shared_ptr<const wxImage> image1;
+	std::shared_ptr<const wxImage> image2;
+	
+	/*
+	 * What to show when an image is missing.
+	 */
+	std::shared_ptr<const wxImage> blankImage;
 	
 	/*
 	 * Components that display the images.

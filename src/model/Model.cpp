@@ -16,7 +16,6 @@ void Model::removeImage(wxString path) {
 	// Calls wxImage Destroy to deallocate the image memory.
 	auto iter = imageStorage.find(path);
 	if (iter != imageStorage.end()) {
-		iter->second->Destroy();
 		imageStorage.erase(path);
 	}
 }

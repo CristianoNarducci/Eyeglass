@@ -5,32 +5,31 @@ wxBEGIN_EVENT_TABLE(OriginalViewTab, wxWindow)
 wxEND_EVENT_TABLE()
 
 OriginalViewTab::OriginalViewTab(wxWindow* parent): ViewTab(parent) {
-	image1 = DisplayUtils::generateBlankImage(1, 1);
-	image2 = DisplayUtils::generateBlankImage(1, 1);
+	blankImage = std::make_shared<wxImage>(DisplayUtils::generateBlankImage(1, 1));
 	
-	wxBitmap* bmp1 = new wxBitmap(image1);
-	wxBitmap* bmp2 = new wxBitmap(image2);
+	image1 = blankImage;
+	image2 = blankImage;
+	
+	std::shared_ptr<wxBitmap> bmp1 = std::make_shared<wxBitmap>(*image1);
+	std::shared_ptr<wxBitmap> bmp2 = std::make_shared<wxBitmap>(*image2);
 	
 	staticBitmap1 = new wxGenericStaticBitmap(this, wxID_ANY, *bmp1, wxPoint(0, 0));
 	staticBitmap2 = new wxGenericStaticBitmap(this, wxID_ANY, *bmp2, wxPoint(1, 0));
-	
-	delete bmp1;
-	delete bmp2;
 }
 
 void OriginalViewTab::update(const std::list<std::shared_ptr<const PixelDiff>>& diffContainer, 
 						std::shared_ptr<const wxImage> image1, std::shared_ptr<const wxImage> image2){
 	if (markedForUpdate) {
 		if (image1) {
-			this->image1 = *image1;
+			this->image1 = image1;
 		} else {
-			this->image1 = DisplayUtils::generateBlankImage(1, 1);
+			this->image1 = blankImage;
 		}
 		
 		if (image2) {
-			this->image2 = *image2;
+			this->image2 = image2;
 		} else {
-			this->image2 = DisplayUtils::generateBlankImage(1, 1);
+			this->image2 = blankImage;
 		}
 		
 		repaintTab();
@@ -44,32 +43,40 @@ void OriginalViewTab::repaintTab() {
 	int imageContainerWidth;
 	int imageContainerHeight;
 	
-	wxImage tempImage1 = image1;
-	wxImage tempImage2 = image2;
+	wxImage tempImage1 = *image1;
+	wxImage tempImage2 = *image2;
 	
 	wxPoint image1Pos;
 	wxPoint image2Pos;
 	wxSize image1NewSize;
 	wxSize image2NewSize;
 	
+	// Count how many non-blank images are there, so that if there's only an image, it is shown fullscreen.
+	int nonBlankCount;
+	if (!image1->IsSameAs(*blankImage) && !image2->IsSameAs(*blankImage)) {
+		nonBlankCount = 2;
+	} else {
+		nonBlankCount = 1;
+	}
+	
 	// Recalculate the size of the images and the new page layout.
 	if (tabSize.GetWidth() > tabSize.GetHeight()) {
-		imageContainerWidth = tabSize.GetWidth() / 2;
+		imageContainerWidth = tabSize.GetWidth() / nonBlankCount;
 		imageContainerHeight = tabSize.GetHeight();
 		
-		image1NewSize = DisplayUtils::getLargestProportionalSize(image1.GetWidth(), image1.GetHeight(),
+		image1NewSize = DisplayUtils::getLargestProportionalSize(image1->GetWidth(), image1->GetHeight(),
 																imageContainerWidth, imageContainerHeight);
-		image2NewSize = DisplayUtils::getLargestProportionalSize(image2.GetWidth(), image2.GetHeight(),
+		image2NewSize = DisplayUtils::getLargestProportionalSize(image2->GetWidth(), image2->GetHeight(),
 																imageContainerWidth, imageContainerHeight);
 		
 		image2Pos.x = imageContainerWidth;
 	} else {
 		imageContainerWidth = tabSize.GetWidth();
-		imageContainerHeight = tabSize.GetHeight() / 2;
+		imageContainerHeight = tabSize.GetHeight() / nonBlankCount;
 		
-		image1NewSize = DisplayUtils::getLargestProportionalSize(image1.GetWidth(), image1.GetHeight(),
+		image1NewSize = DisplayUtils::getLargestProportionalSize(image1->GetWidth(), image1->GetHeight(),
 																imageContainerWidth, imageContainerHeight);
-		image2NewSize = DisplayUtils::getLargestProportionalSize(image2.GetWidth(), image2.GetHeight(),
+		image2NewSize = DisplayUtils::getLargestProportionalSize(image2->GetWidth(), image2->GetHeight(),
 																imageContainerWidth, imageContainerHeight);
 		
 		image2Pos.y = imageContainerHeight;
@@ -82,17 +89,14 @@ void OriginalViewTab::repaintTab() {
 	image2Pos.y += (imageContainerHeight - image2NewSize.GetHeight()) / 2;
 	
 	tempImage1.Rescale(image1NewSize.GetWidth(), image1NewSize.GetHeight());
-	wxBitmap* bmp1 = new wxBitmap(tempImage1);
+	std::shared_ptr<wxBitmap> bmp1 = std::make_shared<wxBitmap>(tempImage1);
 	staticBitmap1->SetBitmap(*bmp1);
 	staticBitmap1->SetPosition(image1Pos);
 	
 	tempImage2.Rescale(image2NewSize.GetWidth(), image2NewSize.GetHeight());
-	wxBitmap* bmp2 = new wxBitmap(tempImage2);
+	std::shared_ptr<wxBitmap> bmp2 = std::make_shared<wxBitmap>(tempImage2);
 	staticBitmap2->SetBitmap(*bmp2);
 	staticBitmap2->SetPosition(image2Pos);
-	
-	delete bmp1;
-	delete bmp2;
 }
 
 void OriginalViewTab::onTabResize(wxSizeEvent& event) {

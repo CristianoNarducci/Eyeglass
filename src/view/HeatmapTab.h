@@ -42,6 +42,11 @@ protected:
 	wxImage image;
 	
 	/*
+	 * What to show when an image is missing.
+	 */
+	std::shared_ptr<const wxImage> blankImage;
+	
+	/*
 	 * Components that display the images.
 	 * wxWidgets documentation suggests the strict use of wxGenericStaticBitmap, instead of just wxStaticBitmap,
 	 * for large images.
