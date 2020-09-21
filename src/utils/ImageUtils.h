@@ -41,7 +41,7 @@ public:
 		unsigned char G_distance = std::abs(RGBValue2.green - RGBValue1.green); 
 		unsigned char B_distance = std::abs(RGBValue2.blue - RGBValue1.blue);
 
-		double percentual_difference = (R_distance + G_distance + B_distance) / 765.0;
+		double percentual_difference = std::sqrt(R_distance * R_distance + G_distance * G_distance + B_distance * B_distance) / std::sqrt(255 * 255 * 3);
 		if (percentual_difference <= tolerance) {
 			percentual_difference = 0;
 		}
@@ -58,7 +58,7 @@ public:
 		double S_distance = std::abs(HSVValue2.saturation - HSVValue1.saturation);
 		double V_distance = std::abs(HSVValue2.value - HSVValue1.value);
 		
-		double percentual_difference = std::sqrt(H_distance * H_distance + S_distance * S_distance + V_distance * V_distance);
+		double percentual_difference = std::sqrt(H_distance * H_distance + S_distance * S_distance + V_distance * V_distance) / std::sqrt(3);
 		if (percentual_difference <= tolerance) {
 			percentual_difference = 0;
 		}
