@@ -8,7 +8,8 @@ enum {
 	COMPARE_IMAGES_BUTTON,
 	TOLERANCE_SLIDER,
 	TAB_NOTEBOOK,
-	ABOUT
+	ABOUT,
+	HELP
 };
 
 // wx event table for this panel only.
@@ -21,6 +22,7 @@ wxBEGIN_EVENT_TABLE(View, wxFrame)
 	EVT_SLIDER(TOLERANCE_SLIDER, View::onSliderUpdate)
 	EVT_NOTEBOOK_PAGE_CHANGED(TAB_NOTEBOOK, View::onTabChanged)
 	EVT_MENU(ABOUT, View::onAbout)
+	EVT_MENU(HELP,View::onHelp)
 	EVT_MENU(wxID_EXIT, View::onExit)
 wxEND_EVENT_TABLE()
 
@@ -32,6 +34,7 @@ View::View(const std::string title, const wxPoint& pos, const wxSize& size, Mode
 	
 	appDropdownMenu = new wxMenu;
 	appDropdownMenu->Append(ABOUT, "Informazioni sul progetto");
+	appDropdownMenu->Append(HELP,"Aiuto");
 	appDropdownMenu->Append(wxID_EXIT, "Esci");
 	
 	menu = new wxMenuBar;
@@ -300,6 +303,15 @@ void View::onAbout(wxCommandEvent& event) {
 						"segnalate come candidate di deprecazione.\n"
 						"Il programma supporta tutti i formati immagine attualmente riconosciuti da wxWidgets.";
 	wxMessageBox(message, "Informazioni su Eyeglass", wxOK | wxICON_INFORMATION);
+}
+
+void View::onHelp(wxCommandEvent &event) {
+	const char* message = "Per iniziare caricare quante immagini si desidera con il pulsante 'Aggiungi Immagini'. \n"
+					      "Una volta fatto ciò sarà possibile sia rimuovere le immagini all'interno della lista sia la possibilità di aggiungerne altre. \n"
+						  "Per selezionare un' immagine da utilizzare nella comparazione cliccare sul pulsante 'Attiva Imagagini'. \n"
+						  "L'applicazione è progettata in modo da poterne attivare solo due alla volta. \n"
+						  "Selezionare infine tolleranza e metodo di comparazione,quindi visualizzare i risultati sull'apposita vista.";
+	wxMessageBox(message,"Guida sull'utilizzo",wxOK | wxICON_INFORMATION);
 }
 
 void View::onExit(wxCommandEvent& event) {
