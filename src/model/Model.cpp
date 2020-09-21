@@ -66,7 +66,7 @@ void Model::compareAlpha(wxString path1, wxString path2, double tolerance) {
 			// image2 has alpha while image1 doesn't. Consider image1 as fully opaque.
 			for (int y = 0; y < image1->GetHeight(); y++) {
 				for (int x = 0; x < image1->GetWidth(); x++) {
-					unsigned long i = y * image1->GetHeight() + x;
+					unsigned long i = y * image1->GetWidth() + x;
 					double percentual_difference = ImageUtils::comparePixelAlpha(255, 
 																				image2_alpha[i],
 																				tolerance);
@@ -83,7 +83,7 @@ void Model::compareAlpha(wxString path1, wxString path2, double tolerance) {
 			// image1 has alpha while image2 doesn't. Consider image2 as fully opaque.
 			for (int y = 0; y < image1->GetHeight(); y++) {
 				for (int x = 0; x < image1->GetWidth(); x++) {
-					unsigned long i = y * image1->GetHeight() + x;
+					unsigned long i = y * image1->GetWidth() + x;
 					double percentual_difference = ImageUtils::comparePixelAlpha(image1_alpha[i], 
 																				255,
 																				tolerance);
@@ -96,7 +96,7 @@ void Model::compareAlpha(wxString path1, wxString path2, double tolerance) {
 			// both images have alpha data.
 			for (int y = 0; y < image1->GetHeight(); y++) {
 				for (int x = 0; x < image1->GetWidth(); x++) {
-					unsigned long i = y * image1->GetHeight() + x;
+					unsigned long i = y * image1->GetWidth() + x;
 					double percentual_difference = ImageUtils::comparePixelAlpha(image1_alpha[i], image2_alpha[i], tolerance);
 					if (percentual_difference > 0) {
 						diffStorage.push_back(std::make_shared<PixelDiff>(x, y, percentual_difference));
@@ -134,7 +134,7 @@ void Model::compareRGB(wxString path1, wxString path2, double tolerance) {
 	
 	for (int y = 0; y < image1->GetHeight(); y++) {
 		for (int x = 0; x < image1->GetWidth(); x++) {
-			unsigned long i = y * image1->GetHeight() + x;
+			unsigned long i = y * image1->GetWidth() + x;
 			
 			// Put the rgb separate chars in an envelope which represents a pixel
 			wxImage::RGBValue image1_pixel(image1_RGB[i * 3], image1_RGB[i * 3 + 1], image1_RGB[i * 3 + 2]);
@@ -176,7 +176,7 @@ void Model::compareHSV(wxString path1, wxString path2, double tolerance) {
 	
 	for (int y = 0; y < image1->GetHeight(); y++) {
 		for (int x = 0; x < image1->GetWidth(); x++) {
-			unsigned long i = y * image1->GetHeight() + x;
+			unsigned long i = y * image1->GetWidth() + x;
 			
 			// Put the rgb separate chars in an envelope which represents a pixel
 			wxImage::RGBValue image1_pixel(image1_RGB[i * 3], image1_RGB[i * 3 + 1], image1_RGB[i * 3 + 2]);
