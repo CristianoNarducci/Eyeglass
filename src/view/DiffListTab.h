@@ -13,8 +13,8 @@ class DiffListTab: public ViewTab  {
 public:
 	DiffListTab(wxWindow* parent);
 	void update(const std::list<std::shared_ptr<const PixelDiff>>& diffContainer,
-													wxString path1, const std::shared_ptr<const wxImage> image1, 
-													wxString path2, const std::shared_ptr<const wxImage> image2) override;
+													wxString path1, std::shared_ptr<const wxImage> image1, 
+													wxString path2, std::shared_ptr<const wxImage> image2) override;
 
 protected:
 	wxListView* list;
