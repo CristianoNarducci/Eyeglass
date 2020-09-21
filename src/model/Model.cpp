@@ -10,8 +10,6 @@ void Model::loadImage(wxString path) {
 	}
 	
 	imageStorage.insert(std::make_pair(path, std::make_shared<wxImage>(image)));
-	
-	notify(1);
 }
 
 void Model::removeImage(wxString path) {
