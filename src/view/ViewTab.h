@@ -26,9 +26,8 @@ public:
 	/*
 	 * Updates the tab with the content provided as parameter, but only if marked for updated beforehand.
 	 */
-	virtual void update(const std::list<std::shared_ptr<const PixelDiff>>& diffContainer,
-													wxString path1, std::shared_ptr<const wxImage> image1, 
-													wxString path2, std::shared_ptr<const wxImage> image2) = 0;
+	virtual void update(const std::list<std::shared_ptr<const PixelDiff>>& diffContainer, 
+					std::shared_ptr<const wxImage> image1, std::shared_ptr<const wxImage> image2) = 0;
 	
 	virtual ~ViewTab() {};
 

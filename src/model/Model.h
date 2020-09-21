@@ -45,22 +45,16 @@ public:
 	virtual void removeImage(wxString path);
 	
 	/*
-	 * Completely purge the image storage.
-	 */
-	virtual void removeAllImages();
-	
-	/*
-	 * Returns a non modifiable image 
+	 * Returns a non modifiable image.
 	 * The images in storage should not be modified directly, as doing so prevents the original image
 	 * from being reused in another round of comparison.
 	 */
 	virtual const std::shared_ptr<const wxImage> getImage(wxString path);
 	
 	/*
-	 * Returns a map containing all the images in storage, with their path identifier.
-	 * The returned data is immutable.
+	 * Returns a list containing the paths of the images in storage.
 	 */
-	virtual const std::map<wxString, const std::shared_ptr<const wxImage>>& getAllImages();
+	virtual std::shared_ptr<std::list<wxString>> getStoredPaths();
 	
 	/*
 	 * For each pixel in both images, compare the alpha value and save the percentual of difference 
@@ -109,7 +103,7 @@ protected:
 	 * The storage where images are saved, after being loaded.
 	 * Each image is saved along with its path, which is used as a key for unique identification and retrieval.
 	 */
-	std::map<wxString, const std::shared_ptr<const wxImage>> imageStorage;
+	std::map<wxString, const std::shared_ptr<wxImage>> imageStorage;
 	
 	/*
 	 * A cache for comparison results.

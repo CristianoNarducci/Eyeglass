@@ -26,7 +26,10 @@ protected:
 		}
 	}
 	virtual void TearDown(){
-		model.removeAllImages();
+		auto paths = model.getStoredPaths();
+		for (auto iter = paths->begin(); iter != paths->end(); iter++) {
+			model.removeImage(*iter);
+		}
 		images.clear();
 	}
 	Model model;

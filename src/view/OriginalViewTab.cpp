@@ -13,11 +13,13 @@ OriginalViewTab::OriginalViewTab(wxWindow* parent): ViewTab(parent) {
 	
 	staticBitmap1 = new wxGenericStaticBitmap(this, wxID_ANY, *bmp1, wxPoint(0, 0));
 	staticBitmap2 = new wxGenericStaticBitmap(this, wxID_ANY, *bmp2, wxPoint(1, 0));
+	
+	delete bmp1;
+	delete bmp2;
 }
 
-void OriginalViewTab::update(const std::list<std::shared_ptr<const PixelDiff>>& diffContainer,
-													wxString path1, std::shared_ptr<const wxImage> image1, 
-													wxString path2, std::shared_ptr<const wxImage> image2) {
+void OriginalViewTab::update(const std::list<std::shared_ptr<const PixelDiff>>& diffContainer, 
+						std::shared_ptr<const wxImage> image1, std::shared_ptr<const wxImage> image2){
 	if (markedForUpdate) {
 		if (image1) {
 			this->image1 = *image1;
@@ -88,6 +90,9 @@ void OriginalViewTab::repaintTab() {
 	wxBitmap* bmp2 = new wxBitmap(tempImage2);
 	staticBitmap2->SetBitmap(*bmp2);
 	staticBitmap2->SetPosition(image2Pos);
+	
+	delete bmp1;
+	delete bmp2;
 }
 
 void OriginalViewTab::onTabResize(wxSizeEvent& event) {

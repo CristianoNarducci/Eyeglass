@@ -281,7 +281,7 @@ void View::updateSelectedTab() {
 	if (tab != nullptr) {
 		wxString path1 = activeImages.GetCount() > 0 ? activeImages[0] : "";
 		wxString path2 = activeImages.GetCount() > 1 ? activeImages[1] : "";
-		tab->update(model.getDifferences(), path1, model.getImage(path1), path2, model.getImage(path2));
+		tab->update(model.getDifferences(), model.getImage(path1), model.getImage(path2));
 		tab->FitInside();
 	}
 

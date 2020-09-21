@@ -9,13 +9,13 @@ HeatmapTab::HeatmapTab(wxWindow* parent): ViewTab(parent) {
 	
 	wxBitmap* bmp = new wxBitmap(image);
 	staticBitmap = new wxGenericStaticBitmap(this, wxID_ANY, *bmp, wxPoint(0, 0));
+	delete bmp;
 }
 
-void HeatmapTab::update(const std::list<std::shared_ptr<const PixelDiff>>& diffContainer,
-													wxString path1, std::shared_ptr<const wxImage> image1, 
-													wxString path2, std::shared_ptr<const wxImage> image2) {
+void HeatmapTab::update(const std::list<std::shared_ptr<const PixelDiff>>& diffContainer, 
+					std::shared_ptr<const wxImage> image1, std::shared_ptr<const wxImage> image2) {
 	if (markedForUpdate) {
-		if (image1 && image2) {
+		if (image1) {
 			image = *image1;
 			generateHeatmap(diffContainer);
 		} else {
@@ -47,6 +47,7 @@ void HeatmapTab::repaintTab() {
 	wxBitmap* bmp = new wxBitmap(tempImage);
 	staticBitmap->SetBitmap(*bmp);
 	staticBitmap->SetPosition(imagePos);
+	delete bmp;
 }
 
 void HeatmapTab::generateHeatmap(const std::list<std::shared_ptr<const PixelDiff>>& diffContainer) {
