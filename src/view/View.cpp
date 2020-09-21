@@ -8,7 +8,8 @@ enum {
 	COMPARE_IMAGES_BUTTON,
 	TOLERANCE_SLIDER,
 	TAB_NOTEBOOK,
-	ABOUT
+	ABOUT,
+	HELP
 };
 
 // wx event table for this panel only.
@@ -21,6 +22,7 @@ wxBEGIN_EVENT_TABLE(View, wxFrame)
 	EVT_SLIDER(TOLERANCE_SLIDER, View::onSliderUpdate)
 	EVT_NOTEBOOK_PAGE_CHANGED(TAB_NOTEBOOK, View::onTabChanged)
 	EVT_MENU(ABOUT, View::onAbout)
+	EVT_MENU(HELP,View::onHelp)
 	EVT_MENU(wxID_EXIT, View::onExit)
 wxEND_EVENT_TABLE()
 
@@ -32,6 +34,7 @@ View::View(const std::string title, const wxPoint& pos, const wxSize& size, Mode
 	
 	appDropdownMenu = new wxMenu;
 	appDropdownMenu->Append(ABOUT, "Informazioni sul progetto");
+	appDropdownMenu->Append(HELP,"Aiuto");
 	appDropdownMenu->Append(wxID_EXIT, "Esci");
 	
 	menu = new wxMenuBar;
@@ -191,7 +194,7 @@ void View::activateSelectedImages(wxCommandEvent& event) {
 	if (activeImages.GetCount() > 1 || list->GetSelectedItemCount() > 1) {
 		long item = -1;
 		while ((item = list->GetNextItem(item, wxLIST_NEXT_ALL, wxLIST_STATE_DONTCARE)) != -1) {
-			if (list->GetItemText(item, 1).IsSameAs("*")){
+			if (list->GetItemText(item, 1).IsSameAs("1") || list->GetItemText(item, 1).IsSameAs("2")){
 				list->SetItem(item, 1, "");
 			}
 		}
@@ -202,8 +205,9 @@ void View::activateSelectedImages(wxCommandEvent& event) {
 	
 	long item = -1;
 	while ((item = list->GetNextItem(item, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED)) != -1) {
+		int count = activeImages.GetCount() + 1;
 		if (activeImages.GetCount() < 2) {
-			list->SetItem(item, 1, "*");
+			list->SetItem(item, 1, std::to_string(count));
 			activeImages.Add(list->GetItemText(item));
 		} else {
 			break;
@@ -299,6 +303,15 @@ void View::onAbout(wxCommandEvent& event) {
 						"segnalate come candidate di deprecazione.\n"
 						"Il programma supporta tutti i formati immagine attualmente riconosciuti da wxWidgets.";
 	wxMessageBox(message, "Informazioni su Eyeglass", wxOK | wxICON_INFORMATION);
+}
+
+void View::onHelp(wxCommandEvent &event) {
+	const char* message = "Per iniziare caricare quante immagini si desidera con il pulsante 'Aggiungi Immagini'. \n"
+					      "Una volta fatto cio' sara' possibile sia rimuovere le immagini all'interno della lista sia la possibilita' di aggiungerne altre. \n"
+						  "Per selezionare un' immagine da utilizzare nella comparazione cliccare sul pulsante 'Attiva Immagini'. \n"
+						  "L'applicazione e' progettata in modo da poterne attivare solo due alla volta. \n"
+						  "Selezionare infine tolleranza e metodo di comparazione,quindi visualizzare i risultati sull'apposita vista.";
+	wxMessageBox(message,"Guida sull'utilizzo",wxOK | wxICON_QUESTION);
 }
 
 void View::onExit(wxCommandEvent& event) {

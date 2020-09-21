@@ -51,6 +51,7 @@ protected:
 	void onTabChanged(wxBookCtrlEvent& event);
 	void onSliderUpdate(wxCommandEvent& event);
 	void onAbout(wxCommandEvent& event);
+	void onHelp(wxCommandEvent& event);
 	void onExit(wxCommandEvent& event);
 	
 	/*
