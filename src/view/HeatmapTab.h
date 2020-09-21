@@ -47,7 +47,7 @@ protected:
 	 * wxWidgets documentation suggests the strict use of wxGenericStaticBitmap, instead of just wxStaticBitmap,
 	 * for large images.
 	 */
-	wxGenericStaticBitmap* staticBitmap;
+	std::shared_ptr<wxGenericStaticBitmap> staticBitmap;
 };
 
 #endif

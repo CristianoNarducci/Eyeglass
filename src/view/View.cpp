@@ -2,7 +2,7 @@
 
 // Enum used for component identification in event table.
 enum {
-	ADD_IMAGES_BUTTON,
+	ADD_IMAGES_BUTTON ,
 	REMOVE_IMAGES_BUTTON,
 	ACTIVATE_IMAGES_BUTTON,
 	COMPARE_IMAGES_BUTTON,
@@ -26,49 +26,51 @@ wxEND_EVENT_TABLE()
 
 View::View(const std::string title, const wxPoint& pos, const wxSize& size, Model& model, Controller& controller): 
 									model(model), controller(controller), wxFrame(NULL, wxID_ANY, title, pos, size) {
+
+
 	model.registerObserver(*this);
+
+	panel = std::make_shared<wxWindow>(this,wxID_ANY,wxDefaultPosition,wxDefaultSize);
 	
-	panel = new wxWindow(this, wxID_ANY, wxDefaultPosition, wxDefaultSize);
-	
-	appDropdownMenu = new wxMenu;
+	appDropdownMenu = std::make_shared<wxMenu>();
 	appDropdownMenu->Append(ABOUT, "Informazioni sul progetto");
 	appDropdownMenu->Append(wxID_EXIT, "Esci");
 	
-	menu = new wxMenuBar;
-	menu->Append(appDropdownMenu, "Eyeglass");
-	SetMenuBar(menu);
+	menu = std::make_shared<wxMenuBar>();
+	menu->Append(appDropdownMenu.get(), "Eyeglass");
+	SetMenuBar(menu.get());
 	
 	// Main interface elements
-	addImagesButton = new wxButton(panel, ADD_IMAGES_BUTTON, "Aggiungi immagini", wxDefaultPosition, wxSize(150, 30));
-	removeImagesButton = new wxButton(panel, REMOVE_IMAGES_BUTTON, "Rimuovi immagini", wxDefaultPosition, wxSize(150, 30));
-	activateImagesButton = new wxButton(panel, ACTIVATE_IMAGES_BUTTON, "Attiva immagini", wxDefaultPosition, wxSize(150, 30));
-	compareImagesButton = new wxButton(panel, COMPARE_IMAGES_BUTTON, "Compara immagini", wxDefaultPosition, wxSize(150, 30));
-	toleranceText = new wxStaticText(panel, wxID_ANY, "Soglia di tolleranza", wxDefaultPosition, wxDefaultSize, wxALIGN_CENTRE_HORIZONTAL);
-	comparisonText = new wxStaticText(panel, wxID_ANY, "Modalita' di comparazione", wxDefaultPosition, wxDefaultSize, wxALIGN_CENTRE_HORIZONTAL);
-	toleranceSlider = new wxSlider(panel, TOLERANCE_SLIDER, 500, 0, 1000);
+	addImagesButton = std::make_shared<wxButton>(panel.get(), ADD_IMAGES_BUTTON, "Aggiungi immagini", wxDefaultPosition, wxSize(150, 30));
+	removeImagesButton = std::make_shared<wxButton>(panel.get(), REMOVE_IMAGES_BUTTON, "Rimuovi immagini", wxDefaultPosition, wxSize(150, 30));
+	activateImagesButton = std::make_shared<wxButton>(panel.get(), ACTIVATE_IMAGES_BUTTON, "Attiva immagini", wxDefaultPosition, wxSize(150, 30));
+	compareImagesButton = std::make_shared<wxButton>(panel.get(), COMPARE_IMAGES_BUTTON, "Compara immagini", wxDefaultPosition, wxSize(150, 30));
+	toleranceText = std::make_shared<wxStaticText>(panel.get(), wxID_ANY, "Soglia di tolleranza", wxDefaultPosition, wxDefaultSize, wxALIGN_CENTRE_HORIZONTAL);
+	comparisonText = std::make_shared<wxStaticText>(panel.get(), wxID_ANY, "Modalita' di comparazione", wxDefaultPosition, wxDefaultSize, wxALIGN_CENTRE_HORIZONTAL);
+	toleranceSlider = std::make_shared<wxSlider>(panel.get(), TOLERANCE_SLIDER, 500, 0, 1000);
 	
-	toleranceSliderValue = new wxTextCtrl(panel, wxID_ANY, "50.0 %", wxDefaultPosition, wxDefaultSize, wxTE_CENTRE);
+	toleranceSliderValue = std::make_shared<wxTextCtrl>(panel.get(), wxID_ANY, "50.0 %", wxDefaultPosition, wxDefaultSize, wxTE_CENTRE);
 	toleranceSliderValue->SetEditable(false);
-	
-	modeSelector = new wxComboBox(panel, wxID_ANY);
+
+	modeSelector = std::make_shared<wxComboBox>(panel.get(), wxID_ANY);
 	modeSelector->Append("RGB");
 	modeSelector->Append("HSV");
 	modeSelector->Append("ALPHA");
 	modeSelector->SetEditable(false);
 	modeSelector->SetSelection(0);
 	
-	list = new wxListView(panel, wxID_ANY);
+	list = std::make_shared<wxListView>(panel.get(), wxID_ANY);
 	list->InsertColumn(0, "Immagini", wxLIST_FORMAT_LEFT, 280);
 	list->InsertColumn(1, "S", wxLIST_FORMAT_CENTER, 40);
-	
+
 	// Main panel sizer
-	wxFlexGridSizer* panelSizer = new wxFlexGridSizer(1, 2, 8, 8);
+	std::shared_ptr<wxFlexGridSizer> panelSizer = std::make_shared<wxFlexGridSizer>(1, 2, 8, 8);
 	panelSizer->AddGrowableRow(0, 16);
 	panelSizer->AddGrowableCol(1, 16);
-	panel->SetSizer(panelSizer);
+	panel->SetSizer(panelSizer.get());
 	
 	// Sidebar sizers and controls
-	wxFlexGridSizer* sidebarSizer = new wxFlexGridSizer(10, 1, 0, 0);
+	std::shared_ptr<wxFlexGridSizer> sidebarSizer = std::make_shared<wxFlexGridSizer>(10, 1, 0, 0);
 	sidebarSizer->AddGrowableRow(0, 16);
 	sidebarSizer->AddGrowableRow(1, 0);
 	sidebarSizer->AddGrowableRow(2, 0);
@@ -80,49 +82,49 @@ View::View(const std::string title, const wxPoint& pos, const wxSize& size, Mode
 	sidebarSizer->AddGrowableRow(8, 0);
 	sidebarSizer->AddGrowableRow(9, 0);
 	
-	panelSizer->Add(sidebarSizer, 1, wxEXPAND);
+	panelSizer->Add(sidebarSizer.get(), 1, wxEXPAND);
 	
-	sidebarSizer->Add(list, 1, wxEXPAND);
+	sidebarSizer->Add(list.get(), 1, wxEXPAND);
 	
 	sidebarSizer->AddSpacer(4);
 	
-	wxBoxSizer* storageControlSizer = new wxBoxSizer(wxHORIZONTAL);
-	sidebarSizer->Add(storageControlSizer, 1, wxEXPAND | wxBOTTOM);
-	storageControlSizer->Add(addImagesButton, 1, wxALL | wxALIGN_CENTER_VERTICAL, 4);
-	storageControlSizer->Add(removeImagesButton, 1, wxALL | wxALIGN_CENTER_VERTICAL, 4);
+	std::shared_ptr<wxBoxSizer> storageControlSizer = std::make_shared<wxBoxSizer>(wxHORIZONTAL);
+	sidebarSizer->Add(storageControlSizer.get(), 1, wxEXPAND | wxBOTTOM);
+	storageControlSizer->Add(addImagesButton.get(), 1, wxALL | wxALIGN_CENTER_VERTICAL, 4);
+	storageControlSizer->Add(removeImagesButton.get(), 1, wxALL | wxALIGN_CENTER_VERTICAL, 4);
 	
-	wxBoxSizer* activeImagesControlSizer = new wxBoxSizer(wxHORIZONTAL);
-	sidebarSizer->Add(activeImagesControlSizer, 1, wxEXPAND | wxBOTTOM);
-	activeImagesControlSizer->Add(activateImagesButton, 1, wxALL | wxALIGN_CENTER_VERTICAL, 4);
-	
-	sidebarSizer->AddSpacer(16);
-	
-	wxBoxSizer* toleranceControlText = new wxBoxSizer(wxHORIZONTAL);
-	sidebarSizer->Add(toleranceControlText, 1, wxEXPAND | wxBOTTOM);
-	toleranceControlText->Add(toleranceText, 1, wxEXPAND | wxALIGN_TOP, 4);
-	
-	wxBoxSizer* toleranceControlSizer = new wxBoxSizer(wxHORIZONTAL);
-	sidebarSizer->Add(toleranceControlSizer, 1, wxEXPAND | wxBOTTOM);
-	toleranceControlSizer->Add(toleranceSlider, 2, wxALL | wxALIGN_CENTER_VERTICAL, 4);
-	toleranceControlSizer->Add(toleranceSliderValue, 1, wxALL | wxALIGN_CENTER_VERTICAL, 4);
+	std::shared_ptr<wxBoxSizer> activeImagesControlSizer = std::make_shared<wxBoxSizer>(wxHORIZONTAL);
+	sidebarSizer->Add(activeImagesControlSizer.get(), 1, wxEXPAND | wxBOTTOM);
+	activeImagesControlSizer->Add(activateImagesButton.get(), 1, wxALL | wxALIGN_CENTER_VERTICAL, 4);
 	
 	sidebarSizer->AddSpacer(16);
+
+	std::shared_ptr<wxBoxSizer> toleranceControlText = std::make_shared<wxBoxSizer>(wxHORIZONTAL);
+	sidebarSizer->Add(toleranceControlText.get(), 1, wxEXPAND | wxBOTTOM);
+	toleranceControlText->Add(toleranceText.get(), 1, wxEXPAND | wxALIGN_TOP, 4);
+
+	std::shared_ptr<wxBoxSizer> toleranceControlSizer = std::make_shared<wxBoxSizer>(wxHORIZONTAL);
+	sidebarSizer->Add(toleranceControlSizer.get(), 1, wxEXPAND | wxBOTTOM);
+	toleranceControlSizer->Add(toleranceSlider.get(), 2, wxALL | wxALIGN_CENTER_VERTICAL, 4);
+	toleranceControlSizer->Add(toleranceSliderValue.get(), 1, wxALL | wxALIGN_CENTER_VERTICAL, 4);
 	
-	wxBoxSizer* modeControlText = new wxBoxSizer(wxHORIZONTAL);
-	sidebarSizer->Add(modeControlText, 1, wxEXPAND | wxBOTTOM);
-	modeControlText->Add(comparisonText, 1, wxEXPAND | wxALIGN_TOP, 4);
-	
-	wxBoxSizer* modeControlSizer = new wxBoxSizer(wxHORIZONTAL);
-	sidebarSizer->Add(modeControlSizer, 1, wxEXPAND | wxBOTTOM);
-	modeControlSizer->Add(modeSelector, 1, wxALL | wxALIGN_CENTER_VERTICAL, 4);
-	modeControlSizer->Add(compareImagesButton, 1, wxALL | wxALIGN_CENTER_VERTICAL, 4);
+	sidebarSizer->AddSpacer(16);
+
+	std::shared_ptr<wxBoxSizer> modeControlText = std::make_shared<wxBoxSizer>(wxHORIZONTAL);
+	sidebarSizer->Add(modeControlText.get(), 1, wxEXPAND | wxBOTTOM);
+	modeControlText->Add(comparisonText.get(), 1, wxEXPAND | wxALIGN_TOP, 4);
+
+	std::shared_ptr<wxBoxSizer> modeControlSizer = std::make_shared<wxBoxSizer>(wxHORIZONTAL);
+	sidebarSizer->Add(modeControlSizer.get(), 1, wxEXPAND | wxBOTTOM);
+	modeControlSizer->Add(modeSelector.get(), 1, wxALL | wxALIGN_CENTER_VERTICAL, 4);
+	modeControlSizer->Add(compareImagesButton.get(), 1, wxALL | wxALIGN_CENTER_VERTICAL, 4);
 	
 	// Result view area
-	tabsNotebook = new wxNotebook(panel, TAB_NOTEBOOK, wxDefaultPosition, wxDefaultSize, wxNB_BOTTOM);
+	tabsNotebook = std::make_shared<wxNotebook>(panel.get(), TAB_NOTEBOOK, wxDefaultPosition, wxDefaultSize, wxNB_BOTTOM);
 	//tabsNotebook->InvalidateBestSize();
-	wxBoxSizer* container = new wxBoxSizer(wxVERTICAL);
-	container->Add(tabsNotebook, 1, wxEXPAND);
-	panelSizer->Add(container, 1, wxEXPAND);
+	std::shared_ptr<wxBoxSizer> container = std::make_shared<wxBoxSizer>(wxVERTICAL);
+	container->Add(tabsNotebook.get(), 1, wxEXPAND);
+	panelSizer->Add(container.get(), 1, wxEXPAND);
 
 	generateTabs();
 }
@@ -247,16 +249,16 @@ void View::update(int eventCode) {
 }
 
 void View::generateTabs() {
-	OriginalViewTab* originalTab = new OriginalViewTab(tabsNotebook);
+	OriginalViewTab* originalTab = new OriginalViewTab(tabsNotebook.get());
 	tabsNotebook->AddPage(originalTab, "Immagini originali", true);
 	
-	DiffListTab* diffTab = new DiffListTab(tabsNotebook);
+	DiffListTab* diffTab = new DiffListTab(tabsNotebook.get());
 	tabsNotebook->AddPage(diffTab, "Lista di differenze");
 	
-	LayerTab* layerTab = new LayerTab(tabsNotebook);
+	LayerTab* layerTab = new LayerTab(tabsNotebook.get());
 	tabsNotebook->AddPage(layerTab, "Vista a livelli");
 	
-	HeatmapTab* heatmapTab = new HeatmapTab(tabsNotebook);
+	HeatmapTab* heatmapTab = new HeatmapTab(tabsNotebook.get());
 	tabsNotebook->AddPage(heatmapTab, "Heatmap");
 }
 

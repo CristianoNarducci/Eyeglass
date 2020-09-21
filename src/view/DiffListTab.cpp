@@ -5,12 +5,12 @@ DiffListTab::DiffListTab(wxWindow* parent): ViewTab(parent) {
 	panelSizer->AddGrowableRow(0, 16);
 	panelSizer->AddGrowableCol(0, 16);
 	this->SetSizer(panelSizer);
-	
-	list = new wxListView(this, wxID_ANY);
+
+	list = std::make_shared<wxListView>(this,wxID_ANY);
 	list->InsertColumn(0, "Asse X", wxLIST_FORMAT_LEFT, 120);
 	list->InsertColumn(1, "Asse Y", wxLIST_FORMAT_LEFT, 120);
 	list->InsertColumn(2, "Percentuale di differenza", wxLIST_FORMAT_LEFT, 200);
-	panelSizer->Add(list, 1, wxEXPAND);
+	panelSizer->Add(list.get(), 1, wxEXPAND);
 }
 
 void DiffListTab::update(const std::list<std::shared_ptr<const PixelDiff>>& diffContainer,

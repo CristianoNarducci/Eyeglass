@@ -56,32 +56,33 @@ protected:
 	/*
 	 * The main application panel, where each element resides.
 	 */
-	wxWindow* panel;
+	std::shared_ptr<wxWindow> panel;
+	//wxWindow* panel;
 	
 	/*
 	 * The top menu bar with its clickable dropdown menus.
 	 */
-	wxMenuBar* menu;
-	wxMenu* appDropdownMenu;
+	std::shared_ptr<wxMenuBar> menu;
+	std::shared_ptr<wxMenu> appDropdownMenu;
 	
 	/*
 	 * The storage and comparison controls.
 	 */
-	wxListView* list;
-	wxButton* addImagesButton;
-	wxButton* removeImagesButton;
-	wxButton* activateImagesButton;
-	wxButton* compareImagesButton;
-	wxSlider* toleranceSlider;
-	wxComboBox* modeSelector;
+	std::shared_ptr<wxListView> list;
+	std::shared_ptr<wxButton> addImagesButton;
+	std::shared_ptr<wxButton> removeImagesButton;
+	std::shared_ptr<wxButton> activateImagesButton;
+	std::shared_ptr<wxButton> compareImagesButton;
+	std::shared_ptr<wxSlider> toleranceSlider;
+	std::shared_ptr<wxComboBox> modeSelector;
 	
 	/*
 	 * Labels and indicators.
 	 */
-	wxTextCtrl* toleranceSliderValue;
+	std::shared_ptr<wxTextCtrl> toleranceSliderValue;
 	
-	wxStaticText* toleranceText;
-	wxStaticText* comparisonText;
+	std::shared_ptr<wxStaticText> toleranceText;
+	std::shared_ptr<wxStaticText> comparisonText;
 	
 	/*
 	 * Holds the paths of the currently active images. It also serves as a counter for them.
@@ -92,7 +93,7 @@ protected:
 	 * All the viewtabs this program can use to display the results of a comparison.
 	 * The "visual" container is kind of a tab chooser, something like a web browser.
 	 */
-	wxNotebook* tabsNotebook;
+	std::shared_ptr<wxNotebook> tabsNotebook;
 	
 	Model& model;
 	Controller& controller;

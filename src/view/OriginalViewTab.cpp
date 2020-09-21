@@ -10,9 +10,9 @@ OriginalViewTab::OriginalViewTab(wxWindow* parent): ViewTab(parent) {
 	
 	wxBitmap* bmp1 = new wxBitmap(image1);
 	wxBitmap* bmp2 = new wxBitmap(image2);
-	
-	staticBitmap1 = new wxGenericStaticBitmap(this, wxID_ANY, *bmp1, wxPoint(0, 0));
-	staticBitmap2 = new wxGenericStaticBitmap(this, wxID_ANY, *bmp2, wxPoint(1, 0));
+
+	staticBitmap1 = std::make_shared<wxGenericStaticBitmap>(this,wxID_ANY,*bmp1,wxPoint(0,0));
+	staticBitmap2 = std::make_shared<wxGenericStaticBitmap>(this,wxID_ANY,*bmp2,wxPoint(1,0));
 }
 
 void OriginalViewTab::update(const std::list<std::shared_ptr<const PixelDiff>>& diffContainer,
