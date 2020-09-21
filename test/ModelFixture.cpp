@@ -85,14 +85,14 @@ TEST_F(ModelSuite,testRGB){
 	double result = diffStorage.front()->percentual_diff;
 	EXPECT_EQ(0,x);
 	EXPECT_EQ(0,y);
-	EXPECT_NEAR(0.36078,result,0.00002);
+	EXPECT_NEAR(0.430028,result,0.00002);
 	x = diffStorage.back()->x;
 	y = diffStorage.back()->y;
 	result = diffStorage.back()->percentual_diff;
 	//Test of last pixel
 	EXPECT_EQ(15,x);
 	EXPECT_EQ(15,y);
-	EXPECT_NEAR(0.31633,result,0.0002);
+	EXPECT_NEAR(0.32757,result,0.0002);
 	model.removeCachedDifferences();
 
 
@@ -107,13 +107,13 @@ TEST_F(ModelSuite,testHSV){
 	double result = diffStorage.front()->percentual_diff;
 	EXPECT_EQ(0,x);
 	EXPECT_EQ(0,y);
-	EXPECT_NEAR(0.38373,result,0.00002);
+	EXPECT_NEAR(0.434399,result,0.00002);
 	//Test of last pixel
 	x = diffStorage.back()->x;
 	y = diffStorage.back()->y;
 	result = diffStorage.back()->percentual_diff;
 	EXPECT_EQ(15,x);
 	EXPECT_EQ(15,y);
-	EXPECT_NEAR(0.161517,result,0.00002);
+	EXPECT_NEAR(0.201382,result,0.00002);
 }
 //
