@@ -6,9 +6,9 @@ wxEND_EVENT_TABLE()
 
 HeatmapTab::HeatmapTab(wxWindow* parent): ViewTab(parent) {
 	image = DisplayUtils::generateBlankImage(1, 1);
-
-	std::shared_ptr<wxBitmap> bmp = std::make_shared<wxBitmap>(image);
-	staticBitmap = std::make_shared<wxGenericStaticBitmap>(this,wxID_ANY,*bmp,wxPoint(0,0));
+	
+	wxBitmap* bmp = new wxBitmap(image);
+	staticBitmap = new wxGenericStaticBitmap(this, wxID_ANY, *bmp, wxPoint(0, 0));
 }
 
 void HeatmapTab::update(const std::list<std::shared_ptr<const PixelDiff>>& diffContainer,
