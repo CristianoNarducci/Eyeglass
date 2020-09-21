@@ -45,6 +45,20 @@ public:
 			return wxSize(containerHeight * objectRatio, containerHeight);
 		}
 	}
+	
+	/*
+	 * Mixes two colors to simulate an overlap effect of an alpha layer.
+	 */
+	static wxImage::RGBValue mixColors(wxImage::RGBValue sourceColor, wxImage::RGBValue maskColor, double percentage) {
+		double inversePercentage = 1.0 - percentage;
+		
+		wxImage::RGBValue result;
+		result.red = sourceColor.red * inversePercentage + maskColor.red * percentage;
+		result.green = sourceColor.green * inversePercentage + maskColor.green * percentage;
+		result.blue = sourceColor.blue * inversePercentage + maskColor.blue * percentage;
+		
+		return result;
+	}
 };
 
 #endif

@@ -5,8 +5,11 @@ wxBEGIN_EVENT_TABLE(OriginalViewTab, wxWindow)
 wxEND_EVENT_TABLE()
 
 OriginalViewTab::OriginalViewTab(wxWindow* parent): ViewTab(parent) {
-	wxBitmap* bmp1 = new wxBitmap(DisplayUtils::generateBlankImage(1, 1));
-	wxBitmap* bmp2= new wxBitmap(DisplayUtils::generateBlankImage(1, 1));
+	image1 = DisplayUtils::generateBlankImage(1, 1);
+	image2 = DisplayUtils::generateBlankImage(1, 1);
+	
+	wxBitmap* bmp1 = new wxBitmap(image1);
+	wxBitmap* bmp2 = new wxBitmap(image2);
 	
 	staticBitmap1 = new wxGenericStaticBitmap(this, wxID_ANY, *bmp1, wxPoint(0, 0));
 	staticBitmap2 = new wxGenericStaticBitmap(this, wxID_ANY, *bmp2, wxPoint(1, 0));
