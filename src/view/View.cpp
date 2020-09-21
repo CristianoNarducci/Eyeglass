@@ -61,8 +61,9 @@ View::View(const std::string title, const wxPoint& pos, const wxSize& size, Mode
 	modeSelector->SetSelection(0);
 	
 	list = new wxListView(panel, wxID_ANY);
-	list->InsertColumn(0, "Immagini", wxLIST_FORMAT_LEFT, 280);
-	list->InsertColumn(1, "S", wxLIST_FORMAT_CENTER, 40);
+	list->InsertColumn(0, "", wxLIST_FORMAT_LEFT,1);
+	list->InsertColumn(1,"Immagini",wxLIST_FORMAT_LEFT,100);
+	list->InsertColumn(2, "S", wxLIST_FORMAT_CENTER, 40);
 	
 	// Main panel sizer
 	wxFlexGridSizer* panelSizer = new wxFlexGridSizer(1, 2, 8, 8);
@@ -142,6 +143,7 @@ void View::loadImages(wxCommandEvent& event) {
 	
 	// Tries to load each image. The ones not loaded will be put into a separate array.
 	wxArrayString pathsNotLoaded;
+	wxFileName path;
 	for (auto iterator = paths.begin(); iterator < paths.end(); ++iterator) {
 		// Do not try to re-add images. While the storage does not do that, the list does.
 		// While this might not be the most elegant way, I feel that is best, between filtering the list
@@ -149,12 +151,15 @@ void View::loadImages(wxCommandEvent& event) {
 		if (!model.getImage(*iterator)) {
 			try {
 				controller.loadImage(*iterator);
+
 			} catch (ImageLoaderException& error) {
 				pathsNotLoaded.Add(*iterator);
 				continue;
 			}
-		
+			path.Assign(*iterator);
 			list->InsertItem(0, *iterator);
+			list->SetItem(0,1,path.GetFullName());
+
 		}
 	}
 	
@@ -194,8 +199,8 @@ void View::activateSelectedImages(wxCommandEvent& event) {
 	if (activeImages.GetCount() > 1 || list->GetSelectedItemCount() > 1) {
 		long item = -1;
 		while ((item = list->GetNextItem(item, wxLIST_NEXT_ALL, wxLIST_STATE_DONTCARE)) != -1) {
-			if (list->GetItemText(item, 1).IsSameAs("1") || list->GetItemText(item, 1).IsSameAs("2")){
-				list->SetItem(item, 1, "");
+			if (list->GetItemText(item, 2).IsSameAs("1") || list->GetItemText(item, 2).IsSameAs("2")){
+				list->SetItem(item, 2, "");
 			}
 		}
 		
@@ -206,8 +211,11 @@ void View::activateSelectedImages(wxCommandEvent& event) {
 	long item = -1;
 	while ((item = list->GetNextItem(item, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED)) != -1) {
 		if (activeImages.GetCount() < 2) {
-			list->SetItem(item, 1, std::to_string(activeImages.GetCount() + 1));
-			activeImages.Add(list->GetItemText(item));
+			if(activeImages.Index(list->GetItemText(item)) == wxNOT_FOUND){
+				activeImages.Add(list->GetItemText(item));
+				list->SetItem(item, 2, std::to_string(activeImages.GetCount()));
+
+			}
 		} else {
 			break;
 		}

@@ -22,7 +22,7 @@
 #include "DiffListTab.h"
 #include "LayerTab.h"
 #include "HeatmapTab.h"
-
+#include <wx/filename.h>
 #include "../exception/ImageLoaderException.h"
 #include "../exception/ImageGeometryException.h"
 
