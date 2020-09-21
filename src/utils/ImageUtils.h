@@ -24,7 +24,7 @@ public:
 	/*
 	 * Returns the percentual of difference between the two alpha values, or 0 if below tolerance.
 	 */
-	static double comparePixelAlpha(const unsigned char alphaValue1, const unsigned char alphaValue2, const double tolerance) {
+	static double comparePixelAlpha(unsigned char alphaValue1, unsigned char alphaValue2, double tolerance) {
 		double percentual_difference = std::abs(alphaValue2 - alphaValue1) / 255.0;
 		if (percentual_difference <= tolerance) {
 			percentual_difference = 0;
@@ -36,12 +36,12 @@ public:
 	/*
 	 * Returns the percentual of difference between the two RGB values, or 0 if below tolerance.
 	 */
-	static double comparePixelRGB(const wxImage::RGBValue RGBValue1, const wxImage::RGBValue RGBValue2, const double tolerance) {
+	static double comparePixelRGB(wxImage::RGBValue RGBValue1, wxImage::RGBValue RGBValue2, double tolerance) {
 		unsigned char R_distance = std::abs(RGBValue2.red - RGBValue1.red);
 		unsigned char G_distance = std::abs(RGBValue2.green - RGBValue1.green); 
 		unsigned char B_distance = std::abs(RGBValue2.blue - RGBValue1.blue);
 
-		double percentual_difference = (R_distance + G_distance + B_distance) / 765.0;
+		double percentual_difference = std::sqrt(R_distance * R_distance + G_distance * G_distance + B_distance * B_distance) / std::sqrt(255 * 255 * 3);
 		if (percentual_difference <= tolerance) {
 			percentual_difference = 0;
 		}
@@ -52,16 +52,13 @@ public:
 	/*
 	 * Returns the percentual of difference between the two HSV values, or 0 if below tolerance.
 	 */
-	static double comparePixelHSV(const wxImage::HSVValue HSVValue1, const wxImage::HSVValue HSVValue2, const double tolerance) {
+	static double comparePixelHSV(wxImage::HSVValue HSVValue1, wxImage::HSVValue HSVValue2, double tolerance) {
 		// The multiplication by 2 is just to take the value on par with the others, otherwise it would be max 0.5
 		double H_distance = std::remainder(std::abs(HSVValue2.hue - HSVValue1.hue), 1.0) * 2.0;
 		double S_distance = std::abs(HSVValue2.saturation - HSVValue1.saturation);
 		double V_distance = std::abs(HSVValue2.value - HSVValue1.value);
 		
-		// I might be wrong, but while skimming the wikipedia article about HSV I did not seem to find anything
-		// about one of these fields being more important than the other two.
-		// So, as for rgb, every channel has a weight of 1
-		double percentual_difference = (H_distance + S_distance + V_distance) / 3.0;
+		double percentual_difference = std::sqrt(H_distance * H_distance + S_distance * S_distance + V_distance * V_distance) / std::sqrt(3);
 		if (percentual_difference <= tolerance) {
 			percentual_difference = 0;
 		}

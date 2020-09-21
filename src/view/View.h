@@ -56,7 +56,7 @@ protected:
 	/*
 	 * The main application panel, where each element resides.
 	 */
-	wxScrolledWindow* panel;
+	wxWindow* panel;
 	
 	/*
 	 * The top menu bar with its clickable dropdown menus.

@@ -32,8 +32,7 @@ View::View(const std::string title, const wxPoint& pos, const wxSize& size, Mode
 									model(model), controller(controller), wxFrame(NULL, wxID_ANY, title, pos, size) {
 	model.registerObserver(*this);
 	
-	panel = new wxScrolledWindow(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxBORDER_THEME);
-	panel->SetScrollRate(5, 5);
+	panel = new wxWindow(this, wxID_ANY, wxDefaultPosition, wxDefaultSize);
 	
 	appDropdownMenu = new wxMenu;
 	appDropdownMenu->Append(ABOUT, "Informazioni sul progetto");
@@ -235,10 +234,6 @@ void View::compareImages(wxCommandEvent& event) {
 		} else if (mode.IsSameAs("ALPHA")) {
 			controller.compareAlpha(activeImages[0], activeImages[1], tolerance);
 		}
-		
-		// Update the selected tab immmediately and mark the others for update.
-		markTabsForUpdate();
-		updateSelectedTab();
 	} catch (ImageGeometryException& error) {
 		wxMessageBox("Causa: geometria diversa. \nE' necessario che le immagini abbiano altezze e larghezze uguali",
 						"Impossibile confrontare le immagini scelte", wxOK | wxICON_EXCLAMATION);
@@ -246,7 +241,13 @@ void View::compareImages(wxCommandEvent& event) {
 }
 
 void View::update(int eventCode) {
-	// TODO: Move event-related code here!
+	switch (eventCode) {
+		case 8:
+			// Update the selected tab immmediately and mark the others for update.
+			markTabsForUpdate();
+			updateSelectedTab();
+			break;
+	}
 }
 
 void View::generateTabs() {
@@ -297,7 +298,11 @@ void View::onSliderUpdate(wxCommandEvent& event) {
 }
 
 void View::onAbout(wxCommandEvent& event) {
-	// TODO: Implement a little message box with some info about the project itself
+	const char* message = "Eyeglass e' uno strumento di comparazione di immagini nato come consegna per un progetto universitario. \n"
+						"Il codice e' stato interamente sviluppato per compilare dal C++ 11 in poi, con attenzione ad evitare istruzioni gia'"
+						"segnalate come candidate di deprecazione.\n"
+						"Il programma supporta tutti i formati immagine attualmente riconosciuti da wxWidgets.";
+	wxMessageBox(message, "Informazioni su Eyeglass", wxOK | wxICON_INFORMATION);
 }
 
 void View::onExit(wxCommandEvent& event) {

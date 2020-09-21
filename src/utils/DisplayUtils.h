@@ -6,8 +6,6 @@
 	#include <wx/wx.h>
 #endif
 
-#include <cmath>
-
 /*
  * Collection of utilities useful in visualization of images.
  */
@@ -32,22 +30,34 @@ public:
 	}
 	
 	/*
-	 * Scales an image without loosing its original aspect ratio, to the container size.
-	 * If the image and the container do not share the same aspect ratio, since the function preserves
-	 * the image aspect ratio, the resulting size will not cover the whole container, thus only the largest 
-	 * side of the image will touch the container.
-	 * 
-	 * The rescaling quality can be specified, otherwise BICUBIC (the best) will be used.
+	 * Calculates the sides that a rectangular object can reach, without loosing its original aspect ratio,
+	 * while being resized to fill a container.
+	 * When the largest side of the object has the same length of one side of the container, the growth stops.
+	 * This means that the object might not fill the container entirely.
 	 */
-	static void proportionallyRescaleImage(wxImage& image, int containerWidth, int containerHeight,
-											wxImageResizeQuality quality = wxIMAGE_QUALITY_BICUBIC) {
-		double imageRatio = image.GetWidth() / double(image.GetHeight());
+	static wxSize getLargestProportionalSize(int objectWidth, int objectHeight,
+												int containerWidth, int containerHeight) {
+		double objectRatio = objectWidth / double(objectHeight);
 		
-		if (imageRatio > 1.0) {
-			image.Rescale(containerWidth, containerWidth / imageRatio, quality);
+		if (containerWidth / objectRatio <= containerHeight) {
+			return wxSize(containerWidth, containerWidth / objectRatio);
 		} else {
-			image.Rescale(containerHeight * imageRatio, containerHeight, quality);
+			return wxSize(containerHeight * objectRatio, containerHeight);
 		}
+	}
+	
+	/*
+	 * Mixes two colors to simulate an overlap effect of an alpha layer.
+	 */
+	static wxImage::RGBValue mixColors(wxImage::RGBValue sourceColor, wxImage::RGBValue maskColor, double percentage) {
+		double inversePercentage = 1.0 - percentage;
+		
+		wxImage::RGBValue result;
+		result.red = sourceColor.red * inversePercentage + maskColor.red * percentage;
+		result.green = sourceColor.green * inversePercentage + maskColor.green * percentage;
+		result.blue = sourceColor.blue * inversePercentage + maskColor.blue * percentage;
+		
+		return result;
 	}
 };
 

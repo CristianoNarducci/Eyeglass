@@ -1,8 +1,6 @@
 #include "ViewTab.h"
 
-ViewTab::ViewTab(wxWindow* parent): wxScrolledWindow(parent, wxID_ANY) {
-	this->SetScrollRate(5,5);
-}
+ViewTab::ViewTab(wxWindow* parent): wxWindow(parent, wxID_ANY) {}
 
 void ViewTab::markForUpdate() {
 	markedForUpdate = true;
