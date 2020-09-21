@@ -13,17 +13,16 @@ void Model::loadImage(wxString path) {
 }
 
 void Model::removeImage(wxString path) {
-	imageStorage.erase(path);
-}
-
-void Model::removeAllImages() {
-	imageStorage.clear();
+	// Calls wxImage Destroy to deallocate the image memory.
+	auto iter = imageStorage.find(path);
+	if (iter != imageStorage.end()) {
+		iter->second->Destroy();
+		imageStorage.erase(path);
+	}
 }
 
 const std::shared_ptr<const wxImage> Model::getImage(wxString path) {
-	std::map<wxString, const std::shared_ptr<const wxImage>>::const_iterator iter;
-	
-	iter = imageStorage.find(path);
+	auto iter = imageStorage.find(path);
 	if (iter != imageStorage.end()) {
 		return iter->second;
 	}
@@ -31,8 +30,14 @@ const std::shared_ptr<const wxImage> Model::getImage(wxString path) {
 	return std::shared_ptr<const wxImage>(nullptr);
 }
 
-const std::map<wxString, const std::shared_ptr<const wxImage>>& Model::getAllImages() {
-	return imageStorage;
+std::shared_ptr<std::list<wxString>> Model::getStoredPaths() {
+	std::shared_ptr<std::list<wxString>> paths = std::make_shared<std::list<wxString>>();
+	
+	for (auto iter = imageStorage.begin(); iter != imageStorage.end(); iter++) {
+		paths->push_back(iter->first);
+	}
+	
+	return paths;
 }
 
 // An image without the alpha channel is interpreted as having every pixel alpha value set to 255
@@ -209,7 +214,7 @@ void Model::removeObserver(Observer& observer) {
 }
 
 void Model::notify(int eventCode) {
-	std::list<Observer*>::iterator iter = observers.begin();
+	auto iter = observers.begin();
 	
 	while(iter != observers.end())
 	{

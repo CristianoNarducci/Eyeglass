@@ -15,9 +15,8 @@
 class HeatmapTab: public ViewTab {
 public:
 	HeatmapTab(wxWindow* parent);
-	void update(const std::list<std::shared_ptr<const PixelDiff>>& diffContainer,
-													wxString path1, const std::shared_ptr<const wxImage> image1, 
-													wxString path2, const std::shared_ptr<const wxImage> image2) override;
+	void update(const std::list<std::shared_ptr<const PixelDiff>>& diffContainer, 
+					std::shared_ptr<const wxImage> image1, std::shared_ptr<const wxImage> image2) override;
 	
 	wxDECLARE_EVENT_TABLE();
 
