@@ -307,11 +307,11 @@ void View::onAbout(wxCommandEvent& event) {
 
 void View::onHelp(wxCommandEvent &event) {
 	const char* message = "Per iniziare caricare quante immagini si desidera con il pulsante 'Aggiungi Immagini'. \n"
-					      "Una volta fatto ciò sarà possibile sia rimuovere le immagini all'interno della lista sia la possibilità di aggiungerne altre. \n"
-						  "Per selezionare un' immagine da utilizzare nella comparazione cliccare sul pulsante 'Attiva Imagagini'. \n"
-						  "L'applicazione è progettata in modo da poterne attivare solo due alla volta. \n"
+					      "Una volta fatto cio' sara' possibile sia rimuovere le immagini all'interno della lista sia la possibilita' di aggiungerne altre. \n"
+						  "Per selezionare un' immagine da utilizzare nella comparazione cliccare sul pulsante 'Attiva Immagini'. \n"
+						  "L'applicazione e' progettata in modo da poterne attivare solo due alla volta. \n"
 						  "Selezionare infine tolleranza e metodo di comparazione,quindi visualizzare i risultati sull'apposita vista.";
-	wxMessageBox(message,"Guida sull'utilizzo",wxOK | wxICON_INFORMATION);
+	wxMessageBox(message,"Guida sull'utilizzo",wxOK | wxICON_QUESTION);
 }
 
 void View::onExit(wxCommandEvent& event) {
