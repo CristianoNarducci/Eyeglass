@@ -1,6 +1,6 @@
 ![Eyeglass logo](https://raw.githubusercontent.com/CristianoNarducci/Eyeglass/master/docs/Eyeglass_logo.png)
 # Eyeglass
-[English version](https://github.com/CristianoNarducci/Eyeglass/blob/master/README_en.md)
+[English version](README_en.md)
 
 Eyeglass e' uno strumento grafico FOSS per visualizzare e comparare immagini.   
 Formati supportati: .bmp .png .jpg .gif .pcx .pnm .tiff .tga .iff .xpm .ico .cur .ani
