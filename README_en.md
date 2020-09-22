@@ -4,11 +4,12 @@
 
 Eyeglass is a FOSS graphical tool for viewing and comparing images.   
 Supported formats: .bmp .png .jpg .gif .pcx .pnm .tiff .tga .iff .xpm .ico .cur .ani
+Supported operating systems: Linux, Mac Os (not tested), Windows (not tested)
 
 
 ### Before anything
 The interface of this program is written in italian. We understand this would pose some problems if someone wanted to dive into our project out of curiosity.   
-We provided a translation file from italian to english [here](docs/english_translations.md).
+We provided a translation file from italian to english [here](docs/english_translation.md).
 
 ### Description
 This program allows you to load and keep in memory some images which can be added from a file chooser, then pick two from the list and start the comparison.   
@@ -51,6 +52,7 @@ After that, add the 'proxy' call to the controller and add the selection to the 
 If not altered, each tab should do its work no matter what comparison method is used, as the program stores the differences in a method-agnostic way (x,y coordinates and the percentage of difference).
 
 ### Screenshots of the running program
+The visual aspect of the program should conform to the theme in use on the computer, as wxWidgets uses libraries native to the systems it runs on.    
 ![horizontal view](docs/screenshots/screen_orig_h.png)
 ![vertical view](docs/screenshots/screen_orig_v.png)
 ![list](docs/screenshots/screen_list.png)
