@@ -2,7 +2,7 @@
 # Eyeglass
 Eyeglass is a FOSS graphical tool for viewing and comparing images.   
 
-## Description
+### Description
 The program allows the user to load and keep in memory some images which can be added from a file chooser, then pick two from the list and start the comparison.   
 As the list of loaded images might easily loose focus thus loosing the selection, the concept of "active images" is introduced.   
 Basically, there is a button which marks the first two (or one, if the selection is single) selected images and tells the program to keep them on display. A number will appear to the right of the list stating which image is active, and the corresponding number.
@@ -23,7 +23,7 @@ The comparison is manipulated from the parameters entered on the bottom left.
 A slider controls the cut-out point, the tolerance under which differences are ignored, while a dropdown allows to select the different aspects to compare.
 Currently, it is possible to compare the alpha channel, the RGB color spectrum and the HSV color spectrum.
 
-## Hacking on Eyeglass
+### Hacking on Eyeglass
 Eyeglass is developed in C++ 11 and should compile without any problem up to C++ 20.
 The dependencies are:
 * CMake         - used to compile the program.
