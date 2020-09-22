@@ -4,8 +4,8 @@
 [English version](README_en.md)
 
 Eyeglass e' uno strumento grafico FOSS per visualizzare e comparare immagini.   
-Formati supportati: .bmp .png .jpg .gif .pcx .pnm .tiff .tga .iff .xpm .ico .cur .ani
-Sistemi operativi supportati: Linux, Mac Os (non testato), Windows (non testato)
+Formati supportati: .bmp .png .jpg .gif .pcx .pnm .tiff .tga .iff .xpm .ico .cur .ani   
+Sistemi operativi supportati: Linux, Mac Os (non testato), Windows (non testato)   
 
 
 ### Descrizione
