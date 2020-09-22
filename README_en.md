@@ -26,7 +26,7 @@ Currently there are four views and they can be switched at will:
 * heatmap         - shows the first image only, grayed out and dimmed a bit. After a comparison, the different pixels between the two images are recolored to a gradient from green to red. The gradient is mapped to the percentage of difference. Bright red means max difference, while dimmed green means low percentage of difference.
 
 The comparison is manipulated from the parameters entered on the bottom left.   
-A slider controls the cut-out point, the tolerance under which differences are ignored, while a dropdown allows to select the different aspects to compare.   
+A slider controls the cut-off point, the tolerance under which differences are ignored, while a dropdown allows to select the different aspects to compare.   
 At the moment it is possible to compare the alpha channel, the RGB color space and in the HSV color space.   
 
 

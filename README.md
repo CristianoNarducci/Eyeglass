@@ -1,6 +1,6 @@
 ![Eyeglass logo](https://raw.githubusercontent.com/CristianoNarducci/Eyeglass/master/docs/Eyeglass_logo.png)
 # Eyeglass
-[English version](https://github.com/CristianoNarducci/Eyeglass/blob/master/README.md)
+[English version](https://github.com/CristianoNarducci/Eyeglass/blob/master/README_en.md)
 
 Eyeglass e' uno strumento grafico FOSS per visualizzare e comparare immagini.   
 Formati supportati: .bmp .png .jpg .gif .pcx .pnm .tiff .tga .iff .xpm .ico .cur .ani
@@ -11,10 +11,10 @@ Questo programma permette di caricare delle immagini e mantenerle in memoria, po
 Siccome la lista di immagini caricate puo' facilmente perdere il focus, quindi la selezione, viene introdotto il concetto di 'immagini attive'.   
 In pratica, c'e' un pulsante che marca le prime due immagini selezionate (o solo una se la selezione e' singola) e le mantiene in mostra. Comparira' un numero nella parte destra della lista che segnala l'immagine attiva, e il relativo numero.   
 
-Il numero aiuta anche ad identificare dov'e' l'immagine. L vista ha un design responsivo e si riorganizza per permettere una miglior visualizzazione dei dati.   
-* quanto l'area sulla destra della finestra e' piu' larga che alta, il contenuto di dispone orizzontalmente. La prima immagine sara' sulla sinistra, la seconda sulla destra.
-* quanto l'opposto e' vero, il contenuto sara' disposto verticalmente quindi la prima immagine sara' in cima, la seconda in basso.
-Se i tab lo permettono, quando una sola immagine e' attiva, questa potrebbe prendere per se' tutto lo spazio dedicato alle immagini.
+Il numero aiuta anche ad identificare dov'e' l'immagine. La vista ha un design responsivo e si riorganizza per permettere una miglior visualizzazione dei dati.   
+* quando l'area sulla destra della finestra e' piu' larga che alta, il contenuto si dispone orizzontalmente. La prima immagine sara' sulla sinistra, la seconda sulla destra.
+* quando l'opposto e' vero, il contenuto sara' disposto verticalmente quindi la prima immagine sara' in cima, la seconda in basso.
+Se i tab lo permettono, quando una sola immagine e' attiva, questa potrebbe prendere per se' tutto lo spazio loro dedicato.
 
 L'area sulla destra, come accennato nel paragrafo precedente, e' la parte dove vengono mostrati i risultati ed e' suddivisa in tab.   
 Al momento ci sono quattro viste e possono essere scambiate a piacimento:
@@ -37,7 +37,7 @@ Le dipendenze sono:
 
 Eyeglass e wxWidgets sono virtualmente inseparabili, senza una totale riscrittura del codice, dato che wx provvede metodi di accesso a tutto il necessario. Inizialmente l'idea era quella di usare ImageMagick (Magick++) per la gestione delle immagini, ma il mix non era appetibile.
 
-Per aagiungere un tab personalizzato, e' necessario che questo sia modellato sulla classe astratta ViewTab e che sia registrato nel wxNotebook (fatto nel metodo View::generateTabs). Dopodiche', l'implementazione sta a te.   
+Per aggiungere un tab personalizzato, e' necessario che questo sia modellato sulla classe astratta ViewTab e che sia registrato nel wxNotebook (nel metodo View::generateTabs). Dopodiche', l'implementazione sta a te.   
 
 Aggiungere un metodo di comparazione e' un po' piu' complicato. Se vuoi fare come per gli altri metodi, devi aggiungere la funzione di comparazione pixel nella libreria ImageUtils.   
 Poi c'e' il Model, dove va inserita la funzione che esegue la comparazione tra immagini, chiamando la funzione di comparazione pixel precedentemente implementata, su ogni pixel delle immagini.   
