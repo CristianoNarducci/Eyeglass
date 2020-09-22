@@ -1,5 +1,4 @@
-![Eyeglass logo](docs/Eyeglass_logo.png)
-<img src="docs/Eyeglass_logo.png" width="200" />
+<img src="docs/Eyeglass_logo.png" width="500" />
 # Eyeglass
 [English version](README_en.md)
 
