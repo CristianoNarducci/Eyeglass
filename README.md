@@ -38,4 +38,5 @@ Each tab, in fact, apart from the minimum shared functionality to ease calls fro
 Adding a comparison method is a little bit trickier. If you want to do it like for the others, you need to add the pixel-comparison function in the ImageUtils lib.   
 Then comes the Model, where you put the function that does the comparison between the images by calling the previously implemented pixel-comparison function on every pixel of the images.   
 After that, add the 'proxy' call to the controller and add the selection to the View.   
+
 If not altered, each tab should do its work no matter what comparison method is used, as the program stores the differences in a method-agnostic way (x,y coordinates and the percentage of difference).
