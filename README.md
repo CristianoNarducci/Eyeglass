@@ -1,5 +1,4 @@
 <img src="docs/Eyeglass_logo.png" alt="logo Eyeglass" width="500" />   
->>>>>>> develop
 
 # Eyeglass
 [English version](README_en.md)
