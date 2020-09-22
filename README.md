@@ -1,6 +1,8 @@
 ![Eyeglass logo](https://raw.githubusercontent.com/CristianoNarducci/Eyeglass/master/docs/Eyeglass_logo.png)
 # Eyeglass
 Eyeglass is a FOSS graphical tool for viewing and comparing images.   
+Supported formats: .bmp .png .jpg .gif .pcx .pnm .tiff .tga .iff .xpm .ico .cur .ani
+
 
 ### Description
 This program allows you to load and keep in memory some images which can be added from a file chooser, then pick two from the list and start the comparison.   
@@ -22,6 +24,7 @@ Currently there are four views and they can be switched at will:
 The comparison is manipulated from the parameters entered on the bottom left.   
 A slider controls the cut-out point, the tolerance under which differences are ignored, while a dropdown allows to select the different aspects to compare.
 At the moment it is possible to compare the alpha channel, the RGB color spectrum and the HSV color spectrum.
+
 
 ### Hacking on Eyeglass
 Eyeglass is developed in C++ 11 and should compile without any problem up to C++ 20.   
