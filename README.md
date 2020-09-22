@@ -24,7 +24,7 @@ A slider controls the cut-out point, the tolerance under which differences are i
 Currently, it is possible to compare the alpha channel, the RGB color spectrum and the HSV color spectrum.
 
 ### Hacking on Eyeglass
-Eyeglass is developed in C++ 11 and should compile without any problem up to C++ 20.
+Eyeglass is developed in C++ 11 and should compile without any problem up to C++ 20.   
 The dependencies are:
 * CMake         - used to compile the program.
 * Google Tests  - provides unit tests.
