@@ -1,10 +1,12 @@
-<img src="docs/Eyeglass_logo.png" width="500" />   
+<img src="docs/Eyeglass_logo.png" alt="logo Eyeglass" width="500" />   
+>>>>>>> develop
 
 # Eyeglass
 [English version](README_en.md)
 
 Eyeglass e' uno strumento grafico FOSS per visualizzare e comparare immagini.   
 Formati supportati: .bmp .png .jpg .gif .pcx .pnm .tiff .tga .iff .xpm .ico .cur .ani
+Sistemi operativi supportati: Linux, Mac Os (non testato), Windows (non testato)
 
 
 ### Descrizione
@@ -45,3 +47,11 @@ Poi c'e' il Model, dove va inserita la funzione che esegue la comparazione tra i
 Dopo questo, va aggiunta la chiamata 'proxy' al controller e va aggiunta la selezione alla View.   
 
 Se non e' stato' alterato, ogni tab dovrebbe svolgere il suo lavoro senza problemi con ogni metodo di comparazione, in quanto il programma salva le differenze in modo agnostico rispetto al metodo di comparazione usato (coordinate x, y e la percentuale di differenza).
+
+### Schermate del programma in esecuzione
+L'aspetto visivo del programma dovrebbe adattarsi al tema in uso sul computer, in quanto wxWidgets si appoggia su librerie native ai sistemi su cui gira.   
+![vista orizzontale](docs/screenshots/screen_orig_h.png)
+![vista verticale](docs/screenshots/screen_orig_v.png)
+![lista](docs/screenshots/screen_list.png)
+![vista sovrapposta](docs/screenshots/screen_layer.png)
+![heatmap](docs/screenshots/screen_heatmap.png)

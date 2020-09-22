@@ -1,4 +1,4 @@
-# Translations for non-italian user
+# Translations for non-italian users
 
 ### Main window controls
 * Aggiungi immagini			-> Add images   
