@@ -1,4 +1,4 @@
-![Eyeglass logo](https://raw.githubusercontent.com/CristianoNarducci/Eyeglass/master/docs/Eyeglass_logo.png)
+![Eyeglass logo](docs/Eyeglass_logo.png)
 # Eyeglass
 [English version](README_en.md)
 
