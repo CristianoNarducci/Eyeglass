@@ -1,45 +1,46 @@
 ![Eyeglass logo](https://raw.githubusercontent.com/CristianoNarducci/Eyeglass/master/docs/Eyeglass_logo.png)
 # Eyeglass
-Eyeglass is a FOSS graphical tool for viewing and comparing images.   
-Supported formats: .bmp .png .jpg .gif .pcx .pnm .tiff .tga .iff .xpm .ico .cur .ani
+[English version](https://github.com/CristianoNarducci/Eyeglass/blob/master/README.md)
+
+Eyeglass e' uno strumento grafico FOSS per visualizzare e comparare immagini.   
+Formati supportati: .bmp .png .jpg .gif .pcx .pnm .tiff .tga .iff .xpm .ico .cur .ani
 
 
-### Description
-This program allows you to load and keep in memory some images which can be added from a file chooser, then pick two from the list and start the comparison.   
-As the list of loaded images might easily loose focus thus loosing the selection, the concept of "active images" is introduced.   
-Basically, there is a button which marks the first two (or one, if the selection is single) selected images and tells the program to keep them on display. A number will appear to the right of the list stating which image is active, and the corresponding number.
+### Descrizione
+Questo programma permette di caricare delle immagini e mantenerle in memoria, poi sceglierne due dalla lista e avviare la comparazione.   
+Siccome la lista di immagini caricate puo' facilmente perdere il focus, quindi la selezione, viene introdotto il concetto di 'immagini attive'.   
+In pratica, c'e' un pulsante che marca le prime due immagini selezionate (o solo una se la selezione e' singola) e le mantiene in mostra. Comparira' un numero nella parte destra della lista che segnala l'immagine attiva, e il relativo numero.   
 
-The number helps in identifying which image is where as well. The view has a responsive design and reflows to allow a better look at the data.   
-* When the area on the right side of the window is wider than is tall, the content is laid out horizontally. The first image will be on the left, the second one on the right.
-* When the opposite is true, the first image will be the uppermost, the second being the lower one.
-If the tab allows it, when only an image is selected, it might take all the space where images are shown, for itself.
+Il numero aiuta anche ad identificare dov'e' l'immagine. L vista ha un design responsivo e si riorganizza per permettere una miglior visualizzazione dei dati.   
+* quanto l'area sulla destra della finestra e' piu' larga che alta, il contenuto di dispone orizzontalmente. La prima immagine sara' sulla sinistra, la seconda sulla destra.
+* quanto l'opposto e' vero, il contenuto sara' disposto verticalmente quindi la prima immagine sara' in cima, la seconda in basso.
+Se i tab lo permettono, quando una sola immagine e' attiva, questa potrebbe prendere per se' tutto lo spazio dedicato alle immagini.
 
-The area on the right, as the previous paragraph might suggest, is the 'view' or 'result' area, which is organized into multiple tabs.   
-Currently there are four views and they can be switched at will:
-* original image  - shows the images as they are. Works both with one and two images active at once.
-* difference list - displays a list with textual entries of the differences discovered after the comparison.
-* overlayed view  - a slider allows to see more or less of the images. The more you go to the right, the less you see of the second image. The more on the left, the less you see of the first one.
-* heatmap         - shows the first image only, grayed out and dimmed a bit. After a comparison, the different pixels between the two images are recolored to a gradient from green to red. The gradient is mapped to the percentage of difference. Bright red means max difference, while dimmed green means low percentage of difference.
+L'area sulla destra, come accennato nel paragrafo precedente, e' la parte dove vengono mostrati i risultati ed e' suddivisa in tab.   
+Al momento ci sono quattro viste e possono essere scambiate a piacimento:
+* immagini originali	- mostra le immagini cosi' come sono. Funziona con solo un'immagine o con due immagini attive per volta.
+* lista di differenze	- visualizza una lista testuale delle differenze scoperte dalla comparazione.
+* vista sovrapposta		- uno slider permette di vedere piu' o meno delle immagini. Piu' si va a destra, meno si vede della seconda immagine. Piu' si va a sinistra, meno si vede della prima.
+* heatmap				- mostra solo una versione in scala di grigi, leggermente scurita, della prima immagine. Dopo una comparazione, i pixel differenti tra le due immagini sono ricolorati con un gradiente dal verde al rosso. Il gradiente e' mappato alla differenza percentuale. Rosso acceso significa differenza massima, mentre verde spento significa bassa percentuale di differenza.
 
-The comparison is manipulated from the parameters entered on the bottom left.   
-A slider controls the cut-out point, the tolerance under which differences are ignored, while a dropdown allows to select the different aspects to compare.
-At the moment it is possible to compare the alpha channel, the RGB color spectrum and the HSV color spectrum.
+La comparazione e' manipolata dai parametri inseriti in fondo a sinistra.   
+Uno slider controlla il punto di stacco, la tolleranza sotto la quale le differenze sono ignorate, mentre il menu' a tendina permette di selezionare i differenti aspetti da comparare.   
+Attualmente e' possibile comparare il canale alpha, i colori nello spazio RGB e nello spazio HSV.
 
 
-### Hacking on Eyeglass
-Eyeglass is developed in C++ 11 and should compile without any problem up to C++ 20.   
-The dependencies are:
-* CMake (v3.17)      - used to compile the program.
-* Google Tests       - provides unit tests.
-* wxWidgets (v3.0.0) - the framework used to create the entire program.
+### Modificare Eyeglass
+Eyeglass e' stato sviluppato in C++ 11 ma dovrebbe compilare fino al C++ 20 senza problemi.   
+Le dipendenze sono:
+* CMake (v3.17)			- usato per compilare il programma.
+* Google Tests			- provvede ai test.
+* wxWidgets (v3.0.0)	- il framework usato per creare l'intero programma.
 
-Eyeglass and wxWidgets are inseparable, without a major rewrite of the entire code, as wx provides facilities for virtually anything. Initially there was a plan to use ImageMagick (Magick++) for the image handling work, but the mix did not look very appealing.
+Eyeglass e wxWidgets sono virtualmente inseparabili, senza una totale riscrittura del codice, dato che wx provvede metodi di accesso a tutto il necessario. Inizialmente l'idea era quella di usare ImageMagick (Magick++) per la gestione delle immagini, ma il mix non era appetibile.
 
-To add a custom tab, it needs to follow the ViewTab abstract class and to be registered in the wxNotebook (done in the View::generateTabs function). After that, the whole implementation is up to you.   
-Each tab, in fact, apart from the minimum shared functionality to ease calls from the main window, implements a set of different functions.   
+Per aagiungere un tab personalizzato, e' necessario che questo sia modellato sulla classe astratta ViewTab e che sia registrato nel wxNotebook (fatto nel metodo View::generateTabs). Dopodiche', l'implementazione sta a te.   
 
-Adding a comparison method is a little bit trickier. If you want to do it like for the others, you need to add the pixel-comparison function in the ImageUtils lib.   
-Then comes the Model, where you put the function that does the comparison between the images by calling the previously implemented pixel-comparison function on every pixel of the images.   
-After that, add the 'proxy' call to the controller and add the selection to the View.   
+Aggiungere un metodo di comparazione e' un po' piu' complicato. Se vuoi fare come per gli altri metodi, devi aggiungere la funzione di comparazione pixel nella libreria ImageUtils.   
+Poi c'e' il Model, dove va inserita la funzione che esegue la comparazione tra immagini, chiamando la funzione di comparazione pixel precedentemente implementata, su ogni pixel delle immagini.   
+Dopo questo, va aggiunta la chiamata 'proxy' al controller e va aggiunta la selezione alla View.   
 
-If not altered, each tab should do its work no matter what comparison method is used, as the program stores the differences in a method-agnostic way (x,y coordinates and the percentage of difference).
+Se non e' stato' alterato, ogni tab dovrebbe svolgere il suo lavoro senza problemi con ogni metodo di comparazione, in quanto il programma salva le differenze in modo agnostico rispetto al metodo di comparazione usato (coordinate x, y e la percentuale di differenza).
