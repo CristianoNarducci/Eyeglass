@@ -41,18 +41,74 @@ public:
 	virtual ~View() {};
 
 protected:
+	/*
+	 * Shows a file picker and tries to load the chosen files. If something goes wrong, Model signals it and this shows a dialog.
+	 */
 	void loadImages(wxCommandEvent& event);
+	
+	/*
+	 * Tells model to remove from storage, the images selected from the list.
+	 * If an active image was affected, its path is removed from the list of active images and the others are renumbered.
+	 * In that case, every tab is marked for update and the one in view is instantly updated.
+	 */
 	void removeImages(wxCommandEvent& event);
+	
+	/*
+	 * Activates the images selected from the list.
+	 * If there were no previously active images, the first two are activated.
+	 * In case there was only an active image and only one image is selected, that selected image is activated.
+	 * Otherwise, the previously active images are deactivated and the new selection becomes active, based on the previously stated rules.
+	 * This marks every tab for update and instantly refreshes the active tab.
+	 */
 	void activateSelectedImages(wxCommandEvent& event);
+	
+	/*
+	 * Reassigns the correct number to each active image in list.
+	 */
 	void renumberActiveImages();
+	
+	/*
+	 * Tells the model to start the comparison with the given settings and images.
+	 * If the model throws an exception regarding different geometry of the active images, a dialog is shown.
+	 */
 	void compareImages(wxCommandEvent& event);
+	
+	/*
+	 * Initializes each tab and adds it to the tabsNotebook.
+	 */
 	void generateTabs();
+	
+	/*
+	 * Calls each tab's markForUpdate method, telling the tabs to refresh their content on the next update call.
+	 */
 	void markTabsForUpdate();
+	
+	/*
+	 * Updates only the currently selected tab with the currently active images and the differences calculated.
+	 * The combination of markForUpdate and updateSelectedTab creates a deferred loading mechanism.
+	 */
 	void updateSelectedTab();
+	
+	/*
+	 * Handles the change of shown tab, telling the new tab to refresh itself.
+	 */
 	void onTabChanged(wxBookCtrlEvent& event);
+	
+	/*
+	 * Refreshes the tolerance textual indicator when the slider changes.
+	 */
 	void onSliderUpdate(wxCommandEvent& event);
+	
+	/*
+	 * Displays a dialog with some informations on the program.
+	 */
 	void onAbout(wxCommandEvent& event);
+	
+	/*
+	 * Shows a little guide for the program.
+	 */
 	void onHelp(wxCommandEvent& event);
+	
 	void onExit(wxCommandEvent& event);
 	
 	/*
