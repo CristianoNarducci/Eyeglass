@@ -182,11 +182,11 @@ void View::removeImages(wxCommandEvent& event) {
 			activeImageAffected = true;
 		}
 		controller.removeImage(list->GetItemText(item));
-		
 		list->DeleteItem(item);
 	}
 	
 	if (activeImageAffected) {
+		renumberActiveImages();
 		controller.removeCachedDifferences();
 		markTabsForUpdate();
 		updateSelectedTab();
@@ -222,6 +222,21 @@ void View::activateSelectedImages(wxCommandEvent& event) {
 	// Update the selected tab immmediately and mark the others for update.
 	markTabsForUpdate();
 	updateSelectedTab();
+}
+
+void View::renumberActiveImages() {
+	// Mark where the search was left
+	long checkpoint = -1;
+	
+	for (int i = 0; i < activeImages.GetCount(); i++) {
+		long id = list->FindItem(checkpoint, activeImages[i]);
+		
+		if (id != wxNOT_FOUND) {
+			list->SetItem(id, 2, std::to_string(i + 1));
+		}
+		
+		checkpoint = id;
+	}
 }
 
 void View::compareImages(wxCommandEvent& event) {

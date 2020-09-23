@@ -44,6 +44,7 @@ protected:
 	void loadImages(wxCommandEvent& event);
 	void removeImages(wxCommandEvent& event);
 	void activateSelectedImages(wxCommandEvent& event);
+	void renumberActiveImages();
 	void compareImages(wxCommandEvent& event);
 	void generateTabs();
 	void markTabsForUpdate();
