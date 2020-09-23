@@ -58,6 +58,20 @@ TEST_F(ModelSuite,testLoad){
 	model.loadImage(_("plane.jpg"));
 	EXPECT_NE(nullptr,model.getImage("plane.jpg"));
 }
+	/*This test verify that an ImageLoaderException is throw
+	 * If an image has an invalid path, the model will throw an exception called ImageLoaderException and will notify the user
+	 * The red messages on the console are normal*/
+TEST_F(ModelSuite,testLoaderException){
+	ASSERT_THROW(model.loadImage(_("pig.jpg")),ImageLoaderException);
+}
+	/*This test verify that an ImageGeometryException is throw
+	 * If the images choice for comparison have different size, the model will throw an exception called ImageGeometryException*/
+TEST_F(ModelSuite,testGeometryException){
+	ASSERT_THROW(model.compareAlpha(_("car.png"),_("cat.jpg"),0),ImageGeometryException);
+	ASSERT_THROW(model.compareRGB(_("car.png"),_("cat.jpg"),0),ImageGeometryException);
+	ASSERT_THROW(model.compareHSV(_("car.png"),_("cat.jpg"),0),ImageGeometryException);
+
+}
 	/*This test verify that the comparison with Alpha works
 	 * it control the cartesian position of the pixel and the result of difference*/
 TEST_F(ModelSuite,testAlpha){
