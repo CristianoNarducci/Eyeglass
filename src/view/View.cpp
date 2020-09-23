@@ -151,7 +151,7 @@ void View::loadImages(wxCommandEvent& event) {
 			try {
 				controller.loadImage(*iterator);
 			} catch (ImageLoaderException& error) {
-				pathsNotLoaded.Add(*iterator);
+				pathsNotLoaded.Add(error.getErroredPath());
 				continue;
 			}
 			

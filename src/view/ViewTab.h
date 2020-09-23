@@ -21,7 +21,7 @@ class ViewTab: public wxWindow {
 public:
 	ViewTab(wxWindow* parent);
 	
-	virtual void markForUpdate();
+	void markForUpdate();
 	
 	/*
 	 * Updates the tab with the content provided as parameter, but only if marked for updated beforehand.

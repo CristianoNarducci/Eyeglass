@@ -6,7 +6,7 @@ void Model::loadImage(wxString path) {
 	wxImage image;
 	
 	if (!image.LoadFile(path)) {
-		throw ImageLoaderException();
+		throw ImageLoaderException(path);
 	}
 	
 	imageStorage.insert(std::make_pair(path, std::make_shared<wxImage>(image)));
