@@ -28,14 +28,15 @@ long_line_behaviour=1
 long_line_column=90
 
 [files]
-current_page=3
-FILE_NAME_0=1503;C++;0;EUTF-8;1;1;0;%2Fhome%2Ffoxubuntu%2FProjects%2Funiversity%2FEyeglass%2Fsrc%2Fview%2FView.h;0;4
-FILE_NAME_1=1097;C++;0;EUTF-8;1;1;0;%2Fhome%2Ffoxubuntu%2FProjects%2Funiversity%2FEyeglass%2Fsrc%2Fview%2FView.cpp;0;4
-FILE_NAME_2=667;C++;0;EUTF-8;1;1;0;%2Fhome%2Ffoxubuntu%2FProjects%2Funiversity%2FEyeglass%2Fsrc%2Fview%2FOriginalViewTab.h;0;4
-FILE_NAME_3=415;C++;0;EUTF-8;1;1;0;%2Fhome%2Ffoxubuntu%2FProjects%2Funiversity%2FEyeglass%2Fsrc%2Fview%2FOriginalViewTab.cpp;0;4
+current_page=0
+FILE_NAME_0=6565;C++;0;EUTF-8;1;1;0;%2Fhome%2Ffoxubuntu%2FProjects%2Funiversity%2FEyeglass%2Fsrc%2Fview%2FView.cpp;0;4
+FILE_NAME_1=388;C++;0;EUTF-8;1;1;0;%2Fhome%2Ffoxubuntu%2FProjects%2Funiversity%2FEyeglass%2Fsrc%2Fexception%2FImageLoaderException.h;0;4
+FILE_NAME_2=159;C++;0;EUTF-8;1;1;0;%2Fhome%2Ffoxubuntu%2FProjects%2Funiversity%2FEyeglass%2Fsrc%2Fmodel%2FModel.cpp;0;4
+FILE_NAME_3=0;C++;0;EUTF-8;1;1;0;%2Fhome%2Ffoxubuntu%2FProjects%2Funiversity%2FEyeglass%2Fsrc%2Fview%2FView.h;0;4
+FILE_NAME_4=616;C++;0;EUTF-8;1;1;0;%2Fhome%2Ffoxubuntu%2FProjects%2Funiversity%2FEyeglass%2Fsrc%2Fview%2FViewTab.h;0;4
 
 [VTE]
-last_dir=/home/foxubuntu/Projects/university/Eyeglass/src/view
+last_dir=/home/foxubuntu/Projects/university/Eyeglass
 
 [build-menu]
 NF_00_LB=CMake
